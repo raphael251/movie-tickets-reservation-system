@@ -1,0 +1,29 @@
+{
+  "name": "movie-tickets-reservation-system",
+  "version": "1.0.0",
+  "description": "This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphael251/movie-tickets-reservation-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/raphael251/movie-tickets-reservation-system/issues"
+  },
+  "homepage": "https://github.com/raphael251/movie-tickets-reservation-system#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}
