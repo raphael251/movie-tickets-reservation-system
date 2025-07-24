@@ -10,11 +10,12 @@ The project is currently in the early stages of development. The main features a
 
 ## Features
 
-| Feature                               | Description                                                                             | Status      |
-| ------------------------------------- | --------------------------------------------------------------------------------------- | ----------- |
-| User authentication and authorization | Users can sign up and log in to make reservations; admins can log in to manage movies.  | IN PROGRESS |
-| Movie management                      | Admins can manage movies, showtimes, and the amount of seats available for reservation. | TODO        |
-| Reservation management                | Users can manage their seat reservations.                                               | TODO        |
+| Feature                | Description                                                                             | Status      |
+| ---------------------- | --------------------------------------------------------------------------------------- | ----------- |
+| User sign up           | Users can create an account                                                             | IN PROGRESS |
+| User login             | Users can login using their created account                                             | TODO        |
+| Movie management       | Admins can manage movies, showtimes, and the amount of seats available for reservation. | TODO        |
+| Reservation management | Users can manage their seat reservations.                                               | TODO        |
 
 ## Core Technologies
 
