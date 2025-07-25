@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 import { UserRepository } from './modules/users/repositories/user.repository.ts';
 import { Hasher } from './modules/shared/security/hasher.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
-import { dirname } from 'path';
+import { UserDBEntity } from './modules/users/database/user.entity.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -16,7 +16,7 @@ async function startApplication() {
     username: appConfig.DB_USERNAME,
     password: appConfig.DB_PASSWORD,
     database: appConfig.DB_DATABASE,
-    entities: [dirname('.') + '/modules/**/*.{js,ts}'],
+    entities: [UserDBEntity],
     synchronize: true, // Set to false in production
     logging: true,
   });
