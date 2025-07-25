@@ -40,7 +40,7 @@ async function startApplication() {
   app.post('/users', (req, res) => new UsersSignUpController(new UserRepository(), new Hasher()).handle(req, res));
 
   app.listen(appConfig.SERVER_PORT, () => {
-    console.log(`Server is running on http://localhost:${appConfig.SERVER_PORT}`);
+    console.log(`Server is running on port ${appConfig.SERVER_PORT}`);
   });
 }
 
