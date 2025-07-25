@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
-import { IUserRepository } from '../../repositories/interfaces/index.ts';
+import { IUserRepository } from '../../repositories/interfaces/user.repository.ts';
 import { IHasher } from '../../../shared/security/interfaces/hasher.ts';
 
 export class UsersSignUpController implements IHttpController {
