@@ -1,11 +1,21 @@
 services:
-  users-db:
+  movies-tickets-reservation-db:
     image: postgres:11
-    container_name: users-db
+    container_name: movies-tickets-reservation-db
     restart: always
     environment:
-      - POSTGRES_DB=users-db
+      - POSTGRES_DB=movies-tickets-reservation-db
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
+    networks:
+      - movies-tickets-reservation-network
     ports:
       - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
+networks:
+  movies-tickets-reservation-network:
+    driver: bridge

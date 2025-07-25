@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/raphael251/movie-tickets-reservation-system#readme",
   "dependencies": {
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "pg": "^8.16.3",
-    "typeorm": "^0.3.25"
+    "typeorm": "^0.3.25",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
