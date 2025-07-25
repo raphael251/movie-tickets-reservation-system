@@ -1,0 +1,11 @@
+services:
+  users-db:
+    image: postgres:11
+    container_name: users-db
+    restart: always
+    environment:
+      - POSTGRES_DB=users-db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - 5432:5432
