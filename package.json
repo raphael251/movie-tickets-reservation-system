@@ -4,7 +4,9 @@
   "description": "This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --require dotenv/config src/index.ts",
+    "build": "swc src --out-dir dist",
+    "build:ci": "tsc && npm run build",
+    "dev": "nodemon --require dotenv/config dist/src/index.js",
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",
@@ -33,13 +35,16 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.32.0",
+    "@swc/cli": "^0.7.8",
+    "@swc/core": "^1.13.2",
+    "@swc/plugin-transform-imports": "^9.0.0",
     "@types/express": "^5.0.3",
     "eslint": "^9.32.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jiti": "^2.5.1",
+    "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
-    "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
   }

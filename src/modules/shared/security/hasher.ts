@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { IHasher } from './interfaces/hasher';
+import { IHasher } from './interfaces/hasher.ts';
 
 export class Hasher implements IHasher {
   async hash(value: string): Promise<string> {

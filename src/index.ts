@@ -1,9 +1,10 @@
 import express from 'express';
-import { UsersSignUpController } from './modules/users/http/controllers/sign-up';
+import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
 import { DataSource } from 'typeorm';
-import { UserRepository } from './modules/users/repositories';
-import { Hasher } from './modules/shared/security/hasher';
-import { AppConfigLoader } from './modules/shared/configs/app-config';
+import { UserRepository } from './modules/users/repositories/user.repository.ts';
+import { Hasher } from './modules/shared/security/hasher.ts';
+import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
+import { dirname } from 'path';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -15,7 +16,7 @@ async function startApplication() {
     username: appConfig.DB_USERNAME,
     password: appConfig.DB_PASSWORD,
     database: appConfig.DB_DATABASE,
-    entities: [__dirname + '/modules/**/*.{js,ts}'],
+    entities: [dirname('.') + '/modules/**/*.{js,ts}'],
     synchronize: true, // Set to false in production
     logging: true,
   });

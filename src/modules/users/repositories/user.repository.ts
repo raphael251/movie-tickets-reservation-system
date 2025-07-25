@@ -1,6 +1,6 @@
-import { UserDBEntity } from '../database/entities/user';
-import { User } from '../entities/user';
-import { IUserRepository } from './interfaces';
+import { UserDBEntity } from '../database/entities/user.ts';
+import { User } from '../entities/user.ts';
+import { IUserRepository } from './interfaces/index.ts';
 
 export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
