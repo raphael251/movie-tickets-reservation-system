@@ -1,4 +1,4 @@
-import zod from "zod";
+import zod from 'zod';
 
 /**
  * AppConfigLoader is responsible for loading and validating the application configuration

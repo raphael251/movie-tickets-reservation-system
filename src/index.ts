@@ -18,11 +18,12 @@ async function startApplication() {
     entities: [__dirname + '/modules/**/*.{js,ts}'],
     synchronize: true, // Set to false in production
     logging: true,
-  })
+  });
 
   const app = express();
 
-  appDataSource.initialize()
+  appDataSource
+    .initialize()
     .then(() => {
       console.log('Data Source has been initialized!');
     })
@@ -44,6 +45,6 @@ async function startApplication() {
 }
 
 startApplication().catch((error) => {
-    console.error('Error starting the application:', error);
-    process.exit(1);
+  console.error('Error starting the application:', error);
+  process.exit(1);
 });
