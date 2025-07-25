@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up';
 import { DataSource } from 'typeorm';

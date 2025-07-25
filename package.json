@@ -4,7 +4,7 @@
   "description": "This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --require dotenv/config src/index.ts"
   },
   "repository": {
     "type": "git",
