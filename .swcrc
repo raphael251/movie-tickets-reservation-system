@@ -1,5 +1,5 @@
 {
-  "exclude": "node_modules/",
+  "exclude": [".spec.ts", ".test.ts", "__tests__"],
   "jsc": {
     "parser": {
       "syntax": "typescript",
