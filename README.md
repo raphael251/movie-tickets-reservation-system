@@ -17,6 +17,14 @@ The project is currently in the early stages of development. The main features a
 | Movie management       | Admins can manage movies, showtimes, and the amount of seats available for reservation. | IN-PROGRESS |
 | Reservation management | Users can manage their seat reservations.                                               | TODO        |
 
+## Improvements
+
+As the project evolves, there are several improvements to be made to enhance the system quality. Here are some of the planned improvements:
+
+| Feature | Description                                                           | Status |
+| ------- | --------------------------------------------------------------------- | ------ |
+| Logger  | Implement Logging tool (e.g.: winstonjs) for a better logging system. | TODO   |
+
 ## Core Technologies
 
 - Node.js & Typescript
