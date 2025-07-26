@@ -5,6 +5,7 @@ import { UserRepository } from './modules/users/repositories/user.repository.ts'
 import { Hasher } from './modules/shared/security/hasher.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
 import { UserDBEntity } from './modules/users/database/user.entity.ts';
+import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -38,7 +39,7 @@ async function startApplication() {
     res.send('Welcome to the Movie Tickets Reservation System!');
   });
 
-  app.post('/users', (req, res) => new UsersSignUpController(new UserRepository(), new Hasher()).handle(req, res));
+  app.post('/users', (req, res) => new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher())).handle(req, res));
 
   app.listen(appConfig.SERVER_PORT, () => {
     console.log(`Server is running on port ${appConfig.SERVER_PORT}`);
