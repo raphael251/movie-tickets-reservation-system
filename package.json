@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
