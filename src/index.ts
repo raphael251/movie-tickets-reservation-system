@@ -8,6 +8,10 @@ import { UserDBEntity } from './modules/users/database/user.entity.ts';
 import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
 import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
+import { MovieDBEntity } from './modules/movies/database/movie.entity.ts';
+import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
+import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
+import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -19,7 +23,7 @@ async function startApplication() {
     username: appConfig.DB_USERNAME,
     password: appConfig.DB_PASSWORD,
     database: appConfig.DB_DATABASE,
-    entities: [UserDBEntity],
+    entities: [UserDBEntity, MovieDBEntity],
     synchronize: true, // Set to false in production
     logging: true,
   });
@@ -46,6 +50,8 @@ async function startApplication() {
   app.post('/users/login', async (req, res) =>
     new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
   );
+
+  app.post('/movies', async (req, res) => new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res));
 
   app.listen(appConfig.SERVER_PORT, () => {
     console.log(`Server is running on port ${appConfig.SERVER_PORT}`);
