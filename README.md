@@ -34,9 +34,10 @@ The project is currently in the early stages of development. The main features a
 
 As the project evolves, there are several improvements to be made to enhance the system quality. Here are some of the planned improvements:
 
-| Feature | Description                                                           | Status |
-| ------- | --------------------------------------------------------------------- | ------ |
-| Logger  | Implement Logging tool (e.g.: winstonjs) for a better logging system. | TODO   |
+| Feature                        | Description                                                           | Status |
+| ------------------------------ | --------------------------------------------------------------------- | ------ |
+| Logger                         | Implement Logging tool (e.g.: winstonjs) for a better logging system. | TODO   |
+| Dependency Injection Container | Implement a DI container (e.g.: inversifyjs) to manage dependencies.  | TODO   |
 
 ## Core Technologies
 
