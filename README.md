@@ -20,6 +20,16 @@ The project is currently in the early stages of development. The main features a
 | Movie seats management.           | N/A                                                                                                       | TODO        |
 | Movie reservation                 | N/A                                                                                                       | TODO        |
 
+## Technical Roadmap
+
+- [x] User sign up API
+- [x] User login API
+- [x] Movie creation API
+- [ ] Movie listing API
+- [ ] Reservation endpoints
+- [ ] Authorization middleware
+- [ ] Room CRUD endpoints
+
 ## Improvements
 
 As the project evolves, there are several improvements to be made to enhance the system quality. Here are some of the planned improvements:
