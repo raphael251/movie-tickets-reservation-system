@@ -1,5 +1,7 @@
 # Movie Tickets Reservation System
 
+## Project Overview
+
 This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.
 
 This project was based on [one of the roadmap.sh backend path projects](https://roadmap.sh/projects/movie-reservation-system) but my idea is to go further and implement my own ideas from the initial one.
