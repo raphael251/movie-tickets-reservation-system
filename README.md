@@ -44,3 +44,34 @@ As the project evolves, there are several improvements to be made to enhance the
 - TypeORM
 - Express
 - PostgreSQL
+
+## Getting Started
+
+To get started with the project, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/raphael251/movie-tickets-reservation-system.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd movie-tickets-reservation-system
+   ```
+3. Install the dependencies:
+   ```bash
+    npm install
+   ```
+4. Set up the environment variables by creating a `.env` file based on the `.env.example` file.
+5. Spin up the database using Docker:
+   ```bash
+   docker-compose up -d
+   ```
+   Ensure you have Docker installed and running on your machine.
+6. Build the project:
+   ```bash
+   npm run build
+   ```
+7. Start the development server:
+   ```bash
+   npm run dev
+   ```
