@@ -10,14 +10,15 @@ This project was based on [one of the roadmap.sh backend path projects](https://
 
 The project is currently in the early stages of development. The main features are planned, but the implementation is still in progress.
 
-## Features
+## Features (Customer-Focused)
 
-| Feature                | Description                                                                             | Status      |
-| ---------------------- | --------------------------------------------------------------------------------------- | ----------- |
-| User sign up           | Users can create an account                                                             | COMPLETE    |
-| User login             | Users can login using their created account                                             | COMPLETE    |
-| Movie management       | Admins can manage movies, showtimes, and the amount of seats available for reservation. | IN-PROGRESS |
-| Reservation management | Users can manage their seat reservations.                                               | TODO        |
+| Feature                           | Description                                                                                               | Status      |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------- |
+| User account creation (sign up)   | N/A                                                                                                       | COMPLETE    |
+| User account login                | N/A                                                                                                       | COMPLETE    |
+| Movie management with a showtime. | Admins can manage movie showtimes, only being able to create a unique movie for a specific room and time. | IN-PROGRESS |
+| Movie seats management.           | N/A                                                                                                       | TODO        |
+| Movie reservation                 | N/A                                                                                                       | TODO        |
 
 ## Improvements
 
