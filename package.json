@@ -11,7 +11,9 @@
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",
     "prepare": "husky",
-    "test": "jest"
+    "test": "jest",
+    "migration:generate": "typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/modules/shared/data-source/data-source.ts",
+    "migration:run": "typeorm-ts-node-esm migration:run -d ./src/modules/shared/data-source/data-source.ts"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
   }
