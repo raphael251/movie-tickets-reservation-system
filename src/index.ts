@@ -12,6 +12,7 @@ import { MovieDBEntity } from './modules/movies/database/movie.entity.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
 import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
+import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -52,6 +53,8 @@ async function startApplication() {
   );
 
   app.post('/movies', async (req, res) => new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res));
+
+  app.get('/movies', async (req, res) => new ListMoviesController(new MovieRepository()).handle(req, res));
 
   app.listen(appConfig.SERVER_PORT, () => {
     console.log(`Server is running on port ${appConfig.SERVER_PORT}`);
