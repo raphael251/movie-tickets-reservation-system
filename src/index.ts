@@ -1,35 +1,21 @@
 import express from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
-import { DataSource } from 'typeorm';
 import { UserRepository } from './modules/users/repositories/user.repository.ts';
 import { Hasher } from './modules/shared/security/hasher.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
-import { UserDBEntity } from './modules/users/database/user.entity.ts';
 import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
 import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
-import { MovieDBEntity } from './modules/movies/database/movie.entity.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
 import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
+import { appDataSource } from './modules/shared/data-source/data-source.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
-
-  const appDataSource = new DataSource({
-    type: 'postgres',
-    host: appConfig.DB_HOST,
-    port: appConfig.DB_PORT,
-    username: appConfig.DB_USERNAME,
-    password: appConfig.DB_PASSWORD,
-    database: appConfig.DB_DATABASE,
-    entities: [UserDBEntity, MovieDBEntity],
-    synchronize: true, // Set to false in production
-    logging: true,
-  });
 
   const app = express();
 
