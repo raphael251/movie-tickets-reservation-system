@@ -42,6 +42,12 @@ export class MovieRepository implements IMovieRepository {
     );
   }
 
+  async findAll(): Promise<Movie[]> {
+    const movies = await MovieDBEntity.find();
+
+    return movies.map((movie) => new Movie(movie.id, movie.title, movie.description, movie.category, movie.room, movie.startTime, movie.endTime));
+  }
+
   async save(movie: Movie): Promise<void> {
     await MovieDBEntity.upsert(movie, {
       conflictPaths: ['id'],
