@@ -24,7 +24,7 @@ export class UserLoginUseCase {
     }
 
     try {
-      const token = jwt.sign({ userId: user.id }, this.appConfig.JWT_SECRET, { expiresIn: this.appConfig.JWT_EXPIRATION });
+      const token = jwt.sign({ userId: user.id, role: user.role }, this.appConfig.JWT_SECRET, { expiresIn: this.appConfig.JWT_EXPIRATION });
       return { token };
     } catch (error) {
       console.error('Error generating token:', error);

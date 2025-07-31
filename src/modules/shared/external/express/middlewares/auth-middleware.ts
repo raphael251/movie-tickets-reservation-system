@@ -15,6 +15,7 @@ export function expressAuthMiddleware(tokenValidator: ITokenValidator) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    req.user = { id: validationResult.userId, role: validationResult.userRole };
     next();
   };
 }
