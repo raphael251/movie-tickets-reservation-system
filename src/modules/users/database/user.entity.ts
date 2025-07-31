@@ -8,6 +8,9 @@ export class UserDBEntity extends BaseEntity {
   @Column()
   email!: string;
 
+  @Column({ enum: ['admin', 'regular'], default: 'regular', type: 'enum' })
+  role!: 'admin' | 'regular';
+
   @Column()
   password!: string;
 }

@@ -1,6 +1,7 @@
 import { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.ts';
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
+import { UserRole } from '../util/constants/roles.ts';
 
 export class UsersSignUpUseCase {
   constructor(
@@ -15,6 +16,7 @@ export class UsersSignUpUseCase {
 
     await this.userRepository.create({
       email,
+      role: UserRole.REGULAR,
       password: await this.hasher.hash(password),
     });
   }
