@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { ITokenValidator } from '../../../security/interfaces/token-validator';
+import { ITokenValidator } from '../../../security/interfaces/token-validator.ts';
+import { rolesAndPermissions } from '../../../security/roles-and-permissions.ts';
 
 export function expressAuthMiddleware(tokenValidator: ITokenValidator) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +16,17 @@ export function expressAuthMiddleware(tokenValidator: ITokenValidator) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    req.user = { id: validationResult.userId, role: validationResult.userRole };
+    const { userId, userRole } = validationResult;
+
+    if (req.requiredPermissions) {
+      const hasRequiredPermissions = req.requiredPermissions.every((perm) => rolesAndPermissions[userRole].has(perm));
+
+      if (!hasRequiredPermissions) {
+        return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+      }
+    }
+
+    req.user = { id: userId, role: userRole };
     next();
   };
 }
