@@ -13,6 +13,7 @@ import { ListMoviesController } from './modules/movies/http/controllers/list.ts'
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { appDataSource } from './modules/shared/data-source/data-source.ts';
+import { expressRequiredPermissionsMiddleware } from './modules/shared/external/express/middlewares/required-permissions.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -40,12 +41,18 @@ async function startApplication() {
     new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
   );
 
-  app.post('/movies', expressAuthMiddleware(new JWTTokenValidator(appConfig)), async (req, res) =>
-    new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
+  app.post(
+    '/movies',
+    expressRequiredPermissionsMiddleware(['movies:create']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
-  app.get('/movies', expressAuthMiddleware(new JWTTokenValidator(appConfig)), async (req, res) =>
-    new ListMoviesController(new MovieRepository()).handle(req, res),
+  app.get(
+    '/movies',
+    expressRequiredPermissionsMiddleware(['movies:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new ListMoviesController(new MovieRepository()).handle(req, res),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {
