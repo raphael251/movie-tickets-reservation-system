@@ -10,6 +10,7 @@ const envSchema = zod.object({
   DB_USERNAME: zod.string(),
   DB_PASSWORD: zod.string(),
   DB_DATABASE: zod.string(),
+  DB_MIGRATIONS_PATH: zod.string(),
   DB_HOST: zod.string(),
   DB_PORT: zod.coerce.number(),
 });

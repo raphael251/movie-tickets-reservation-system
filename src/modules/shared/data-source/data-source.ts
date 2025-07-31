@@ -14,5 +14,6 @@ export const appDataSource = new DataSource({
   password: appConfig.DB_PASSWORD,
   database: appConfig.DB_DATABASE,
   entities: [UserDBEntity, MovieDBEntity],
+  migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: true,
 });
