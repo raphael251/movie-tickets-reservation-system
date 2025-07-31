@@ -13,7 +13,8 @@
     "prepare": "husky",
     "test": "jest",
     "migration:generate": "typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/modules/shared/data-source/data-source.ts",
-    "migration:run": "typeorm-ts-node-esm migration:run -d ./src/modules/shared/data-source/data-source.ts"
+    "migration:run": "typeorm-ts-node-esm migration:run -d ./src/modules/shared/data-source/data-source.ts",
+    "migration:revert": "typeorm-ts-node-esm migration:revert -d ./src/modules/shared/data-source/data-source.ts"
   },
   "repository": {
     "type": "git",
