@@ -16,9 +16,8 @@ The project is currently in the early stages of development. The main features a
 | --------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------- |
 | User account creation (sign up)   | N/A                                                                                                       | COMPLETE    |
 | User account login                | N/A                                                                                                       | COMPLETE    |
-| Movie management with a showtime. | Admins can manage movie showtimes, only being able to create a unique movie for a specific room and time. | IN-PROGRESS |
-| Movie seats management.           | N/A                                                                                                       | TODO        |
-| Movie reservation                 | N/A                                                                                                       | TODO        |
+| Movie management with a showtime. | Admins can manage movie showtimes, only being able to create a unique movie for a specific room and time. | COMPLETE    |
+| Movie reservation                 | N/A                                                                                                       | IN-PROGRESS |
 
 ## Technical Roadmap
 
