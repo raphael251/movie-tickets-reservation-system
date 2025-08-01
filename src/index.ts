@@ -14,6 +14,9 @@ import { expressAuthMiddleware } from './modules/shared/external/express/middlew
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { appDataSource } from './modules/shared/data-source/data-source.ts';
 import { expressRequiredPermissionsMiddleware } from './modules/shared/external/express/middlewares/required-permissions.ts';
+import { CreateReservationController } from './modules/reservations/http/controllers/create.ts';
+import { CreateReservationUseCase } from './modules/reservations/use-cases/create.ts';
+import { ReservationRepository } from './modules/reservations/repositories/reservation.repository.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -53,6 +56,14 @@ async function startApplication() {
     expressRequiredPermissionsMiddleware(['movies:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     async (req, res) => new ListMoviesController(new MovieRepository()).handle(req, res),
+  );
+
+  app.post(
+    '/reservations',
+    expressRequiredPermissionsMiddleware(['reservations:create']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) =>
+      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new MovieRepository())).handle(req, res),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {
