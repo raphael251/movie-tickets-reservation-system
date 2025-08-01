@@ -3,13 +3,18 @@ import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import { UserRole } from '../util/constants/roles.ts';
 
+type Input = {
+  email: string;
+  password: string;
+};
+
 export class UsersSignUpUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
   ) {}
 
-  async execute(email: string, password: string): Promise<void> {
+  async execute({ email, password }: Input): Promise<void> {
     if (await this.userRepository.findByEmail(email)) {
       throw new EmailAlreadyRegisteredError();
     }

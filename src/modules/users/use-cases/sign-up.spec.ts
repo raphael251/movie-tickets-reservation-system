@@ -27,7 +27,10 @@ describe('UsersSignUpUseCase', () => {
   it('should create a user with hashed password', async () => {
     userRepository.findByEmail.mockResolvedValue(null);
 
-    await useCase.execute('test@example.com', 'password');
+    await useCase.execute({
+      email: 'test@example.com',
+      password: 'password',
+    });
 
     expect(userRepository.create).toHaveBeenCalledWith({
       email: 'test@example.com',
@@ -39,6 +42,11 @@ describe('UsersSignUpUseCase', () => {
   it('should not create a user if email is already registered', async () => {
     userRepository.findByEmail.mockResolvedValueOnce(new User('1', UserRole.REGULAR, 'test@example.com', 'hashedPassword'));
 
-    await expect(useCase.execute('test@example.com', 'password')).rejects.toThrow(EmailAlreadyRegisteredError);
+    await expect(
+      useCase.execute({
+        email: 'test@example.com',
+        password: 'password',
+      }),
+    ).rejects.toThrow(EmailAlreadyRegisteredError);
   });
 });

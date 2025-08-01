@@ -11,7 +11,11 @@ export class CreateReservationController implements IHttpController {
     try {
       const { movieId, seatCode } = request.body;
 
-      const reservation = await this.createReservationUseCase.execute(request.user!.id, movieId, seatCode);
+      const reservation = await this.createReservationUseCase.execute({
+        movieId,
+        userId: request.user!.id,
+        seatCode,
+      });
 
       response.status(201).json(reservation);
     } catch (error) {

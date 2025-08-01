@@ -13,7 +13,10 @@ export class UsersLoginController implements IHttpController {
         return;
       }
 
-      const { token } = await this.useCase.execute(req.body.email, req.body.password);
+      const { token } = await this.useCase.execute({
+        email: req.body.email,
+        password: req.body.password,
+      });
 
       res.status(200).send({ token });
     } catch (error) {

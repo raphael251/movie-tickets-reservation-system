@@ -4,6 +4,11 @@ import { InvalidEmailOrPasswordError } from '../errors/invalid-email-or-password
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import jwt from 'jsonwebtoken';
 
+type Input = {
+  email: string;
+  password: string;
+};
+
 export class UserLoginUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
@@ -11,7 +16,7 @@ export class UserLoginUseCase {
     private readonly appConfig: AppConfig,
   ) {}
 
-  async execute(email: string, password: string): Promise<{ token: string }> {
+  async execute({ email, password }: Input): Promise<{ token: string }> {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {

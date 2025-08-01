@@ -13,7 +13,10 @@ export class UsersSignUpController implements IHttpController {
         return;
       }
 
-      await this.useCase.execute(req.body.email, req.body.password);
+      await this.useCase.execute({
+        email: req.body.email,
+        password: req.body.password,
+      });
 
       res.status(201).send('User created successfully');
     } catch (error) {

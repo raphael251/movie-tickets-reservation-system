@@ -4,13 +4,19 @@ import { InvalidMovieIdError } from '../errors/invalid-movie-id.ts';
 import { SeatAlreadyReservedError } from '../errors/seat-already-reserved.ts';
 import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 
+type Input = {
+  userId: string;
+  movieId: string;
+  seatCode: string;
+};
+
 export class CreateReservationUseCase {
   constructor(
     private readonly reservationRepository: IReservationRepository,
     private readonly movieRepository: IMovieRepository,
   ) {}
 
-  async execute(userId: string, movieId: string, seatCode: string): Promise<void> {
+  async execute({ userId, movieId, seatCode }: Input): Promise<void> {
     const existingReservation = await this.reservationRepository.findByMovieIdAndSeatCode(movieId, seatCode);
 
     if (existingReservation) {
