@@ -48,6 +48,22 @@ As the project evolves, there are several improvements to be made to enhance the
 - Express
 - PostgreSQL
 
+## Error Handling
+
+Standard on handling errors in the application:
+
+The use cases should throw an InvalidInputError when the input is invalid, and the HTTP controllers should catch this error and return a 400 Bad Request response with the error message.
+
+The HTTP controllers should also catch other errors and return a 500 Internal Server Error response with a generic error message.
+
+The HTTP controllers should not return the error stack trace to the client, as it may contain sensitive information. Instead, they should log the error stack trace for debugging purposes.
+
+The HTTP controlers should catch any unexpected errors and return a 500 Internal Server Error response with a generic error message.
+
+The HTTP controlllers should use instanceof to check the type of the error and return the appropriate response.
+
+For the business logic errors, such as EmailAlreadyRegisteredError in the users sign up use case, the HTTP controllers should catch these errors and return a 409 Conflict response with the error message.
+
 ## Getting Started
 
 To get started with the project, follow these steps:
