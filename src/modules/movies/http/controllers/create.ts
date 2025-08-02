@@ -1,3 +1,4 @@
+import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
 import { AlreadyScheduledMovieError } from '../../errors/already-schedule-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
@@ -23,11 +24,17 @@ export class CreateMovieController implements IHttpController {
       response.status(201).json(movie);
     } catch (error) {
       if (error instanceof InvalidTimeError || error instanceof AlreadyScheduledMovieError) {
-        response.status(400).send(error.message);
-      } else {
-        console.error('Error during movie creation:', error);
-        response.status(500).send('Internal Server Error');
+        response.status(409).json({ errors: [error.message] });
+        return;
       }
+
+      if (error instanceof InputValidationError) {
+        response.status(400).json({ errors: error.errors });
+        return;
+      }
+
+      console.error('Error during movie creation:', error);
+      response.status(500).send('Internal Server Error');
     }
   }
 }
