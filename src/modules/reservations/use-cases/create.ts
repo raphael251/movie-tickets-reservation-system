@@ -44,7 +44,9 @@ export class CreateReservationUseCase {
       throw new InvalidMovieIdError();
     }
 
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // Reservation expires in 30 minutes
+    const ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
+
+    const expiresAt = new Date(Date.now() + ONE_HOUR_IN_MILLISECONDS);
 
     const reservation = new Reservation(crypto.randomUUID(), input.userId, movieId, seatCode, expiresAt);
 
