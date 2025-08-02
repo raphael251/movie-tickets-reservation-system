@@ -9,6 +9,7 @@ export const appConfigMock: AppConfig = {
   DB_USERNAME: 'user',
   DB_PASSWORD: 'password',
   DB_DATABASE: 'database',
+  DB_MIGRATIONS_PATH: 'migrations',
   DB_HOST: 'localhost',
   DB_PORT: 5432,
 };
