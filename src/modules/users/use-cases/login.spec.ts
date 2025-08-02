@@ -3,6 +3,7 @@ import { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { appConfigMock } from '../../shared/tests/mocks/app-config.ts';
 import { InvalidEmailOrPasswordError } from '../errors/invalid-email-or-password.ts';
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
+import { UserRole } from '../util/constants/roles.ts';
 import { UserLoginUseCase } from './login.ts';
 
 describe('UserLoginUseCase', () => {
@@ -28,11 +29,14 @@ describe('UserLoginUseCase', () => {
   });
 
   it('should return a token for valid credentials', async () => {
-    const user = { id: '1', email: 'test@example.com', password: 'password' };
+    const user = { id: '1', email: 'test@example.com', role: UserRole.REGULAR, password: 'password' };
     userRepository.findByEmail.mockResolvedValue(user);
     hasher.compare.mockResolvedValue(true);
 
-    const result = await useCase.execute('test@example.com', 'password');
+    const result = await useCase.execute({
+      email: 'test@example.com',
+      password: 'password',
+    });
 
     expect(result).toHaveProperty('token');
   });
@@ -40,6 +44,11 @@ describe('UserLoginUseCase', () => {
   it('should throw InvalidEmailOrPasswordError for invalid email', async () => {
     userRepository.findByEmail.mockResolvedValue(null);
 
-    await expect(useCase.execute('test@example.com', 'password')).rejects.toThrow(new InvalidEmailOrPasswordError());
+    await expect(
+      useCase.execute({
+        email: 'test@example.com',
+        password: 'password',
+      }),
+    ).rejects.toThrow(new InvalidEmailOrPasswordError());
   });
 });

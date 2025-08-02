@@ -1,8 +1,10 @@
+import z from 'zod';
 import { AppConfig } from '../../shared/configs/app-config.ts';
 import { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { InvalidEmailOrPasswordError } from '../errors/invalid-email-or-password.ts';
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import jwt from 'jsonwebtoken';
+import { InputValidationError } from '../../shared/errors/input-validation.ts';
 
 type Input = {
   email: string;
@@ -16,7 +18,19 @@ export class UserLoginUseCase {
     private readonly appConfig: AppConfig,
   ) {}
 
-  async execute({ email, password }: Input): Promise<{ token: string }> {
+  async execute(input: Input): Promise<{ token: string }> {
+    const inputValidationSchema = z.object({
+      email: z.email(),
+      password: z.string(),
+    });
+
+    const parseResult = inputValidationSchema.safeParse(input);
+    if (!parseResult.success) {
+      throw new InputValidationError(parseResult.error.issues.map((issue) => issue.message));
+    }
+
+    const { email, password } = parseResult.data;
+
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {

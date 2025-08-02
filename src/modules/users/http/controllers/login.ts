@@ -1,3 +1,4 @@
+import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
 import { InvalidEmailOrPasswordError } from '../../errors/invalid-email-or-password.ts';
 import { UserLoginUseCase } from '../../use-cases/login.ts';
@@ -21,8 +22,13 @@ export class UsersLoginController implements IHttpController {
       res.status(200).send({ token });
     } catch (error) {
       if (error instanceof Error) {
-        if (error.name === InvalidEmailOrPasswordError.name) {
-          res.status(400).send(error.message);
+        if (error instanceof InvalidEmailOrPasswordError) {
+          res.status(401).json({ errors: [error.message] });
+          return;
+        }
+
+        if (error instanceof InputValidationError) {
+          res.status(400).json({ errors: error.errors });
           return;
         }
       }
