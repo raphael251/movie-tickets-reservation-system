@@ -1,3 +1,4 @@
+import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
 import { InvalidMovieIdError } from '../../errors/invalid-movie-id.ts';
 import { SeatAlreadyReservedError } from '../../errors/seat-already-reserved.ts';
@@ -20,7 +21,12 @@ export class CreateReservationController implements IHttpController {
       response.status(201).json(reservation);
     } catch (error) {
       if (error instanceof SeatAlreadyReservedError || error instanceof InvalidMovieIdError) {
-        response.status(409).json({ error: error.message });
+        response.status(409).json({ errors: [error.message] });
+        return;
+      }
+
+      if (error instanceof InputValidationError) {
+        response.status(400).json({ errors: error.errors });
         return;
       }
 
