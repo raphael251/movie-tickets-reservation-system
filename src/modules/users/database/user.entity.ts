@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRole } from '../util/constants/roles.ts';
 
 @Entity('user')
 export class UserDBEntity extends BaseEntity {
@@ -8,8 +9,8 @@ export class UserDBEntity extends BaseEntity {
   @Column()
   email!: string;
 
-  @Column({ enum: ['admin', 'regular'], default: 'regular', type: 'enum' })
-  role!: 'admin' | 'regular';
+  @Column({ enum: UserRole, default: UserRole.REGULAR, type: 'enum' })
+  role!: UserRole;
 
   @Column()
   password!: string;

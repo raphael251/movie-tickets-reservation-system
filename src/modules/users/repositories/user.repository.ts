@@ -4,7 +4,8 @@ import { IUserRepository } from './interfaces/user.repository.ts';
 
 export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
-    return UserDBEntity.findOne({ where: { email } });
+    const user = await UserDBEntity.findOne({ where: { email } });
+    return user ? new User(user.id, user.role, user.email, user.password) : null;
   }
 
   async create(userData: { email: string; password: string }): Promise<User> {
@@ -15,6 +16,6 @@ export class UserRepository implements IUserRepository {
 
     await user.save();
 
-    return new User(user.id, user.email, user.password);
+    return new User(user.id, user.role, user.email, user.password);
   }
 }
