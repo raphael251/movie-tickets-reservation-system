@@ -23,14 +23,9 @@ async function startApplication() {
 
   const app = express();
 
-  appDataSource
-    .initialize()
-    .then(() => {
-      console.log('Data Source has been initialized!');
-    })
-    .catch((err) => {
-      console.error('Error during Data Source initialization:', err);
-    });
+  await appDataSource.initialize();
+
+  console.log('Data Source has been initialized!');
 
   app.use(express.json());
 
