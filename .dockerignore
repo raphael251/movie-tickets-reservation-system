@@ -1,0 +1,7 @@
+.github
+.husky
+.swc
+dist
+node_modules
+.env
+.env.example
