@@ -34,20 +34,20 @@ jobs:
 
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition movie-tickets-reservation-system --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition movie-tickets-reservation-system-task-def --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: movie-tickets-reservation-system
+          container-name: MovieTicketsContainer
           image: ${{ steps.login-ecr.outputs.registry }}/portfolio-apps/movie-tickets-reservation-system:latest
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: move-tickets-reservation-system-service-laq3vfop
-          cluster: vivid-bat-jwpp7w
+          service: movie-tickets-reservation-system-task-def-service-7hegpfk0
+          cluster: accurate-dolphin-5u0pn2
           wait-for-service-stability: true
