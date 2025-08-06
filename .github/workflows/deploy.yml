@@ -48,6 +48,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: movie-tickets-reservation-system-task-def-service-7hegpfk0
+          service: movie-tickets-reservation-system-task-def-service-ztluukhu
           cluster: accurate-dolphin-5u0pn2
           wait-for-service-stability: true
