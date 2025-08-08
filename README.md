@@ -26,7 +26,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Movie creation API
 - [x] Movie listing API
 - [x] Authorization middleware
-- [ ] Reservation endpoints
+- [x] Reservation endpoints
 - [ ] Room CRUD endpoints
 
 ## Improvements
