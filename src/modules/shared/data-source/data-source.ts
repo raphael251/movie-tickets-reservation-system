@@ -4,6 +4,7 @@ import { MovieDBEntity } from '../../movies/database/movie.entity.ts';
 import { UserDBEntity } from '../../users/database/user.entity.ts';
 import { AppConfigLoader } from '../configs/app-config.ts';
 import { ReservationDBEntity } from '../../reservations/database/reservation.entity.ts';
+import { readFileSync } from 'node:fs';
 
 const appConfig = AppConfigLoader.load();
 
@@ -14,7 +15,12 @@ export const appDataSource = new DataSource({
   username: appConfig.DB_USERNAME,
   password: appConfig.DB_PASSWORD,
   database: appConfig.DB_DATABASE,
-  ssl: appConfig.DB_SSL_ENABLED,
+  ssl: appConfig.DB_SSL_CA_PATH
+    ? {
+        rejectUnauthorized: false,
+        ca: readFileSync(appConfig.DB_SSL_CA_PATH, 'utf-8'),
+      }
+    : false,
   entities: [UserDBEntity, MovieDBEntity, ReservationDBEntity],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: true,

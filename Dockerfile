@@ -24,6 +24,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 USER nodejs
 COPY --from=installer /app .
+COPY certs/rds-ca.pem /app/certs/rds-ca.pem
 
 EXPOSE 80
 
