@@ -1,4 +1,4 @@
-export class Movie {
+export class Screening {
   constructor(
     public id: string,
     public title: string,

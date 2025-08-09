@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('movie')
-export class MovieDBEntity extends BaseEntity {
+@Entity('screening')
+export class ScreeningDBEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 

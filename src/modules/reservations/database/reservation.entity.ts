@@ -9,7 +9,7 @@ export class ReservationDBEntity extends BaseEntity {
   userId!: string;
 
   @Column()
-  movieId!: string;
+  screeningId!: string;
 
   @Column()
   seatCode!: string;

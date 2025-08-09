@@ -1,4 +1,15 @@
 export const rolesAndPermissions: Record<string, Set<string>> = {
-  admin: new Set(['movies:create', 'movies:read', 'movies:update', 'movies:delete']),
-  regular: new Set(['reservations:create', 'reservations:read', 'movies:read']),
+  admin: new Set([
+    // movies
+    'movies:create',
+    'movies:read',
+    'movies:update',
+    'movies:delete',
+    // screenings
+    'screenings:create',
+    'screenings:read',
+    'screenings:update',
+    'screenings:delete',
+  ]),
+  regular: new Set(['reservations:create', 'reservations:read', 'screenings:read']),
 };

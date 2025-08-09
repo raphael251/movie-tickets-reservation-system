@@ -3,10 +3,10 @@ import { Reservation } from '../entities/reservation.ts';
 import { IReservationRepository } from './interfaces/reservation.repository';
 
 export class ReservationRepository implements IReservationRepository {
-  async findByMovieIdAndSeatCode(movieId: string, seatCode: string): Promise<Reservation | null> {
+  async findByScreeningIdAndSeatCode(screeningId: string, seatCode: string): Promise<Reservation | null> {
     return ReservationDBEntity.createQueryBuilder('reservation')
       .select()
-      .where('reservation.movieId = :movieId', { movieId })
+      .where('reservation.screeningId = :screeningId', { screeningId })
       .andWhere('reservation.seatCode = :seatCode', { seatCode })
       .getOne();
   }

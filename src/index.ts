@@ -6,10 +6,10 @@ import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
 import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
 import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
-import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
-import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
-import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
-import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
+import { CreateScreeningController } from './modules/screenings/http/controllers/create.ts';
+import { ScreeningRepository } from './modules/screenings/repositories/screening.repository.ts';
+import { CreateScreeningUseCase } from './modules/screenings/use-cases/create.ts';
+import { ListScreeningsController } from './modules/screenings/http/controllers/list.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { appDataSource } from './modules/shared/data-source/data-source.ts';
@@ -43,17 +43,17 @@ async function startApplication() {
   );
 
   app.post(
-    '/movies',
-    expressRequiredPermissionsMiddleware(['movies:create']),
+    '/screenings',
+    expressRequiredPermissionsMiddleware(['screenings:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
+    async (req, res) => new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository())).handle(req, res),
   );
 
   app.get(
-    '/movies',
-    expressRequiredPermissionsMiddleware(['movies:read']),
+    '/screenings',
+    expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new ListMoviesController(new MovieRepository()).handle(req, res),
+    async (req, res) => new ListScreeningsController(new ScreeningRepository()).handle(req, res),
   );
 
   app.post(
@@ -61,7 +61,7 @@ async function startApplication() {
     expressRequiredPermissionsMiddleware(['reservations:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     async (req, res) =>
-      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new MovieRepository())).handle(req, res),
+      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository())).handle(req, res),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {

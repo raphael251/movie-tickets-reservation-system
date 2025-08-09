@@ -1,8 +1,8 @@
 import z from 'zod';
-import { Movie } from '../entities/movie.ts';
-import { AlreadyScheduledMovieError } from '../errors/already-schedule-movie.ts';
+import { Screening } from '../entities/screening.ts';
+import { AlreadyScheduledMovieError } from '../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../errors/invalid-time.ts';
-import { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
+import { IScreeningRepository } from '../repositories/interfaces/screening.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 
 type Input = {
@@ -14,10 +14,10 @@ type Input = {
   endTime: Date;
 };
 
-export class CreateMovieUseCase {
-  constructor(private readonly movieRepository: IMovieRepository) {}
+export class CreateScreeningUseCase {
+  constructor(private readonly repository: IScreeningRepository) {}
 
-  async execute(input: Input): Promise<Movie> {
+  async execute(input: Input): Promise<Screening> {
     const inputValidationSchema = z.object({
       title: z.string().min(1, 'Title is required'),
       description: z.string().optional(),
@@ -41,16 +41,16 @@ export class CreateMovieUseCase {
       throw new InvalidTimeError();
     }
 
-    const existingMovie = await this.movieRepository.findByRoomAndTime(input.room, input.startTime, input.endTime);
+    const existingScreening = await this.repository.findByRoomAndTime(input.room, input.startTime, input.endTime);
 
-    if (existingMovie) {
+    if (existingScreening) {
       throw new AlreadyScheduledMovieError();
     }
 
-    const movie = new Movie(crypto.randomUUID(), input.title, input.description, input.category, input.room, input.startTime, input.endTime);
+    const screening = new Screening(crypto.randomUUID(), input.title, input.description, input.category, input.room, input.startTime, input.endTime);
 
-    await this.movieRepository.save(movie);
+    await this.repository.save(screening);
 
-    return movie;
+    return screening;
   }
 }

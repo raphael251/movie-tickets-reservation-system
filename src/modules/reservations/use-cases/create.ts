@@ -1,26 +1,26 @@
 import z from 'zod';
-import { IMovieRepository } from '../../movies/repositories/interfaces/movie.repository.ts';
+import { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
 import { Reservation } from '../entities/reservation.ts';
-import { InvalidMovieIdError } from '../errors/invalid-movie-id.ts';
+import { InvalidScreeningIdError } from '../errors/invalid-screening-id.ts';
 import { SeatAlreadyReservedError } from '../errors/seat-already-reserved.ts';
 import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 
 type Input = {
   userId: string;
-  movieId: string;
+  screeningId: string;
   seatCode: string;
 };
 
 export class CreateReservationUseCase {
   constructor(
     private readonly reservationRepository: IReservationRepository,
-    private readonly movieRepository: IMovieRepository,
+    private readonly screeninRepository: IScreeningRepository,
   ) {}
 
   async execute(input: Input): Promise<void> {
     const inputValidationSchema = z.object({
-      movieId: z.uuid('Invalid movie ID format'),
+      screeningId: z.uuid('Invalid screening ID format'),
       seatCode: z.string().min(1, 'Seat code is required'),
     });
 
@@ -30,25 +30,25 @@ export class CreateReservationUseCase {
       throw new InputValidationError(parseResult.error.issues.map((issue) => issue.message));
     }
 
-    const { movieId, seatCode } = parseResult.data;
+    const { screeningId, seatCode } = parseResult.data;
 
-    const existingReservation = await this.reservationRepository.findByMovieIdAndSeatCode(movieId, seatCode);
+    const existingReservation = await this.reservationRepository.findByScreeningIdAndSeatCode(screeningId, seatCode);
 
     if (existingReservation) {
       throw new SeatAlreadyReservedError();
     }
 
-    const movieExists = await this.movieRepository.findById(movieId);
+    const screeningExists = await this.screeninRepository.findById(screeningId);
 
-    if (!movieExists) {
-      throw new InvalidMovieIdError();
+    if (!screeningExists) {
+      throw new InvalidScreeningIdError();
     }
 
     const ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
 
     const expiresAt = new Date(Date.now() + ONE_HOUR_IN_MILLISECONDS);
 
-    const reservation = new Reservation(crypto.randomUUID(), input.userId, movieId, seatCode, expiresAt);
+    const reservation = new Reservation(crypto.randomUUID(), input.userId, screeningId, seatCode, expiresAt);
 
     await this.reservationRepository.save(reservation);
   }

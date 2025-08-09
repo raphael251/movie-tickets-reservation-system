@@ -1,18 +1,18 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
-import { AlreadyScheduledMovieError } from '../../errors/already-schedule-movie.ts';
+import { AlreadyScheduledMovieError } from '../../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
-import { CreateMovieUseCase } from '../../use-cases/create.ts';
+import { CreateScreeningUseCase } from '../../use-cases/create.ts';
 import { Request, Response } from 'express';
 
-export class CreateMovieController implements IHttpController {
-  constructor(private readonly createMovieUseCase: CreateMovieUseCase) {}
+export class CreateScreeningController implements IHttpController {
+  constructor(private readonly createScreeningUseCase: CreateScreeningUseCase) {}
 
   async handle(request: Request, response: Response): Promise<void> {
     const { title, description, category, room, startTime, endTime } = request.body;
 
     try {
-      const movie = await this.createMovieUseCase.execute({
+      const screening = await this.createScreeningUseCase.execute({
         title,
         description,
         category,
@@ -21,7 +21,7 @@ export class CreateMovieController implements IHttpController {
         endTime: new Date(endTime),
       });
 
-      response.status(201).json(movie);
+      response.status(201).json(screening);
     } catch (error) {
       if (error instanceof InvalidTimeError || error instanceof AlreadyScheduledMovieError) {
         response.status(409).json({ errors: [error.message] });
@@ -33,7 +33,7 @@ export class CreateMovieController implements IHttpController {
         return;
       }
 
-      console.error('Error during movie creation:', error);
+      console.error('Error during screening creation:', error);
       response.status(500).send('Internal Server Error');
     }
   }
