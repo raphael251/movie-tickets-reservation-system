@@ -9,7 +9,7 @@ type Input = {
   title: string;
   description: string;
   category: string;
-  room: string;
+  theaterId: string;
   startTime: Date;
   endTime: Date;
 };
@@ -19,10 +19,10 @@ export class CreateScreeningUseCase {
 
   async execute(input: Input): Promise<Screening> {
     const inputValidationSchema = z.object({
-      title: z.string().min(1, 'Title is required'),
+      title: z.string().min(1, 'title field is required'),
       description: z.string().optional(),
-      category: z.string().min(1, 'Category is required'),
-      room: z.string().min(1, 'Room is required'),
+      category: z.string().min(1, 'category field is required'),
+      theaterId: z.uuid('theaterId field is required'),
       startTime: z.date().refine((date) => !isNaN(date.getTime()), {
         message: 'Start time must be a valid date',
       }),
@@ -41,13 +41,21 @@ export class CreateScreeningUseCase {
       throw new InvalidTimeError();
     }
 
-    const existingScreening = await this.repository.findByRoomAndTime(input.room, input.startTime, input.endTime);
+    const existingScreening = await this.repository.findByTheaterIdAndTime(input.theaterId, input.startTime, input.endTime);
 
     if (existingScreening) {
       throw new AlreadyScheduledMovieError();
     }
 
-    const screening = new Screening(crypto.randomUUID(), input.title, input.description, input.category, input.room, input.startTime, input.endTime);
+    const screening = new Screening(
+      crypto.randomUUID(),
+      input.title,
+      input.description,
+      input.category,
+      input.theaterId,
+      input.startTime,
+      input.endTime,
+    );
 
     await this.repository.save(screening);
 

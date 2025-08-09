@@ -4,10 +4,10 @@ import { Screening } from '../entities/screening.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
 
 export class ScreeningRepository implements IScreeningRepository {
-  async findByRoomAndTime(room: string, startTime: Date, endTime: Date): Promise<Screening | null> {
+  async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
     const foundScreening = await ScreeningDBEntity.createQueryBuilder('screening')
       .select()
-      .where('screening.room = :room', { room })
+      .where('screening.theaterId = :theaterId', { theaterId })
       .andWhere(
         new Brackets((qb) => {
           qb.where(
@@ -36,7 +36,7 @@ export class ScreeningRepository implements IScreeningRepository {
       foundScreening.title,
       foundScreening.description,
       foundScreening.category,
-      foundScreening.room,
+      foundScreening.theaterId,
       foundScreening.startTime,
       foundScreening.endTime,
     );
@@ -54,7 +54,7 @@ export class ScreeningRepository implements IScreeningRepository {
       foundScreening.title,
       foundScreening.description,
       foundScreening.category,
-      foundScreening.room,
+      foundScreening.theaterId,
       foundScreening.startTime,
       foundScreening.endTime,
     );
@@ -70,7 +70,7 @@ export class ScreeningRepository implements IScreeningRepository {
           screening.title,
           screening.description,
           screening.category,
-          screening.room,
+          screening.theaterId,
           screening.startTime,
           screening.endTime,
         ),

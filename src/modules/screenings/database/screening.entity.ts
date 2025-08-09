@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ForeignKey, PrimaryGeneratedColumn } from 'typeorm';
+import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
 
 @Entity('screening')
 export class ScreeningDBEntity extends BaseEntity {
@@ -14,8 +15,9 @@ export class ScreeningDBEntity extends BaseEntity {
   @Column()
   category!: string;
 
-  @Column()
-  room!: string;
+  @Column('uuid')
+  @ForeignKey(() => TheaterDBEntity)
+  theaterId!: string;
 
   @Column()
   startTime!: Date;
