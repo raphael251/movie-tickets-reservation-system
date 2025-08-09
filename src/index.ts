@@ -17,6 +17,7 @@ import { expressRequiredPermissionsMiddleware } from './modules/shared/external/
 import { CreateReservationController } from './modules/reservations/http/controllers/create.ts';
 import { CreateReservationUseCase } from './modules/reservations/use-cases/create.ts';
 import { ReservationRepository } from './modules/reservations/repositories/reservation.repository.ts';
+import { Seeder } from './modules/shared/seed/seeder.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -26,6 +27,8 @@ async function startApplication() {
   await appDataSource.initialize();
 
   console.log('Data Source has been initialized!');
+
+  await Seeder.run();
 
   app.use(express.json());
 

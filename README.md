@@ -41,13 +41,14 @@ The project is currently in the early stages of development. The main features a
 
 As the project evolves, there are several improvements to be made to enhance the system quality. Here are some of the planned improvements:
 
-| Feature                        | Description                                                            | Status      |
-| ------------------------------ | ---------------------------------------------------------------------- | ----------- |
-| Logger                         | Implement Logging tool (e.g.: winstonjs) for a better logging system.  | TODO        |
-| Dependency Injection Container | Implement a DI container (e.g.: inversifyjs) to manage dependencies.   | TODO        |
-| Response standardization       | Standardize API responses for consistency.                             | TODO        |
-| Input validation               | Implement input validation for all endpoints to ensure data integrity. | IN-PROGRESS |
-| Add factory functions          | Implement factory functions for creating entities.                     | TODO        |
+| Feature                        | Description                                                                                                                                                 | Status      |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Logger                         | Implement Logging tool (e.g.: winstonjs) for a better logging system.                                                                                       | TODO        |
+| Dependency Injection Container | Implement a DI container (e.g.: inversifyjs) to manage dependencies.                                                                                        | TODO        |
+| Response standardization       | Standardize API responses for consistency.                                                                                                                  | TODO        |
+| Input validation               | Implement input validation for all endpoints to ensure data integrity.                                                                                      | IN-PROGRESS |
+| Add factory functions          | Implement factory functions for creating entities.                                                                                                          | TODO        |
+| Seeder detailed verification   | Currently the seeder just continues if it encounters any duplicate keys. It should handle the cases where the seed file was modified after the initial run. | TODO        |
 
 ## Core Technologies
 
