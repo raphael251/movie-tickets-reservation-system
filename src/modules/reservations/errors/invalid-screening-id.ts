@@ -1,6 +1,6 @@
-export class InvalidScreeningIdError extends Error {
+export class InvalidScreeningSeatIdError extends Error {
   constructor() {
-    super('Invalid screening ID.');
+    super('Invalid screening seat ID.');
     this.name = this.constructor.name;
   }
 }

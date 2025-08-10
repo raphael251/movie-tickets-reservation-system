@@ -4,7 +4,7 @@ import { Screening } from '../entities/screening.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { ScreeningSeatDBEntity } from '../database/screening-seat.entity.ts';
-import { Seat } from '../../seats/entities/seat.ts';
+import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../screenings/entities/screening-seat.ts';
 
 export class ScreeningRepository implements IScreeningRepository {
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
@@ -97,9 +97,27 @@ export class ScreeningRepository implements IScreeningRepository {
     `);
   }
 
-  async findSeatsByScreeningId(screeningId: string): Promise<Seat[]> {
+  async findSeatsByScreeningId(screeningId: string): Promise<ScreeningSeat[]> {
     const seats = await ScreeningSeatDBEntity.createQueryBuilder().select().where('"screeningId" = :screeningId', { screeningId }).getMany();
 
-    return seats.map((seat) => new Seat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
+    return seats.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
+  }
+
+  async findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null> {
+    const foundScreeningSeat = await ScreeningSeatDBEntity.findOne({ where: { id: screeningSeatId } });
+
+    if (!foundScreeningSeat) return null;
+
+    return new ScreeningSeat(
+      foundScreeningSeat.id,
+      foundScreeningSeat.screeningId,
+      foundScreeningSeat.rowLabel,
+      foundScreeningSeat.seatNumber,
+      foundScreeningSeat.status,
+    );
+  }
+
+  async updateScreeningSeatStatusById(screeningSeatId: string, status: SCREENING_SEAT_STATUS): Promise<void> {
+    await ScreeningSeatDBEntity.update({ id: screeningSeatId }, { status });
   }
 }

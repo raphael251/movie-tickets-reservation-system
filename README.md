@@ -34,9 +34,8 @@ The project is currently in the early stages of development. The main features a
 - [x] Create ScreeningSeat entity for managing seat reservations within a screening
 - [x] Populate the screening seats for a screening on creation
 - [x] Create endpoint to list all seats in a screening
-- [ ] Create endpoint for reserving a seat in a screening
+- [x] Update the reservations endpoint to reserve a screening seat instead of the old params
 - [ ] Create a new Movie entity just for the static information about movies available for screening
-- [ ] Room CRUD endpoints
 
 ## Improvements
 
