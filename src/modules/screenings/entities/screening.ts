@@ -4,7 +4,7 @@ export class Screening {
     public title: string,
     public description: string,
     public category: string,
-    public room: string,
+    public theaterId: string,
     public startTime: Date,
     public endTime: Date,
   ) {}
