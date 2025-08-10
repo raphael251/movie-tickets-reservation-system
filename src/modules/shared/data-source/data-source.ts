@@ -7,7 +7,7 @@ import { ReservationDBEntity } from '../../reservations/database/reservation.ent
 import { readFileSync } from 'node:fs';
 import { SeatDBEntity } from '../../seats/database/seat.entity.ts';
 import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
-import { ScreeningSeatDBEntity } from '../../screening-seats/database/screening-seat.entity.ts';
+import { ScreeningSeatDBEntity } from '../../screenings/database/screening-seat.entity.ts';
 
 const appConfig = AppConfigLoader.load();
 

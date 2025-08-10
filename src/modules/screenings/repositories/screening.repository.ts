@@ -3,6 +3,8 @@ import { ScreeningDBEntity } from '../database/screening.entity.ts';
 import { Screening } from '../entities/screening.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
+import { ScreeningSeatDBEntity } from '../database/screening-seat.entity.ts';
+import { Seat } from '../../seats/entities/seat.ts';
 
 export class ScreeningRepository implements IScreeningRepository {
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
@@ -93,5 +95,11 @@ export class ScreeningRepository implements IScreeningRepository {
         INNER JOIN screening sc ON sc."theaterId" = s."theaterId"
         WHERE sc.id = '${screeningId}';
     `);
+  }
+
+  async findSeatsByScreeningId(screeningId: string): Promise<Seat[]> {
+    const seats = await ScreeningSeatDBEntity.createQueryBuilder().select().where('"screeningId" = :screeningId', { screeningId }).getMany();
+
+    return seats.map((seat) => new Seat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
   }
 }

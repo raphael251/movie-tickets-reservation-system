@@ -9,7 +9,7 @@ import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
 import { CreateScreeningController } from './modules/screenings/http/controllers/create.ts';
 import { ScreeningRepository } from './modules/screenings/repositories/screening.repository.ts';
 import { CreateScreeningUseCase } from './modules/screenings/use-cases/create.ts';
-import { ListScreeningsController } from './modules/screenings/http/controllers/list.ts';
+import { ListScreeningsController } from './modules/screenings/http/controllers/list-screenings.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { appDataSource } from './modules/shared/data-source/data-source.ts';
@@ -18,6 +18,7 @@ import { CreateReservationController } from './modules/reservations/http/control
 import { CreateReservationUseCase } from './modules/reservations/use-cases/create.ts';
 import { ReservationRepository } from './modules/reservations/repositories/reservation.repository.ts';
 import { Seeder } from './modules/shared/seed/seeder.ts';
+import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -54,6 +55,13 @@ async function startApplication() {
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     async (req, res) => new ListScreeningsController(new ScreeningRepository()).handle(req, res),
+  );
+
+  app.get(
+    '/screenings/:screeningId/seats',
+    expressRequiredPermissionsMiddleware(['screenings:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new ListScreeningSeatsController(new ScreeningRepository()).handle(req, res),
   );
 
   app.post(
