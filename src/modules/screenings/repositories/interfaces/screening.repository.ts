@@ -5,4 +5,5 @@ export interface IScreeningRepository {
   findAll(): Promise<Screening[]>;
   findById(id: string): Promise<Screening | null>;
   save(screening: Screening): Promise<void>;
+  createScreeningSeats(screeningId: string): Promise<void>;
 }

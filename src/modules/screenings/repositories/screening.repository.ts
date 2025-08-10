@@ -2,6 +2,7 @@ import { Brackets } from 'typeorm';
 import { ScreeningDBEntity } from '../database/screening.entity.ts';
 import { Screening } from '../entities/screening.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
+import { appDataSource } from '../../shared/data-source/data-source.ts';
 
 export class ScreeningRepository implements IScreeningRepository {
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
@@ -82,5 +83,15 @@ export class ScreeningRepository implements IScreeningRepository {
       conflictPaths: ['id'],
       skipUpdateIfNoValuesChanged: true,
     });
+  }
+
+  async createScreeningSeats(screeningId: string): Promise<void> {
+    await appDataSource.query(`
+      INSERT INTO "screeningSeat"  ("screeningId", "rowLabel", "seatNumber")
+      SELECT '${screeningId}', s."rowLabel", s."seatNumber"
+        FROM seat s
+        INNER JOIN screening sc ON sc."theaterId" = s."theaterId"
+        WHERE sc.id = '${screeningId}';
+    `);
   }
 }

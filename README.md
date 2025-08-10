@@ -32,7 +32,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Create Seed script to run on app startup to create the available theaters and seats (create CRUD for them in the future)
 - [x] Rename Movie entity to Screening for a better naming and separation of concerns
 - [x] Create ScreeningSeat entity for managing seat reservations within a screening
-- [ ] Populate the screening seats for a screening on creation
+- [x] Populate the screening seats for a screening on creation
 - [ ] Create endpoint for available seats in a screening
 - [ ] Create endpoint for reserving a seat in a screening
 - [ ] Create a new Movie entity just for the static information about movies available for screening

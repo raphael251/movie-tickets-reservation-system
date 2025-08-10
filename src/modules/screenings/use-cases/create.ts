@@ -59,6 +59,8 @@ export class CreateScreeningUseCase {
 
     await this.repository.save(screening);
 
+    await this.repository.createScreeningSeats(screening.id);
+
     return screening;
   }
 }
