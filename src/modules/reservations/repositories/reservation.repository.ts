@@ -16,4 +16,8 @@ export class ReservationRepository implements IReservationRepository {
       skipUpdateIfNoValuesChanged: true,
     });
   }
+
+  async findAllByUserId(userId: string): Promise<Reservation[]> {
+    return ReservationDBEntity.createQueryBuilder('reservation').select().where('reservation.userId = :userId', { userId }).getMany();
+  }
 }

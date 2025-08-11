@@ -19,6 +19,7 @@ import { CreateReservationUseCase } from './modules/reservations/use-cases/creat
 import { ReservationRepository } from './modules/reservations/repositories/reservation.repository.ts';
 import { Seeder } from './modules/shared/seed/seeder.ts';
 import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
+import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -70,6 +71,13 @@ async function startApplication() {
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     async (req, res) =>
       new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository())).handle(req, res),
+  );
+
+  app.get(
+    '/reservations',
+    expressRequiredPermissionsMiddleware(['reservations:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new ListReservationsController(new ReservationRepository()).handle(req, res),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {
