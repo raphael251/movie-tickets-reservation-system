@@ -12,12 +12,12 @@ The project is currently in the early stages of development. The main features a
 
 ## Features (Customer-Focused)
 
-| Feature                           | Description                                                                                               | Status      |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------- |
-| User account creation (sign up)   | N/A                                                                                                       | COMPLETE    |
-| User account login                | N/A                                                                                                       | COMPLETE    |
-| Movie management with a showtime. | Admins can manage movie showtimes, only being able to create a unique movie for a specific room and time. | COMPLETE    |
-| Movie reservation                 | N/A                                                                                                       | IN-PROGRESS |
+| Feature                               | Description                                                                                                                 | Status      |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| User account creation (sign up)       | N/A                                                                                                                         | COMPLETE    |
+| User account login                    | N/A                                                                                                                         | COMPLETE    |
+| Screening management with a showtime. | Admins can manage screening showtimes, only being able to create a unique screening for a specific theater and time window. | COMPLETE    |
+| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | IN-PROGRESS |
 
 ## Technical Roadmap
 
