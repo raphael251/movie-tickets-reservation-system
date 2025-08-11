@@ -97,10 +97,14 @@ export class ScreeningRepository implements IScreeningRepository {
     `);
   }
 
-  async findSeatsByScreeningId(screeningId: string): Promise<ScreeningSeat[]> {
-    const seats = await ScreeningSeatDBEntity.createQueryBuilder().select().where('"screeningId" = :screeningId', { screeningId }).getMany();
+  async findSeatsByScreeningId(screeningId: string, filter: { status?: SCREENING_SEAT_STATUS }): Promise<ScreeningSeat[]> {
+    const seatsQuery = ScreeningSeatDBEntity.createQueryBuilder().select().where('"screeningId" = :screeningId', { screeningId });
 
-    return seats.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
+    if (filter.status) {
+      seatsQuery.andWhere('"status" = :status', { status: filter.status });
+    }
+
+    return (await seatsQuery.getMany()).map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
   }
 
   async findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null> {

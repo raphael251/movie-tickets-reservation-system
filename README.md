@@ -35,6 +35,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Populate the screening seats for a screening on creation
 - [x] Create endpoint to list all seats in a screening
 - [x] Update the reservations endpoint to reserve a screening seat instead of the old params
+- [x] Create filter for the screening seats endpoint to filter screening seats by status
 - [ ] Create endpoint to list all user's reservations
 - [ ] Create a new Movie entity just for the static information about movies available for screening
 
