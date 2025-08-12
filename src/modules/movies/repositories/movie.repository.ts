@@ -9,4 +9,9 @@ export class MovieRepository implements IMovieRepository {
       skipUpdateIfNoValuesChanged: true,
     });
   }
+
+  async findById(movieId: string): Promise<Movie | null> {
+    const movie = await MovieDBEntity.findOne({ where: { id: movieId } });
+    return movie ? new Movie(movie.id, movie.title, movie.description, movie.category) : null;
+  }
 }

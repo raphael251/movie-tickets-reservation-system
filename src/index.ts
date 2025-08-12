@@ -23,6 +23,8 @@ import { ListReservationsController } from './modules/reservations/http/controll
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
 import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
+import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
+import { UpdateMovieUseCase } from './modules/movies/use-cases/update.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -49,6 +51,13 @@ async function startApplication() {
 
   app.post('/movies', expressRequiredPermissionsMiddleware(['movies:create']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
     new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
+  );
+
+  app.put(
+    '/movies/:movieId',
+    expressRequiredPermissionsMiddleware(['movies:update']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
   app.post(
