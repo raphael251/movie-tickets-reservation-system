@@ -34,15 +34,7 @@ export class ScreeningRepository implements IScreeningRepository {
       return null;
     }
 
-    return new Screening(
-      foundScreening.id,
-      foundScreening.title,
-      foundScreening.description,
-      foundScreening.category,
-      foundScreening.theaterId,
-      foundScreening.startTime,
-      foundScreening.endTime,
-    );
+    return new Screening(foundScreening.id, foundScreening.movieId, foundScreening.theaterId, foundScreening.startTime, foundScreening.endTime);
   }
 
   async findById(id: string): Promise<Screening | null> {
@@ -52,32 +44,13 @@ export class ScreeningRepository implements IScreeningRepository {
       return null;
     }
 
-    return new Screening(
-      foundScreening.id,
-      foundScreening.title,
-      foundScreening.description,
-      foundScreening.category,
-      foundScreening.theaterId,
-      foundScreening.startTime,
-      foundScreening.endTime,
-    );
+    return new Screening(foundScreening.id, foundScreening.movieId, foundScreening.theaterId, foundScreening.startTime, foundScreening.endTime);
   }
 
   async findAll(): Promise<Screening[]> {
     const screenings = await ScreeningDBEntity.find();
 
-    return screenings.map(
-      (screening) =>
-        new Screening(
-          screening.id,
-          screening.title,
-          screening.description,
-          screening.category,
-          screening.theaterId,
-          screening.startTime,
-          screening.endTime,
-        ),
-    );
+    return screenings.map((screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime));
   }
 
   async save(screening: Screening): Promise<void> {

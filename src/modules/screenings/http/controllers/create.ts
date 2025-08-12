@@ -9,13 +9,11 @@ export class CreateScreeningController implements IHttpController {
   constructor(private readonly createScreeningUseCase: CreateScreeningUseCase) {}
 
   async handle(request: Request, response: Response): Promise<void> {
-    const { title, description, category, theaterId, startTime, endTime } = request.body;
+    const { movieId, theaterId, startTime, endTime } = request.body;
 
     try {
       const screening = await this.createScreeningUseCase.execute({
-        title,
-        description,
-        category,
+        movieId,
         theaterId,
         startTime: new Date(startTime),
         endTime: new Date(endTime),

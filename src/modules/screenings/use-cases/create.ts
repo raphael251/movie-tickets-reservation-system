@@ -6,9 +6,7 @@ import { IScreeningRepository } from '../repositories/interfaces/screening.repos
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 
 type Input = {
-  title: string;
-  description: string;
-  category: string;
+  movieId: string;
   theaterId: string;
   startTime: Date;
   endTime: Date;
@@ -19,9 +17,7 @@ export class CreateScreeningUseCase {
 
   async execute(input: Input): Promise<Screening> {
     const inputValidationSchema = z.object({
-      title: z.string().min(1, 'title field is required'),
-      description: z.string().optional(),
-      category: z.string().min(1, 'category field is required'),
+      movieId: z.uuid('movieId field is required'),
       theaterId: z.uuid('theaterId field is required'),
       startTime: z.date().refine((date) => !isNaN(date.getTime()), {
         message: 'Start time must be a valid date',
@@ -47,15 +43,7 @@ export class CreateScreeningUseCase {
       throw new AlreadyScheduledMovieError();
     }
 
-    const screening = new Screening(
-      crypto.randomUUID(),
-      input.title,
-      input.description,
-      input.category,
-      input.theaterId,
-      input.startTime,
-      input.endTime,
-    );
+    const screening = new Screening(crypto.randomUUID(), input.movieId, input.theaterId, input.startTime, input.endTime);
 
     await this.repository.save(screening);
 

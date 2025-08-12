@@ -20,6 +20,9 @@ import { ReservationRepository } from './modules/reservations/repositories/reser
 import { Seeder } from './modules/shared/seed/seeder.ts';
 import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
 import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
+import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
+import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
+import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -42,6 +45,10 @@ async function startApplication() {
 
   app.post('/users/login', async (req, res) =>
     new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
+  );
+
+  app.post('/movies', expressRequiredPermissionsMiddleware(['movies:create']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
+    new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
   app.post(

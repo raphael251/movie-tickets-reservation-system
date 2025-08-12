@@ -1,9 +1,7 @@
 export class Screening {
   constructor(
     public id: string,
-    public title: string,
-    public description: string,
-    public category: string,
+    public movieId: string,
     public theaterId: string,
     public startTime: Date,
     public endTime: Date,
