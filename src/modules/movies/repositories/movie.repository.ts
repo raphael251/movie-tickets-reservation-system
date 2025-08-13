@@ -14,4 +14,9 @@ export class MovieRepository implements IMovieRepository {
     const movie = await MovieDBEntity.findOne({ where: { id: movieId } });
     return movie ? new Movie(movie.id, movie.title, movie.description, movie.category) : null;
   }
+
+  async findAll(): Promise<Movie[]> {
+    const movies = await MovieDBEntity.find();
+    return movies.map((movie) => new Movie(movie.id, movie.title, movie.description, movie.category));
+  }
 }
