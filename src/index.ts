@@ -26,6 +26,8 @@ import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
 import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
 import { UpdateMovieUseCase } from './modules/movies/use-cases/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
+import { DeleteMovieUseCase } from './modules/movies/use-cases/delete.ts';
+import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -54,6 +56,10 @@ async function startApplication() {
     new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
+  app.get('/movies', expressRequiredPermissionsMiddleware(['movies:read']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
+    new ListMoviesController(new MovieRepository()).handle(req, res),
+  );
+
   app.put(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
@@ -61,8 +67,11 @@ async function startApplication() {
     async (req, res) => new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
-  app.get('/movies', expressRequiredPermissionsMiddleware(['movies:read']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
-    new ListMoviesController(new MovieRepository()).handle(req, res),
+  app.delete(
+    '/movies/:movieId',
+    expressRequiredPermissionsMiddleware(['movies:delete']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) => new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
   app.post(

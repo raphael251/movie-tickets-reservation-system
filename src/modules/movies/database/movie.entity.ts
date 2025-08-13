@@ -13,4 +13,7 @@ export class MovieDBEntity extends BaseEntity {
 
   @Column()
   category!: string;
+
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  deletedAt?: Date;
 }

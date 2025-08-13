@@ -28,4 +28,5 @@ export const appDataSource = new DataSource({
   entities: [UserDBEntity, ScreeningDBEntity, ReservationDBEntity, SeatDBEntity, TheaterDBEntity, ScreeningSeatDBEntity, MovieDBEntity],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: true,
+  useUTC: true,
 });

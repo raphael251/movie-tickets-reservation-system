@@ -4,4 +4,5 @@ export interface IMovieRepository {
   findById(movieId: string): Promise<Movie | null>;
   findAll(): Promise<Movie[]>;
   save(movie: Movie): Promise<void>;
+  deleteById(movieId: string): Promise<void>;
 }
