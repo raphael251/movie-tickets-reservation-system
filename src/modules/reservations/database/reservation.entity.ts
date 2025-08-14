@@ -2,6 +2,12 @@ import { BaseEntity, Column, Entity, ForeignKey, PrimaryGeneratedColumn } from '
 import { ScreeningSeatDBEntity } from '../../screenings/database/screening-seat.entity.ts';
 import { UserDBEntity } from '../../users/database/user.entity.ts';
 
+export enum RESERVATION_STATUS {
+  PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  CANCELED = 'CANCELED',
+}
+
 @Entity('reservation')
 export class ReservationDBEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -14,4 +20,7 @@ export class ReservationDBEntity extends BaseEntity {
   @Column('uuid')
   @ForeignKey(() => ScreeningSeatDBEntity)
   screeningSeatId!: string;
+
+  @Column({ type: 'enum', enum: RESERVATION_STATUS, default: RESERVATION_STATUS.PENDING })
+  status!: RESERVATION_STATUS;
 }

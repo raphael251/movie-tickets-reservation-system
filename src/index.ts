@@ -28,6 +28,8 @@ import { UpdateMovieUseCase } from './modules/movies/use-cases/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 import { DeleteMovieUseCase } from './modules/movies/use-cases/delete.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
+import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
+import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -108,6 +110,14 @@ async function startApplication() {
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     async (req, res) => new ListReservationsController(new ReservationRepository()).handle(req, res),
+  );
+
+  app.delete(
+    '/reservations/:reservationId',
+    expressRequiredPermissionsMiddleware(['reservations:cancel']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    async (req, res) =>
+      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository())).handle(req, res),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {

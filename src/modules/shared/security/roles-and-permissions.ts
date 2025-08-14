@@ -11,5 +11,5 @@ export const rolesAndPermissions: Record<string, Set<string>> = {
     'screenings:update',
     'screenings:delete',
   ]),
-  regular: new Set(['reservations:create', 'reservations:read', 'screenings:read']),
+  regular: new Set(['reservations:create', 'reservations:read', 'reservations:cancel', 'screenings:read']),
 };
