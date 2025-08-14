@@ -10,14 +10,15 @@ This project was based on [one of the roadmap.sh backend path projects](https://
 
 The project is currently in the early stages of development. The main features are planned, but the implementation is still in progress.
 
-## Features (Customer-Focused)
+## Features (User-Focused)
 
 | Feature                               | Description                                                                                                                 | Status      |
 | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| User account creation (sign up)       | N/A                                                                                                                         | COMPLETE    |
-| User account login                    | N/A                                                                                                                         | COMPLETE    |
+| User sign up and login                | Users can create their own account and log in to it                                                                         | COMPLETE    |
+| Movie management                      | Admins can manage movie information, including creating, updating, and deleting movies.                                     | COMPLETE    |
 | Screening management with a showtime. | Admins can manage screening showtimes, only being able to create a unique screening for a specific theater and time window. | COMPLETE    |
-| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | IN-PROGRESS |
+| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | COMPLETE    |
+| Reservation management                | Users can manage their current reservations and cancel them if needed                                                       | IN-PROGRESS |
 
 ## Technical Roadmap
 
@@ -39,6 +40,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Create endpoint to list all user's reservations
 - [x] Create a new Movie entity just for the static information about movies available for screening
 - [ ] Handle invalid ids on creation gracefully (on movies endpoints and others as well)
+- [ ] Handle pagination on movies listing
 
 ## Improvements
 
