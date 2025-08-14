@@ -41,6 +41,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Create a new Movie entity just for the static information about movies available for screening
 - [ ] Handle invalid ids on creation gracefully (on movies endpoints and others as well)
 - [ ] Handle pagination on movies listing
+- [ ] Add rules for reservation cancellation (e.g.: only before 1 hour of the screening start time)
 
 ## Improvements
 
