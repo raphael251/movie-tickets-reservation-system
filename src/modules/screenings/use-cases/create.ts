@@ -4,6 +4,10 @@ import { AlreadyScheduledMovieError } from '../errors/already-scheduled-movie.ts
 import { InvalidTimeError } from '../errors/invalid-time.ts';
 import { IScreeningRepository } from '../repositories/interfaces/screening.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
+import { IMovieRepository } from '../../movies/repositories/interfaces/movie.repository.ts';
+import { ITheaterRepository } from '../../theaters/repositories/interfaces/theather.repository.ts';
+import { MovieDoesNotExistError } from '../errors/movie-does-not-exist.ts';
+import { TheaterDoesNotExistError } from '../errors/theater-does-not-exist.ts';
 
 type Input = {
   movieId: string;
@@ -13,7 +17,11 @@ type Input = {
 };
 
 export class CreateScreeningUseCase {
-  constructor(private readonly repository: IScreeningRepository) {}
+  constructor(
+    private readonly screeningRepository: IScreeningRepository,
+    private readonly movieRepository: IMovieRepository,
+    private readonly theaterRepository: ITheaterRepository,
+  ) {}
 
   async execute(input: Input): Promise<Screening> {
     const inputValidationSchema = z.object({
@@ -37,17 +45,29 @@ export class CreateScreeningUseCase {
       throw new InvalidTimeError();
     }
 
-    const existingScreening = await this.repository.findByTheaterIdAndTime(input.theaterId, input.startTime, input.endTime);
+    const existingScreening = await this.screeningRepository.findByTheaterIdAndTime(input.theaterId, input.startTime, input.endTime);
 
     if (existingScreening) {
       throw new AlreadyScheduledMovieError();
     }
 
+    const foundMovie = await this.movieRepository.findById(input.movieId);
+
+    if (!foundMovie) {
+      throw new MovieDoesNotExistError();
+    }
+
+    const foundTheater = await this.theaterRepository.findById(input.theaterId);
+
+    if (!foundTheater) {
+      throw new TheaterDoesNotExistError();
+    }
+
     const screening = new Screening(crypto.randomUUID(), input.movieId, input.theaterId, input.startTime, input.endTime);
 
-    await this.repository.save(screening);
+    await this.screeningRepository.save(screening);
 
-    await this.repository.createScreeningSeats(screening.id);
+    await this.screeningRepository.createScreeningSeats(screening.id);
 
     return screening;
   }

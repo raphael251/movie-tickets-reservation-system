@@ -39,7 +39,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Create filter for the screening seats endpoint to filter screening seats by status
 - [x] Create endpoint to list all user's reservations
 - [x] Create a new Movie entity just for the static information about movies available for screening
-- [ ] Handle invalid ids on creation gracefully (on movies endpoints and others as well)
+- [x] Handle invalid ids on creation gracefully (on screenings endpoints and others as well)
 - [ ] Handle pagination on movies listing
 - [ ] Add rules for reservation cancellation (e.g.: only before 1 hour of the screening start time)
 

@@ -30,6 +30,7 @@ import { DeleteMovieUseCase } from './modules/movies/use-cases/delete.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
 import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
+import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -80,7 +81,11 @@ async function startApplication() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository())).handle(req, res),
+    async (req, res) =>
+      new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository(), new MovieRepository(), new TheaterRepository())).handle(
+        req,
+        res,
+      ),
   );
 
   app.get(
