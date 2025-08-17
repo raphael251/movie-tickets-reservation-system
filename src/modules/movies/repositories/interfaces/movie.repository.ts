@@ -1,4 +1,4 @@
-import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/index.ts';
+import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/types.ts';
 import { Movie } from '../../entities/movie.ts';
 
 export interface IMovieRepository {

@@ -1,4 +1,5 @@
-import { encodeCursor, IPaginationParams, TPaginationResponse } from '../../shared/pagination/index.ts';
+import { encodeCursor } from '../../shared/pagination/helpers.ts';
+import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { MovieDBEntity } from '../database/movie.entity.ts';
 import { Movie } from '../entities/movie.ts';
 import { IMovieRepository } from './interfaces/movie.repository.ts';

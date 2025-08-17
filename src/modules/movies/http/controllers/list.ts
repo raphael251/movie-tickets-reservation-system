@@ -3,7 +3,7 @@ import { IMovieRepository } from '../../repositories/interfaces/movie.repository
 import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { decodeCursor } from '../../../shared/pagination/index.ts';
+import { decodeCursor } from '../../../shared/pagination/helpers.ts';
 
 export class ListMoviesController implements IHttpController {
   constructor(private repository: IMovieRepository) {}
