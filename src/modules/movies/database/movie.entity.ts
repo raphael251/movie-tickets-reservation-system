@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('movie')
 export class MovieDBEntity extends BaseEntity {
@@ -16,4 +16,7 @@ export class MovieDBEntity extends BaseEntity {
 
   @Column({ type: 'timestamp with time zone', nullable: true })
   deletedAt?: Date;
+
+  @CreateDateColumn()
+  createdAt!: Date;
 }
