@@ -31,6 +31,7 @@ import { DeleteMovieController } from './modules/movies/http/controllers/delete.
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
 import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
+import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -59,8 +60,11 @@ async function startApplication() {
     new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
   );
 
-  app.get('/movies', expressRequiredPermissionsMiddleware(['movies:read']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
-    new ListMoviesController(new MovieRepository()).handle(req, res),
+  app.get(
+    '/movies',
+    expressRequiredPermissionsMiddleware(['movies:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository())),
   );
 
   app.put(

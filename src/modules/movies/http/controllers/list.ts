@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
 import { IMovieRepository } from '../../repositories/interfaces/movie.repository.ts';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { decodeCursor } from '../../../shared/pagination/helpers.ts';
+import { Movie } from '../../entities/movie.ts';
 
-export class ListMoviesController implements IHttpController {
+export class ListMoviesController implements IHttpControllerV2<Movie> {
   constructor(private repository: IMovieRepository) {}
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
     try {
       const inputValidationSchema = z.object({
         cursor: z.string().min(1).optional(),
@@ -27,16 +27,17 @@ export class ListMoviesController implements IHttpController {
         limit,
       });
 
-      response.status(200).json({
+      return {
+        status: 200,
         data,
         meta: {
           hasNext,
           nextCursor,
         },
-      });
+      };
     } catch (error) {
       console.error('Error during movie listing:', error);
-      response.status(500).send('Internal Server Error');
+      return { status: 500 };
     }
   }
 }
