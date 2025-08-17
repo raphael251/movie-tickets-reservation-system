@@ -14,7 +14,7 @@ export class CreateMovieController implements IHttpController {
       response.status(201).json(movie);
     } catch (error) {
       if (error instanceof InputValidationError) {
-        response.status(400).json({ error: error.message });
+        response.status(400).json({ errors: error.errors });
       }
 
       console.error('Error during screening creation:', error);
