@@ -1,40 +1,47 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { InvalidEmailOrPasswordError } from '../../errors/invalid-email-or-password.ts';
 import { UserLoginUseCase } from '../../use-cases/login.ts';
-import { Request, Response } from 'express';
 
-export class UsersLoginController implements IHttpController {
+export class UsersLoginController implements IHttpControllerV2<{ token: string }> {
   constructor(private readonly useCase: UserLoginUseCase) {}
 
-  async handle(req: Request, res: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<{ token: string }>> {
     try {
-      if (!req.body.email || !req.body.password) {
-        res.status(400).send('Email and password are required');
-        return;
+      if (!request.body.email || !request.body.password) {
+        return { status: 400, errors: ['Email and password are required'] };
       }
 
       const { token } = await this.useCase.execute({
-        email: req.body.email,
-        password: req.body.password,
+        email: request.body.email,
+        password: request.body.password,
       });
 
-      res.status(200).send({ token });
+      return {
+        status: 200,
+        data: {
+          token,
+        },
+      };
     } catch (error) {
       if (error instanceof Error) {
         if (error instanceof InvalidEmailOrPasswordError) {
-          res.status(401).json({ errors: [error.message] });
-          return;
+          return {
+            status: 401,
+            errors: [error.message],
+          };
         }
 
         if (error instanceof InputValidationError) {
-          res.status(400).json({ errors: error.errors });
-          return;
+          return {
+            status: 400,
+            errors: error.errors,
+          };
         }
       }
 
       console.error('Error during user login:', error);
-      res.status(500).send('Internal Server Error');
+      return { status: 500 };
     }
   }
 }

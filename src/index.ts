@@ -52,8 +52,9 @@ async function startApplication() {
 
   app.post('/users', expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()))));
 
-  app.post('/users/login', async (req, res) =>
-    new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
+  app.post(
+    '/users/login',
+    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig))),
   );
 
   app.post(

@@ -20,6 +20,7 @@ export function expressHttpControllerAdapter<T>(controller: IHttpControllerV2<T>
         res.status(status).send();
         break;
       case 400:
+      case 401:
       case 409:
         res.status(status).json(httpResponse);
         break;
