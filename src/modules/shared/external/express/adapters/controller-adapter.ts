@@ -16,6 +16,9 @@ export function expressHttpControllerAdapter<T>(controller: IHttpControllerV2<T>
       case 201:
         res.status(200).json(httpResponse);
         break;
+      case 204:
+        res.status(204).send();
+        break;
       case 400:
         res.status(400).json(httpResponse);
         break;

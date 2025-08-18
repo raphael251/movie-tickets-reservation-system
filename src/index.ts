@@ -81,7 +81,7 @@ async function startApplication() {
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:delete']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository())).handle(req, res),
+    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository()))),
   );
 
   app.post(

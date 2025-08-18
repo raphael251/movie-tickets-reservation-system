@@ -23,6 +23,9 @@ export type THttpResponse<T> =
       data?: T;
     }
   | {
+      status: 204;
+    }
+  | {
       status: 200;
       data: T[];
       meta: {

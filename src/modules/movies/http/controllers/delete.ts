@@ -1,24 +1,29 @@
-import { Request, Response } from 'express';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { DeleteMovieUseCase } from '../../use-cases/delete.ts';
+import { Movie } from '../../entities/movie.ts';
 
-export class DeleteMovieController implements IHttpController {
+export class DeleteMovieController implements IHttpControllerV2<Movie> {
   constructor(private deleteMovieUseCase: DeleteMovieUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
     try {
       const { movieId } = request.params;
 
       await this.deleteMovieUseCase.execute({ movieId });
-      response.status(204).send();
+      return { status: 204 };
     } catch (error) {
       if (error instanceof InputValidationError) {
-        response.status(400).json({ errors: error.errors });
+        return {
+          status: 400,
+          errors: error.errors,
+        };
       }
 
       console.error('Error during movie deletion:', error);
-      response.status(500).json({ error: 'Internal Server Error' });
+      return {
+        status: 500,
+      };
     }
   }
 }
