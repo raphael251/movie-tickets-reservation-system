@@ -1,13 +1,12 @@
 import z from 'zod';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
-import { Request, Response } from 'express';
-import { SCREENING_SEAT_STATUS } from '../../entities/screening-seat.ts';
+import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../entities/screening-seat.ts';
 
-export class ListScreeningSeatsController implements IHttpController {
+export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeat[]> {
   constructor(private repository: IScreeningRepository) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<ScreeningSeat[]>> {
     const filterSchema = z.object({
       status: z.enum(SCREENING_SEAT_STATUS).optional(),
     });
@@ -15,12 +14,17 @@ export class ListScreeningSeatsController implements IHttpController {
     const { success: isValid, data: filter } = filterSchema.safeParse(request.query);
 
     if (!isValid) {
-      response.status(400).json({ error: 'Invalid query parameters' });
-      return;
+      return {
+        status: 400,
+        errors: ['Invalid query parameters'],
+      };
     }
 
     const seats = await this.repository.findSeatsByScreeningId(request.params.screeningId, filter);
 
-    response.status(200).json({ seats });
+    return {
+      status: 200,
+      data: seats,
+    };
   }
 }

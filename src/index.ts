@@ -105,7 +105,7 @@ async function startApplication() {
     '/screenings/:screeningId/seats',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new ListScreeningSeatsController(new ScreeningRepository()).handle(req, res),
+    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository())),
   );
 
   app.post(
