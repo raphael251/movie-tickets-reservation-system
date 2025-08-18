@@ -1,42 +1,45 @@
-import { Request, Response } from 'express';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { UsersSignUpUseCase } from '../../use-cases/sign-up.ts';
 import { EmailAlreadyRegisteredError } from '../../errors/email-already-registered.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 
-export class UsersSignUpController implements IHttpController {
+export class UsersSignUpController implements IHttpControllerV2<never> {
   constructor(private readonly useCase: UsersSignUpUseCase) {}
 
-  async handle(req: Request, res: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<never>> {
     try {
-      if (!req.body.email || !req.body.password) {
-        res.status(400).send('Email and password are required');
-        return;
+      if (!request.body.email || !request.body.password) {
+        return {
+          status: 400,
+          errors: ['Email and password are required'],
+        };
       }
 
       await this.useCase.execute({
-        email: req.body.email,
-        password: req.body.password,
+        email: request.body.email,
+        password: request.body.password,
       });
 
-      res.status(201).send('User created successfully');
+      return { status: 201 };
     } catch (error) {
       if (error instanceof Error) {
         if (error instanceof EmailAlreadyRegisteredError) {
-          res.status(409).json({ errors: [error.message] });
-          return;
+          return {
+            status: 409,
+            errors: [error.message],
+          };
         }
 
         if (error instanceof InputValidationError) {
-          res.status(400).json({
+          return {
+            status: 400,
             errors: error.errors,
-          });
-          return;
+          };
         }
       }
 
       console.error('Error during user sign-up:', error);
-      res.status(500).send('Internal Server Error');
+      return { status: 500 };
     }
   }
 }

@@ -50,7 +50,7 @@ async function startApplication() {
     res.send('Welcome to the Movie Tickets Reservation System!');
   });
 
-  app.post('/users', (req, res) => new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher())).handle(req, res));
+  app.post('/users', expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()))));
 
   app.post('/users/login', async (req, res) =>
     new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
