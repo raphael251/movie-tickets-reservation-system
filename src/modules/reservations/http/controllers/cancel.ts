@@ -1,31 +1,28 @@
-import { Request, Response } from 'express';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { CancelReservationUseCase } from '../../use-cases/cancel.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { ReservationDoesNotExistError } from '../../errors/reservation-does-not-exist.ts';
 
-export class CancelReservationController implements IHttpController {
+export class CancelReservationController implements IHttpControllerV2<never> {
   constructor(private readonly cancelReservationUseCase: CancelReservationUseCase) {}
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<never>> {
     try {
       const { reservationId } = request.params;
 
       await this.cancelReservationUseCase.execute({ reservationId });
 
-      response.status(204).send();
+      return { status: 204 };
     } catch (error) {
       if (error instanceof InputValidationError) {
-        response.status(400).json({ errors: error.errors });
-        return;
+        return { status: 400, errors: error.errors };
       }
 
       if (error instanceof ReservationDoesNotExistError) {
-        response.status(404).json({ errors: [error.message] });
-        return;
+        return { status: 404, errors: [error.message] };
       }
 
       console.error('Error during reservation cancellation:', error);
-      response.status(500).send('Internal Server Error');
+      return { status: 500 };
     }
   }
 }

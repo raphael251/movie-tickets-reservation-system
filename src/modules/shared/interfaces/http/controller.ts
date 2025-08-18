@@ -37,7 +37,7 @@ export type THttpResponse<T> =
       status: 500;
     }
   | {
-      status: 400 | 401 | 409;
+      status: 400 | 401 | 409 | 404;
       errors?: string[];
     };
 

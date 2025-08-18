@@ -128,8 +128,9 @@ async function startApplication() {
     '/reservations/:reservationId',
     expressRequiredPermissionsMiddleware(['reservations:cancel']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) =>
-      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository())).handle(req, res),
+    expressHttpControllerAdapter(
+      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository())),
+    ),
   );
 
   app.listen(appConfig.SERVER_PORT, () => {
