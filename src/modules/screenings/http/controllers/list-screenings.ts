@@ -1,13 +1,16 @@
-import { IHttpController } from '../../../shared/interfaces/http/controller';
+import { IHttpControllerV2, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
+import { Screening } from '../../entities/screening.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
-import { Request, Response } from 'express';
 
-export class ListScreeningsController implements IHttpController {
+export class ListScreeningsController implements IHttpControllerV2<Screening[]> {
   constructor(private repository: IScreeningRepository) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(): Promise<THttpResponse<Screening[]>> {
     const screenings = await this.repository.findAll();
 
-    response.status(200).json({ screenings });
+    return {
+      status: 200,
+      data: screenings,
+    };
   }
 }

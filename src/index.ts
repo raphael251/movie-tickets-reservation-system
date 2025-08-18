@@ -98,7 +98,7 @@ async function startApplication() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new ListScreeningsController(new ScreeningRepository()).handle(req, res),
+    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository())),
   );
 
   app.get(
