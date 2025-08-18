@@ -74,7 +74,7 @@ async function startApplication() {
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository())).handle(req, res),
+    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository()))),
   );
 
   app.delete(

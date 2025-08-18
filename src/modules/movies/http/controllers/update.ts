@@ -1,27 +1,34 @@
-import { Request, Response } from 'express';
-import { IHttpController } from '../../../shared/interfaces/http/controller.ts';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { UpdateMovieUseCase } from '../../use-cases/update.ts';
+import { Movie } from '../../entities/movie.ts';
 
-export class UpdateMovieController implements IHttpController {
+export class UpdateMovieController implements IHttpControllerV2<Movie> {
   constructor(private readonly updateMovieUseCase: UpdateMovieUseCase) {}
 
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
     try {
       const { title, description, category } = request.body;
       const { movieId } = request.params;
 
       const movie = await this.updateMovieUseCase.execute({ movieId, title, description, category });
 
-      response.status(200).json(movie);
+      return {
+        status: 200,
+        data: movie,
+      };
     } catch (error) {
       if (error instanceof InputValidationError) {
-        response.status(400).json({ error: error.message });
-        return;
+        return {
+          status: 400,
+          errors: error.errors,
+        };
       }
 
       console.error('Error during movie update:', error);
-      response.status(500).send('Internal Server Error');
+      return {
+        status: 500,
+      };
     }
   }
 }
