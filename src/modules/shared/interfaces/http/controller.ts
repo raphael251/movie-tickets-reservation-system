@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserRole } from '../../../users/util/constants/roles.ts';
 
@@ -6,10 +7,10 @@ export interface IHttpController {
 }
 
 export type THttpRequest = {
-  body?: Record<string, unknown>;
-  query?: Record<string, unknown>;
-  params?: Record<string, unknown>;
-  headers: Record<string, string | string[] | undefined>;
+  body?: any;
+  query?: any;
+  params?: any;
+  headers: { [key: string]: string | string[] | undefined };
   user?: {
     id: string;
     role: UserRole;
@@ -18,7 +19,7 @@ export type THttpRequest = {
 
 export type THttpResponse<T> =
   | {
-      status: 200;
+      status: 200 | 201;
       data?: T;
     }
   | {

@@ -56,8 +56,11 @@ async function startApplication() {
     new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig)).handle(req, res),
   );
 
-  app.post('/movies', expressRequiredPermissionsMiddleware(['movies:create']), expressAuthMiddleware(new JWTTokenValidator(appConfig)), (req, res) =>
-    new CreateMovieController(new CreateMovieUseCase(new MovieRepository())).handle(req, res),
+  app.post(
+    '/movies',
+    expressRequiredPermissionsMiddleware(['movies:create']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository()))),
   );
 
   app.get(

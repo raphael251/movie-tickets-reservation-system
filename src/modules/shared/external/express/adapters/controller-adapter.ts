@@ -13,6 +13,7 @@ export function expressHttpControllerAdapter<T>(controller: IHttpControllerV2<T>
 
     switch (status) {
       case 200:
+      case 201:
         res.status(200).json(httpResponse);
         break;
       case 400:
