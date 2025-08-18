@@ -1,22 +1,26 @@
-import { Request, Response } from 'express';
-import { IHttpController } from '../../../shared/interfaces/http/controller';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller';
 import { IReservationRepository } from '../../repositories/interfaces/reservation.repository';
+import { Reservation } from '../../entities/reservation';
 
-export class ListReservationsController implements IHttpController {
+export class ListReservationsController implements IHttpControllerV2<Reservation[]> {
   constructor(private repository: IReservationRepository) {}
-  async handle(request: Request, response: Response): Promise<void> {
+  async handle(request: THttpRequest): Promise<THttpResponse<Reservation[]>> {
     try {
       if (!request.user) {
-        response.status(500).send('Internal Server Error');
-        return;
+        return {
+          status: 500,
+        };
       }
 
       const reservations = await this.repository.findAllByUserId(request.user.id);
 
-      response.status(200).json({ reservations });
+      return {
+        status: 200,
+        data: reservations,
+      };
     } catch (error) {
       console.error('Error during reservation listing:', error);
-      response.status(500).send('Internal Server Error');
+      return { status: 500 };
     }
   }
 }

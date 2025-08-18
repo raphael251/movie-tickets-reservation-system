@@ -121,7 +121,7 @@ async function startApplication() {
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) => new ListReservationsController(new ReservationRepository()).handle(req, res),
+    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository())),
   );
 
   app.delete(
