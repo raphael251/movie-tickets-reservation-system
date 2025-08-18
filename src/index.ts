@@ -112,8 +112,9 @@ async function startApplication() {
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    async (req, res) =>
-      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository())).handle(req, res),
+    expressHttpControllerAdapter(
+      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository())),
+    ),
   );
 
   app.get(
