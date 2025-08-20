@@ -42,6 +42,13 @@ The project is currently in the early stages of development. The main features a
 - [x] Handle invalid ids on creation gracefully (on screenings endpoints and others as well)
 - [x] Add cursor pagination on movies listing
 - [x] Add rule for reservation cancellation: only allowed before 48 hours of the screening start time
+- [ ] Add pagination to screening seats listing endpoint
+- [ ] Add error handling on screening seats listing controller
+- [ ] Add pagination to screenings listing endpoint
+- [ ] Return reservation data on its creation
+- [ ] Remove the empty object from the responses where no data is returned
+- [ ] Add pagination to reservations listing endpoint
+- [ ] Review the reservation status
 
 ## Improvements
 
