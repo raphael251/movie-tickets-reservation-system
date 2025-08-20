@@ -6,6 +6,7 @@ import { SeatAlreadyReservedError } from '../errors/seat-already-reserved.ts';
 import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 import { SCREENING_SEAT_STATUS } from '../../screenings/entities/screening-seat.ts';
+import { RESERVATION_STATUS } from '../database/reservation.entity.ts';
 
 type Input = {
   userId: string;
@@ -41,7 +42,7 @@ export class CreateReservationUseCase {
       throw new SeatAlreadyReservedError();
     }
 
-    const reservation = new Reservation(crypto.randomUUID(), input.userId, screeningSeatId);
+    const reservation = new Reservation(crypto.randomUUID(), input.userId, screeningSeatId, RESERVATION_STATUS.CONFIRMED);
 
     await this.screeningRepository.updateScreeningSeatStatusById(screeningSeatId, SCREENING_SEAT_STATUS.RESERVED);
 
