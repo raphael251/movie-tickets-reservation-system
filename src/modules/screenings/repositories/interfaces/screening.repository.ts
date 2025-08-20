@@ -10,4 +10,5 @@ export interface IScreeningRepository {
   createScreeningSeats(screeningId: string): Promise<void>;
   findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null>;
   updateScreeningSeatStatusById(screeningSeatId: string, status: SCREENING_SEAT_STATUS): Promise<void>;
+  findScreeningByScreeningSeatId(screeningSeatId: string): Promise<Screening | null>;
 }

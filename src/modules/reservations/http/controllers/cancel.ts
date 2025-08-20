@@ -2,6 +2,7 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { CancelReservationUseCase } from '../../use-cases/cancel.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { ReservationDoesNotExistError } from '../../errors/reservation-does-not-exist.ts';
+import { CancelingOperationOutOfRange } from '../../errors/canceling-operation-out-of-range.ts';
 
 export class CancelReservationController implements IHttpControllerV2<never> {
   constructor(private readonly cancelReservationUseCase: CancelReservationUseCase) {}
@@ -19,6 +20,10 @@ export class CancelReservationController implements IHttpControllerV2<never> {
 
       if (error instanceof ReservationDoesNotExistError) {
         return { status: 404, errors: [error.message] };
+      }
+
+      if (error instanceof CancelingOperationOutOfRange) {
+        return { status: 409, errors: [error.message] };
       }
 
       console.error('Error during reservation cancellation:', error);

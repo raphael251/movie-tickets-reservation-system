@@ -5,6 +5,8 @@ import { IReservationRepository } from '../repositories/interfaces/reservation.r
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 import { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
 import { SCREENING_SEAT_STATUS } from '../../screenings/entities/screening-seat.ts';
+import { ScreeningDoesNotExistError } from '../errors/screening-does-not-exist.ts';
+import { CancelingOperationOutOfRange } from '../errors/canceling-operation-out-of-range.ts';
 
 type Input = {
   reservationId: string;
@@ -12,7 +14,7 @@ type Input = {
 
 export class CancelReservationUseCase {
   constructor(
-    private repository: IReservationRepository,
+    private reservationRepository: IReservationRepository,
     private readonly screeningRepository: IScreeningRepository,
   ) {}
 
@@ -29,14 +31,28 @@ export class CancelReservationUseCase {
 
     const { reservationId } = parseResult.data;
 
-    const reservation = await this.repository.findById(reservationId);
+    const reservation = await this.reservationRepository.findById(reservationId);
 
     if (!reservation) {
       throw new ReservationDoesNotExistError();
     }
 
-    await this.screeningRepository.updateScreeningSeatStatusById(reservation.screeningSeatId, SCREENING_SEAT_STATUS.RESERVED);
+    const screening = await this.screeningRepository.findScreeningByScreeningSeatId(reservation.screeningSeatId);
 
-    await this.repository.updateStatusById(reservationId, RESERVATION_STATUS.CANCELED);
+    if (!screening) {
+      throw new ScreeningDoesNotExistError();
+    }
+
+    const currentTime = new Date();
+
+    const FORTY_EIGHT_HOURS_IN_MS = 48 * 60 * 60 * 1000;
+
+    if (screening.startTime.getTime() - currentTime.getTime() < FORTY_EIGHT_HOURS_IN_MS) {
+      throw new CancelingOperationOutOfRange();
+    }
+
+    await this.screeningRepository.updateScreeningSeatStatusById(reservation.screeningSeatId, SCREENING_SEAT_STATUS.AVAILABLE);
+
+    await this.reservationRepository.updateStatusById(reservationId, RESERVATION_STATUS.CANCELED);
   }
 }

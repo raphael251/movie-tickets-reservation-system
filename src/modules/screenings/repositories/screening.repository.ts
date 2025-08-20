@@ -97,4 +97,14 @@ export class ScreeningRepository implements IScreeningRepository {
   async updateScreeningSeatStatusById(screeningSeatId: string, status: SCREENING_SEAT_STATUS): Promise<void> {
     await ScreeningSeatDBEntity.update({ id: screeningSeatId }, { status });
   }
+
+  async findScreeningByScreeningSeatId(screeningSeatId: string): Promise<Screening | null> {
+    const screening = await ScreeningDBEntity.createQueryBuilder('screening')
+      .select()
+      .innerJoin(ScreeningSeatDBEntity, 'screeningSeat', 'screeningSeat.screeningId = screening.id')
+      .where('screeningSeat.id = :screeningSeatId', { screeningSeatId })
+      .getOne();
+
+    return screening ? new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime) : null;
+  }
 }
