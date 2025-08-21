@@ -14,6 +14,7 @@ const envSchema = zod.object({
   DB_MIGRATIONS_PATH: zod.string(),
   DB_HOST: zod.string(),
   DB_PORT: zod.coerce.number(),
+  DB_LOGGING_ENABLED: zod.coerce.boolean().default(false),
 });
 
 // Export the inferred type for use in other modules
