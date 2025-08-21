@@ -1,7 +1,8 @@
-import { createApp } from './app';
-import { AppConfigLoader } from './modules/shared/configs/app-config';
-import { appDataSource } from './modules/shared/data-source/data-source';
-import { Seeder } from './modules/shared/seed/seeder';
+import 'dotenv/config';
+import { createApp } from './app.ts';
+import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
+import { appDataSource } from './modules/shared/data-source/data-source.ts';
+import { Seeder } from './modules/shared/seed/seeder.ts';
 
 export async function startApplication() {
   const app = createApp();

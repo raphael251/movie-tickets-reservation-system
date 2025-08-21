@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { ScreeningDBEntity } from '../../screenings/database/screening.entity.ts';
 import { UserDBEntity } from '../../users/database/user.entity.ts';
