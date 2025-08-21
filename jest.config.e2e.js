@@ -8,4 +8,7 @@ export default {
   transform: {
     ...tsJestTransformCfg,
   },
+  testMatch: ['<rootDir>/src/__tests__/e2e/**/*.ts', '!<rootDir>/src/__tests__/e2e/init.ts'],
+  globalSetup: '<rootDir>/src/__tests__/globalSetup.ts',
+  globalTeardown: '<rootDir>/src/__tests__/globalTeardown.ts',
 };

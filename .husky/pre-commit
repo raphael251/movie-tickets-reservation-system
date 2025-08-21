@@ -1,2 +1,2 @@
 npm run check-types
-npm test
+npm run test:unit
