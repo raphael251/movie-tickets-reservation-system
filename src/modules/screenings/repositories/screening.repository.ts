@@ -5,8 +5,13 @@ import { IScreeningRepository } from './interfaces/screening.repository.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { ScreeningSeatDBEntity } from '../database/screening-seat.entity.ts';
 import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../screenings/entities/screening-seat.ts';
+import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
+import { AppConfig } from '../../shared/configs/app-config.ts';
+import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
 
 export class ScreeningRepository implements IScreeningRepository {
+  constructor(private appConfig: AppConfig) {}
+
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
     const foundScreening = await ScreeningDBEntity.createQueryBuilder('screening')
       .select()
@@ -70,14 +75,52 @@ export class ScreeningRepository implements IScreeningRepository {
     `);
   }
 
-  async findSeatsByScreeningId(screeningId: string, filter: { status?: SCREENING_SEAT_STATUS }): Promise<ScreeningSeat[]> {
-    const seatsQuery = ScreeningSeatDBEntity.createQueryBuilder().select().where('"screeningId" = :screeningId', { screeningId });
+  async findSeatsByScreeningId(
+    screeningId: string,
+    filter: { status?: SCREENING_SEAT_STATUS },
+    { limit = this.appConfig.PAGINATION_DEFAULT_LIMIT, cursor }: IPaginationParams,
+  ): Promise<TPaginationResponse<ScreeningSeat>> {
+    // Increasing the number of retrieved registers to check if there is a next page
+    const limitWithNextPageFirstElement = limit + 1;
+
+    const seatsQuery = ScreeningSeatDBEntity.createQueryBuilder()
+      .select()
+      .where('"screeningId" = :screeningId', { screeningId })
+      .orderBy('"rowLabel"', 'ASC')
+      .addOrderBy('"seatNumber"', 'ASC')
+      .take(limitWithNextPageFirstElement);
 
     if (filter.status) {
       seatsQuery.andWhere('"status" = :status', { status: filter.status });
     }
 
-    return (await seatsQuery.getMany()).map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status));
+    if (cursor) {
+      const [rowLabel, seatNumber] = decodeCursor(cursor).split(':');
+
+      seatsQuery.andWhere('("rowLabel", "seatNumber") > (:rowLabel, :seatNumber)', { rowLabel, seatNumber });
+    }
+
+    const screeningSeats = await seatsQuery.getMany();
+
+    const hasNext = screeningSeats.length > limit;
+
+    if (hasNext) {
+      const screeningSeatsToReturn = screeningSeats.slice(0, -1);
+
+      const lastSeat = screeningSeatsToReturn[screeningSeatsToReturn.length - 1];
+
+      return {
+        hasNext: true,
+        nextCursor: encodeCursor(`${lastSeat.rowLabel}:${lastSeat.seatNumber}`),
+        data: screeningSeatsToReturn.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status)),
+      };
+    }
+
+    return {
+      data: screeningSeats.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status)),
+      hasNext: false,
+      nextCursor: undefined,
+    };
   }
 
   async findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null> {
