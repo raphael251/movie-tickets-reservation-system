@@ -11,7 +11,7 @@ export class ListMoviesController implements IHttpControllerV2<Movie> {
     try {
       const inputValidationSchema = z.object({
         cursor: z.string().min(1).optional(),
-        limit: z.coerce.number().min(1).default(10),
+        limit: z.coerce.number().min(1).optional(),
       });
 
       const validationResult = inputValidationSchema.safeParse(request.query);
