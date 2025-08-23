@@ -1,3 +1,4 @@
+import { AppConfig } from '../../shared/configs/app-config.ts';
 import { encodeCursor } from '../../shared/pagination/helpers.ts';
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { MovieDBEntity } from '../database/movie.entity.ts';
@@ -5,6 +6,8 @@ import { Movie } from '../entities/movie.ts';
 import { IMovieRepository } from './interfaces/movie.repository.ts';
 
 export class MovieRepository implements IMovieRepository {
+  constructor(private appConfig: AppConfig) {}
+
   async save(movie: Movie): Promise<void> {
     await MovieDBEntity.upsert(movie, {
       conflictPaths: ['id'],
@@ -19,7 +22,7 @@ export class MovieRepository implements IMovieRepository {
 
   async findPaginated({ cursor, limit }: IPaginationParams): Promise<TPaginationResponse<Movie>> {
     // Increasing the number of retrieved registers to check if there is a next page
-    const limitWithNextPageFirstElement = limit + 1;
+    const limitWithNextPageFirstElement = (limit || this.appConfig.PAGINATION_DEFAULT_LIMIT) + 1 + 1;
 
     const query = MovieDBEntity.createQueryBuilder('movie')
       .where('movie.deletedAt IS NULL')

@@ -53,28 +53,28 @@ export function createApp() {
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository()))),
+    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)))),
   );
 
   app.get(
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository())),
+    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig))),
   );
 
   app.put(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository()))),
+    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)))),
   );
 
   app.delete(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:delete']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository()))),
+    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)))),
   );
 
   app.post(
@@ -82,7 +82,7 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['screenings:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository(), new MovieRepository(), new TheaterRepository())),
+      new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository(), new MovieRepository(appConfig), new TheaterRepository())),
     ),
   );
 
