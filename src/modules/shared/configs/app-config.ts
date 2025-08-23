@@ -15,6 +15,8 @@ const envSchema = zod.object({
   DB_HOST: zod.string(),
   DB_PORT: zod.coerce.number(),
   DB_LOGGING_ENABLED: zod.coerce.boolean().default(false),
+
+  PAGINATION_DEFAULT_LIMIT: zod.coerce.number().default(10),
 });
 
 // Export the inferred type for use in other modules
