@@ -43,7 +43,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Add cursor pagination on movies listing
 - [x] Add rule for reservation cancellation: only allowed before 48 hours of the screening start time
 - [x] Add initial end-to-end tests setup
-- [ ] Add pagination to screening seats listing endpoint
+- [x] Add pagination to screening seats listing endpoint
 - [ ] Add error handling on screening seats listing controller
 - [ ] Add pagination to screenings listing endpoint
 - [ ] Return reservation data on its creation

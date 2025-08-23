@@ -82,7 +82,9 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['screenings:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CreateScreeningController(new CreateScreeningUseCase(new ScreeningRepository(), new MovieRepository(appConfig), new TheaterRepository())),
+      new CreateScreeningController(
+        new CreateScreeningUseCase(new ScreeningRepository(appConfig), new MovieRepository(appConfig), new TheaterRepository()),
+      ),
     ),
   );
 
@@ -90,14 +92,14 @@ export function createApp() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository())),
+    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig))),
   );
 
   app.get(
     '/screenings/:screeningId/seats',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository())),
+    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig))),
   );
 
   app.post(
@@ -105,7 +107,7 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['reservations:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository())),
+      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository(appConfig))),
     ),
   );
 
@@ -121,7 +123,7 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['reservations:cancel']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository())),
+      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository(appConfig))),
     ),
   );
 
