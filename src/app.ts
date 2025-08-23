@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
 import { UserRepository } from './modules/users/repositories/user.repository.ts';
 import { Hasher } from './modules/shared/security/hasher.ts';
@@ -126,6 +126,18 @@ export function createApp() {
       new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository(appConfig))),
     ),
   );
+
+  app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof Error) {
+      console.error(err.stack);
+    } else {
+      console.error('Unknown error:', err);
+    }
+
+    res.status(500).send('Internal Server Error');
+
+    next();
+  });
 
   return app;
 }
