@@ -14,4 +14,6 @@ export const appConfigMock: AppConfig = {
   DB_HOST: 'localhost',
   DB_PORT: 5432,
   DB_LOGGING_ENABLED: false,
+
+  PAGINATION_DEFAULT_LIMIT: 10,
 };
