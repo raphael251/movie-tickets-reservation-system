@@ -46,7 +46,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Add pagination to screening seats listing endpoint
 - [x] Add pagination to screenings listing endpoint
 - [x] Add pagination to reservations listing endpoint
-- [ ] Add error handling on screening seats listing controller
+- [x] Add error handling on screening seats listing controller
 - [ ] Return reservation data on its creation
 - [ ] Remove the empty object from the responses where no data is returned
 - [ ] Review the reservation status
