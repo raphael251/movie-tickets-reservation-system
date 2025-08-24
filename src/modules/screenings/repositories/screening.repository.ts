@@ -52,10 +52,46 @@ export class ScreeningRepository implements IScreeningRepository {
     return new Screening(foundScreening.id, foundScreening.movieId, foundScreening.theaterId, foundScreening.startTime, foundScreening.endTime);
   }
 
-  async findAll(): Promise<Screening[]> {
-    const screenings = await ScreeningDBEntity.find();
+  async findAll({ limit = this.appConfig.PAGINATION_DEFAULT_LIMIT, cursor }: IPaginationParams): Promise<TPaginationResponse<Screening>> {
+    // Increasing the number of retrieved registers to check if there is a next page
+    const limitWithNextPageFirstElement = limit + 1;
 
-    return screenings.map((screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime));
+    const screeningsQuery = await ScreeningDBEntity.createQueryBuilder()
+      .select()
+      .where('"startTime" > :now', { now: new Date() })
+      .orderBy('"startTime"', 'ASC')
+      .take(limitWithNextPageFirstElement);
+
+    if (cursor) {
+      const decodedCursor = decodeCursor(cursor);
+
+      screeningsQuery.andWhere('"startTime" > :startTime', { startTime: new Date(Number(decodedCursor)) });
+    }
+
+    const screenings = await screeningsQuery.getMany();
+
+    const hasNext = screenings.length === limitWithNextPageFirstElement;
+
+    if (hasNext) {
+      const screeningsToReturn = screenings.slice(0, -1);
+      const lastScreening = screeningsToReturn[screeningsToReturn.length - 1];
+
+      return {
+        hasNext: true,
+        data: screeningsToReturn.map(
+          (screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime),
+        ),
+        nextCursor: encodeCursor(lastScreening.startTime.getTime().toString()),
+      };
+    }
+
+    return {
+      hasNext: false,
+      data: screenings.map(
+        (screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime),
+      ),
+      nextCursor: undefined,
+    };
   }
 
   async save(screening: Screening): Promise<void> {
