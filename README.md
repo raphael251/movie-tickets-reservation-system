@@ -12,13 +12,13 @@ The project is currently in the early stages of development. The main features a
 
 ## Features (User-Focused)
 
-| Feature                               | Description                                                                                                                 | Status      |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| User sign up and login                | Users can create their own account and log in to it                                                                         | COMPLETE    |
-| Movie management                      | Admins can manage movie information, including creating, updating, and deleting movies.                                     | COMPLETE    |
-| Screening management with a showtime. | Admins can manage screening showtimes, only being able to create a unique screening for a specific theater and time window. | COMPLETE    |
-| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | COMPLETE    |
-| Reservation management                | Users can manage their current reservations and cancel them if needed                                                       | IN-PROGRESS |
+| Feature                               | Description                                                                                                                 | Status   |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------- |
+| User sign up and login                | Users can create their own account and log in to it                                                                         | COMPLETE |
+| Movie management                      | Admins can manage movie information, including creating, updating, and deleting movies.                                     | COMPLETE |
+| Screening management with a showtime. | Admins can manage screening showtimes, only being able to create a unique screening for a specific theater and time window. | COMPLETE |
+| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | COMPLETE |
+| Reservation management                | Users can manage their current reservations and cancel them if needed                                                       | COMPLETE |
 
 ## Technical Roadmap
 
