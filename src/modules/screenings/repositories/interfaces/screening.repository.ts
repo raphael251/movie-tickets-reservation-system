@@ -4,7 +4,7 @@ import { Screening } from '../../entities/screening.ts';
 
 export interface IScreeningRepository {
   findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null>;
-  findAll(): Promise<Screening[]>;
+  findAll(pagination?: IPaginationParams): Promise<TPaginationResponse<Screening>>;
   findSeatsByScreeningId(
     screeningId: string,
     filter: { status?: SCREENING_SEAT_STATUS },
