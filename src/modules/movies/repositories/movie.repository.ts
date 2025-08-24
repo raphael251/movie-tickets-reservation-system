@@ -1,5 +1,5 @@
 import { AppConfig } from '../../shared/configs/app-config.ts';
-import { encodeCursor } from '../../shared/pagination/helpers.ts';
+import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { MovieDBEntity } from '../database/movie.entity.ts';
 import { Movie } from '../entities/movie.ts';
@@ -30,7 +30,9 @@ export class MovieRepository implements IMovieRepository {
       .take(limitWithNextPageFirstElement);
 
     if (cursor) {
-      query.andWhere('movie.createdAt < :cursor', { cursor: new Date(Number(cursor)) });
+      const decodedCursor = decodeCursor(cursor);
+
+      query.andWhere('movie.createdAt < :cursor', { cursor: new Date(Number(decodedCursor)) });
     }
 
     const movies = await query.getMany();

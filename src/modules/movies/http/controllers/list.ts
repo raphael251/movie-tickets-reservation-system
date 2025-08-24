@@ -2,7 +2,6 @@ import { IMovieRepository } from '../../repositories/interfaces/movie.repository
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { decodeCursor } from '../../../shared/pagination/helpers.ts';
 import { Movie } from '../../entities/movie.ts';
 
 export class ListMoviesController implements IHttpControllerV2<Movie> {
@@ -23,7 +22,7 @@ export class ListMoviesController implements IHttpControllerV2<Movie> {
       const { limit, cursor } = validationResult.data;
 
       const { data, hasNext, nextCursor } = await this.repository.findPaginated({
-        cursor: cursor ? decodeCursor(cursor) : undefined,
+        cursor,
         limit,
       });
 
