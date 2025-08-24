@@ -107,7 +107,7 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['reservations:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(), new ScreeningRepository(appConfig))),
+      new CreateReservationController(new CreateReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig))),
     ),
   );
 
@@ -115,7 +115,7 @@ export function createApp() {
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository())),
+    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository(appConfig))),
   );
 
   app.delete(
@@ -123,7 +123,7 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['reservations:cancel']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(
-      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(), new ScreeningRepository(appConfig))),
+      new CancelReservationController(new CancelReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig))),
     ),
   );
 
