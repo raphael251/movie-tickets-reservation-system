@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
 import { UserRepository } from './modules/users/repositories/user.repository.ts';
 import { Hasher } from './modules/shared/security/hasher.ts';
@@ -127,7 +127,7 @@ export function createApp() {
     ),
   );
 
-  app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  app.use((err: unknown, req: Request, res: Response) => {
     if (err instanceof Error) {
       console.error(err.stack);
     } else {
