@@ -33,6 +33,7 @@ export class ReservationRepository implements IReservationRepository {
       .select()
       .where('reservation.userId = :userId', { userId })
       .orderBy('reservation.createdAt', 'DESC')
+      .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
       .limit(limitWithNextPageFirstElement);
 
     if (cursor) {
@@ -63,7 +64,11 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   async findById(reservationId: string): Promise<Reservation | null> {
-    return ReservationDBEntity.createQueryBuilder('reservation').select().where('reservation.id = :reservationId', { reservationId }).getOne();
+    return ReservationDBEntity.createQueryBuilder('reservation')
+      .select()
+      .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
+      .where('reservation.id = :reservationId', { reservationId })
+      .getOne();
   }
 
   async updateStatusById(reservationId: string, status: RESERVATION_STATUS): Promise<void> {

@@ -1,11 +1,11 @@
-import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller';
-import { IReservationRepository } from '../../repositories/interfaces/reservation.repository';
-import { Reservation } from '../../entities/reservation';
+import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
+import { IReservationRepository } from '../../repositories/interfaces/reservation.repository.ts';
 import z from 'zod';
+import { mapReservationToDTO, ReservationDTO } from '../../dtos/reservation.dto.ts';
 
-export class ListReservationsController implements IHttpControllerV2<Reservation[]> {
+export class ListReservationsController implements IHttpControllerV2<ReservationDTO> {
   constructor(private reservationRepository: IReservationRepository) {}
-  async handle(request: THttpRequest): Promise<THttpResponse<Reservation[]>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<ReservationDTO>> {
     try {
       if (!request.user) {
         return {
@@ -31,7 +31,7 @@ export class ListReservationsController implements IHttpControllerV2<Reservation
 
       return {
         status: 200,
-        data,
+        data: data.map((reservation) => mapReservationToDTO(reservation)),
         meta: {
           hasNext,
           nextCursor,
