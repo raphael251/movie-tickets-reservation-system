@@ -37,7 +37,7 @@ export class CancelReservationUseCase {
       throw new ReservationDoesNotExistError();
     }
 
-    const screening = await this.screeningRepository.findScreeningByScreeningSeatId(reservation.screeningSeatId);
+    const screening = await this.screeningRepository.findScreeningByScreeningSeatId(reservation.screeningSeat.id);
 
     if (!screening) {
       throw new ScreeningDoesNotExistError();
@@ -51,7 +51,7 @@ export class CancelReservationUseCase {
       throw new CancelingOperationOutOfRange();
     }
 
-    await this.screeningRepository.updateScreeningSeatStatusById(reservation.screeningSeatId, SCREENING_SEAT_STATUS.AVAILABLE);
+    await this.screeningRepository.updateScreeningSeatStatusById(reservation.screeningSeat.id, SCREENING_SEAT_STATUS.AVAILABLE);
 
     await this.reservationRepository.updateStatusById(reservationId, RESERVATION_STATUS.CANCELED);
   }

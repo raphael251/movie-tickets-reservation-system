@@ -19,7 +19,7 @@ export class CreateReservationUseCase {
     private readonly screeningRepository: IScreeningRepository,
   ) {}
 
-  async execute(input: Input): Promise<void> {
+  async execute(input: Input): Promise<Reservation> {
     const inputValidationSchema = z.object({
       screeningSeatId: z.uuid('Invalid screening seat ID format'),
     });
@@ -42,10 +42,12 @@ export class CreateReservationUseCase {
       throw new SeatAlreadyReservedError();
     }
 
-    const reservation = new Reservation(crypto.randomUUID(), input.userId, screeningSeatId, RESERVATION_STATUS.CONFIRMED);
+    const reservation = new Reservation(crypto.randomUUID(), input.userId, existingScreeningSeat, RESERVATION_STATUS.CONFIRMED);
 
     await this.screeningRepository.updateScreeningSeatStatusById(screeningSeatId, SCREENING_SEAT_STATUS.RESERVED);
 
     await this.reservationRepository.save(reservation);
+
+    return reservation;
   }
 }

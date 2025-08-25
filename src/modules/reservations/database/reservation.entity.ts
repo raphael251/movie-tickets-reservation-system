@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ForeignKey, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, ForeignKey, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ScreeningSeatDBEntity } from '../../screenings/database/screening-seat.entity.ts';
 import { UserDBEntity } from '../../users/database/user.entity.ts';
 
@@ -17,9 +17,9 @@ export class ReservationDBEntity extends BaseEntity {
   @ForeignKey(() => UserDBEntity)
   userId!: string;
 
-  @Column('uuid')
-  @ForeignKey(() => ScreeningSeatDBEntity)
-  screeningSeatId!: string;
+  @OneToOne(() => ScreeningSeatDBEntity, { nullable: false })
+  @JoinColumn()
+  screeningSeat!: ScreeningSeatDBEntity;
 
   @Column({ type: 'enum', enum: RESERVATION_STATUS, default: RESERVATION_STATUS.PENDING })
   status!: RESERVATION_STATUS;
