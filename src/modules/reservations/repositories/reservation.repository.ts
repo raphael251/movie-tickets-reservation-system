@@ -1,22 +1,24 @@
 import { AppConfig } from '../../shared/configs/app-config.ts';
+import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
-import { RESERVATION_STATUS, ReservationDBEntity } from '../database/reservation.entity.ts';
-import { Reservation } from '../entities/reservation.ts';
+import { RESERVATION_STATUS, Reservation } from '../database/reservation.entity.ts';
 import { IReservationRepository } from './interfaces/reservation.repository';
 
 export class ReservationRepository implements IReservationRepository {
   constructor(private appConfig: AppConfig) {}
 
   async findByScreeningIdAndSeatCode(screeningId: string, seatCode: string): Promise<Reservation | null> {
-    return ReservationDBEntity.createQueryBuilder('reservation')
+    return appDataSource
+      .createQueryBuilder(Reservation, 'reservation')
       .select()
       .where('reservation.screeningId = :screeningId', { screeningId })
       .andWhere('reservation.seatCode = :seatCode', { seatCode })
       .getOne();
   }
+
   async save(reservation: Reservation): Promise<void> {
-    ReservationDBEntity.upsert(reservation, {
+    appDataSource.getRepository(Reservation).upsert(reservation, {
       conflictPaths: ['id'],
       skipUpdateIfNoValuesChanged: true,
     });
@@ -29,7 +31,8 @@ export class ReservationRepository implements IReservationRepository {
     // Increasing the number of retrieved registers to check if there is a next page
     const limitWithNextPageFirstElement = limit + 1;
 
-    const reservationsQuery = ReservationDBEntity.createQueryBuilder('reservation')
+    const reservationsQuery = appDataSource
+      .createQueryBuilder(Reservation, 'reservation')
       .select()
       .where('reservation.userId = :userId', { userId })
       .orderBy('reservation.createdAt', 'DESC')
@@ -64,7 +67,8 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   async findById(reservationId: string): Promise<Reservation | null> {
-    return ReservationDBEntity.createQueryBuilder('reservation')
+    return appDataSource
+      .createQueryBuilder(Reservation, 'reservation')
       .select()
       .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
       .where('reservation.id = :reservationId', { reservationId })
@@ -72,6 +76,11 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   async updateStatusById(reservationId: string, status: RESERVATION_STATUS): Promise<void> {
-    await ReservationDBEntity.createQueryBuilder().update().set({ status }).where('id = :reservationId', { reservationId }).execute();
+    await appDataSource
+      .createQueryBuilder(Reservation, 'reservation')
+      .update()
+      .set({ status })
+      .where('reservation.id = :reservationId', { reservationId })
+      .execute();
   }
 }

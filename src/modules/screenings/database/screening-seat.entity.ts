@@ -1,14 +1,14 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, ForeignKey, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, ForeignKey, Entity } from 'typeorm';
 import { ScreeningDBEntity } from '../../screenings/database/screening.entity.ts';
 
-enum SCREENING_SEAT_STATUS {
+export enum SCREENING_SEAT_STATUS {
   AVAILABLE = 'AVAILABLE',
   PENDING = 'PENDING',
   RESERVED = 'RESERVED',
 }
 
 @Entity('screeningSeat')
-export class ScreeningSeatDBEntity extends BaseEntity {
+export class ScreeningSeat {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 

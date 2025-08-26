@@ -1,7 +1,7 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
-import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../entities/screening-seat.ts';
+import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../database/screening-seat.entity.ts';
 
 export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeat[]> {
   constructor(private repository: IScreeningRepository) {}

@@ -48,8 +48,8 @@ The project is currently in the early stages of development. The main features a
 - [x] Add pagination to reservations listing endpoint
 - [x] Add error handling on screening seats listing controller
 - [x] Return reservation data on its creation
-- [ ] Remove the empty object from the responses where no data is returned
-- [ ] Review the reservation status
+- [x] Review the reservation status
+- [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
 
 ## Improvements
 
