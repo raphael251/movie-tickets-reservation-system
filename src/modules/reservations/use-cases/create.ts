@@ -1,11 +1,11 @@
 import z from 'zod';
 import { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
-import { Reservation } from '../entities/reservation.ts';
+import { Reservation } from '../database/reservation.entity.ts';
 import { InvalidScreeningSeatIdError } from '../errors/invalid-screening-id.ts';
 import { SeatAlreadyReservedError } from '../errors/seat-already-reserved.ts';
 import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { SCREENING_SEAT_STATUS } from '../../screenings/entities/screening-seat.ts';
+import { SCREENING_SEAT_STATUS } from '../../screenings/database/screening-seat.entity.ts';
 import { RESERVATION_STATUS } from '../database/reservation.entity.ts';
 
 type Input = {
@@ -42,7 +42,7 @@ export class CreateReservationUseCase {
       throw new SeatAlreadyReservedError();
     }
 
-    const reservation = new Reservation(crypto.randomUUID(), input.userId, existingScreeningSeat, RESERVATION_STATUS.CONFIRMED);
+    const reservation = Reservation.create(input.userId, existingScreeningSeat, RESERVATION_STATUS.CONFIRMED);
 
     await this.screeningRepository.updateScreeningSeatStatusById(screeningSeatId, SCREENING_SEAT_STATUS.RESERVED);
 

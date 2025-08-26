@@ -4,7 +4,7 @@ import { ReservationDoesNotExistError } from '../errors/reservation-does-not-exi
 import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 import { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
-import { SCREENING_SEAT_STATUS } from '../../screenings/entities/screening-seat.ts';
+import { SCREENING_SEAT_STATUS } from '../../screenings/database/screening-seat.entity.ts';
 import { ScreeningDoesNotExistError } from '../errors/screening-does-not-exist.ts';
 import { CancelingOperationOutOfRange } from '../errors/canceling-operation-out-of-range.ts';
 

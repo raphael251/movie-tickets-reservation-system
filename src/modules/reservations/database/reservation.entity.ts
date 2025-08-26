@@ -1,5 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ForeignKey, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { ScreeningSeatDBEntity } from '../../screenings/database/screening-seat.entity.ts';
+import { Column, CreateDateColumn, Entity, ForeignKey, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
 import { UserDBEntity } from '../../users/database/user.entity.ts';
 
 export enum RESERVATION_STATUS {
@@ -9,7 +9,7 @@ export enum RESERVATION_STATUS {
 }
 
 @Entity('reservation')
-export class ReservationDBEntity extends BaseEntity {
+export class Reservation {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -17,9 +17,9 @@ export class ReservationDBEntity extends BaseEntity {
   @ForeignKey(() => UserDBEntity)
   userId!: string;
 
-  @OneToOne(() => ScreeningSeatDBEntity, { nullable: false })
+  @OneToOne(() => ScreeningSeat, { nullable: false })
   @JoinColumn()
-  screeningSeat!: ScreeningSeatDBEntity;
+  screeningSeat!: ScreeningSeat;
 
   @Column({ type: 'enum', enum: RESERVATION_STATUS, default: RESERVATION_STATUS.PENDING })
   status!: RESERVATION_STATUS;
@@ -29,4 +29,16 @@ export class ReservationDBEntity extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  static create(userId: string, screeningSeat: ScreeningSeat, status: RESERVATION_STATUS): Reservation {
+    const reservation = new Reservation();
+
+    reservation.id = crypto.randomUUID();
+    reservation.userId = userId;
+    reservation.screeningSeat = screeningSeat;
+    reservation.status = status;
+    reservation.createdAt = new Date();
+
+    return reservation;
+  }
 }

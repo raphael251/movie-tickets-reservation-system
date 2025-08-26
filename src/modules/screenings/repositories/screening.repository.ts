@@ -3,8 +3,7 @@ import { ScreeningDBEntity } from '../database/screening.entity.ts';
 import { Screening } from '../entities/screening.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
-import { ScreeningSeatDBEntity } from '../database/screening-seat.entity.ts';
-import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../screenings/entities/screening-seat.ts';
+import { ScreeningSeat, SCREENING_SEAT_STATUS } from '../database/screening-seat.entity.ts';
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { AppConfig } from '../../shared/configs/app-config.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
@@ -119,21 +118,22 @@ export class ScreeningRepository implements IScreeningRepository {
     // Increasing the number of retrieved registers to check if there is a next page
     const limitWithNextPageFirstElement = limit + 1;
 
-    const seatsQuery = ScreeningSeatDBEntity.createQueryBuilder()
+    const seatsQuery = appDataSource
+      .createQueryBuilder(ScreeningSeat, 'screeningSeat')
       .select()
-      .where('"screeningId" = :screeningId', { screeningId })
-      .orderBy('"rowLabel"', 'ASC')
-      .addOrderBy('"seatNumber"', 'ASC')
+      .where('screeningSeat.screeningId = :screeningId', { screeningId })
+      .orderBy('screeningSeat.rowLabel', 'ASC')
+      .addOrderBy('screeningSeat.seatNumber', 'ASC')
       .take(limitWithNextPageFirstElement);
 
     if (filter.status) {
-      seatsQuery.andWhere('"status" = :status', { status: filter.status });
+      seatsQuery.andWhere('screeningSeat.status = :status', { status: filter.status });
     }
 
     if (cursor) {
       const [rowLabel, seatNumber] = decodeCursor(cursor).split(':');
 
-      seatsQuery.andWhere('("rowLabel", "seatNumber") > (:rowLabel, :seatNumber)', { rowLabel, seatNumber });
+      seatsQuery.andWhere('(screeningSeat.rowLabel, screeningSeat.seatNumber) > (:rowLabel, :seatNumber)', { rowLabel, seatNumber });
     }
 
     const screeningSeats = await seatsQuery.getMany();
@@ -148,39 +148,33 @@ export class ScreeningRepository implements IScreeningRepository {
       return {
         hasNext: true,
         nextCursor: encodeCursor(`${lastSeat.rowLabel}:${lastSeat.seatNumber}`),
-        data: screeningSeatsToReturn.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status)),
+        data: screeningSeatsToReturn,
       };
     }
 
     return {
-      data: screeningSeats.map((seat) => new ScreeningSeat(seat.id, seat.screeningId, seat.rowLabel, seat.seatNumber, seat.status)),
+      data: screeningSeats,
       hasNext: false,
       nextCursor: undefined,
     };
   }
 
   async findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null> {
-    const foundScreeningSeat = await ScreeningSeatDBEntity.findOne({ where: { id: screeningSeatId } });
+    const foundScreeningSeat = await appDataSource.getRepository(ScreeningSeat).findOne({ where: { id: screeningSeatId } });
 
     if (!foundScreeningSeat) return null;
 
-    return new ScreeningSeat(
-      foundScreeningSeat.id,
-      foundScreeningSeat.screeningId,
-      foundScreeningSeat.rowLabel,
-      foundScreeningSeat.seatNumber,
-      foundScreeningSeat.status,
-    );
+    return foundScreeningSeat;
   }
 
   async updateScreeningSeatStatusById(screeningSeatId: string, status: SCREENING_SEAT_STATUS): Promise<void> {
-    await ScreeningSeatDBEntity.update({ id: screeningSeatId }, { status });
+    await appDataSource.getRepository(ScreeningSeat).update({ id: screeningSeatId }, { status });
   }
 
   async findScreeningByScreeningSeatId(screeningSeatId: string): Promise<Screening | null> {
     const screening = await ScreeningDBEntity.createQueryBuilder('screening')
       .select()
-      .innerJoin(ScreeningSeatDBEntity, 'screeningSeat', 'screeningSeat.screeningId = screening.id')
+      .innerJoin(ScreeningSeat, 'screeningSeat', 'screeningSeat.screeningId = screening.id')
       .where('screeningSeat.id = :screeningSeatId', { screeningSeatId })
       .getOne();
 

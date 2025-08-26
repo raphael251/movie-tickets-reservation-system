@@ -1,6 +1,6 @@
 import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/types.ts';
 import { RESERVATION_STATUS } from '../../database/reservation.entity.ts';
-import { Reservation } from '../../entities/reservation.ts';
+import { Reservation } from '../../database/reservation.entity.ts';
 
 export interface IReservationRepository {
   save(reservation: Reservation): Promise<void>;
