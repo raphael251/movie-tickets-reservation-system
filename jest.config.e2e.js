@@ -8,7 +8,8 @@ export default {
   transform: {
     ...tsJestTransformCfg,
   },
-  testMatch: ['<rootDir>/src/__tests__/e2e/**/*.ts', '!<rootDir>/src/__tests__/e2e/init.ts'],
+  testMatch: ['<rootDir>/src/__tests__/e2e/**/*.ts'],
+  testPathIgnorePatterns: ['/src/__tests__/e2e/http/utils/'],
   globalSetup: '<rootDir>/src/__tests__/globalSetup.ts',
   globalTeardown: '<rootDir>/src/__tests__/globalTeardown.ts',
 };
