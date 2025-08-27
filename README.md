@@ -50,7 +50,21 @@ The project is currently in the early stages of development. The main features a
 - [x] Return reservation data on its creation
 - [x] Review the reservation status
 - [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
-- [x] Refactor the movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [x] Refactor the Movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [ ] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [ ] Refactor the Seat entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [ ] Refactor the Theater entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [ ] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [ ] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
+  - [ ] CreateMovieController
+  - [ ] ListMoviesController
+  - [ ] UpdateMovieController
+  - [ ] CreateScreeningController
+  - [ ] ListScreeningSeatsController
+  - [ ] ListScreeningsController
+  - [ ] UsersLoginController
+- [ ] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
+- [ ] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
 
 ## Improvements
 
