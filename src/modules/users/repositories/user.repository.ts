@@ -1,21 +1,17 @@
-import { UserDBEntity } from '../database/user.entity.ts';
-import { User } from '../entities/user.ts';
+import { appDataSource } from '../../shared/data-source/data-source.ts';
+import { User } from '../database/user.entity.ts';
 import { IUserRepository } from './interfaces/user.repository.ts';
 
 export class UserRepository implements IUserRepository {
-  async findByEmail(email: string): Promise<User | null> {
-    const user = await UserDBEntity.findOne({ where: { email } });
-    return user ? new User(user.id, user.role, user.email, user.password) : null;
+  findByEmail(email: string): Promise<User | null> {
+    return appDataSource.getRepository(User).findOne({ where: { email } });
   }
 
   async create(userData: { email: string; password: string }): Promise<User> {
-    const user = UserDBEntity.create({
-      email: userData.email,
-      password: userData.password,
-    });
+    const user = User.create(userData.email, userData.password);
 
-    await user.save();
+    await appDataSource.getRepository(User).save(user);
 
-    return new User(user.id, user.role, user.email, user.password);
+    return user;
   }
 }
