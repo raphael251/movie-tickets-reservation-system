@@ -1,5 +1,5 @@
 import z from 'zod';
-import { Screening } from '../entities/screening.ts';
+import { Screening } from '../database/screening.entity.ts';
 import { AlreadyScheduledMovieError } from '../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../errors/invalid-time.ts';
 import { IScreeningRepository } from '../repositories/interfaces/screening.repository.ts';
@@ -63,7 +63,7 @@ export class CreateScreeningUseCase {
       throw new TheaterDoesNotExistError();
     }
 
-    const screening = new Screening(crypto.randomUUID(), input.movieId, input.theaterId, input.startTime, input.endTime);
+    const screening = Screening.create(input.movieId, input.theaterId, input.startTime, input.endTime);
 
     await this.screeningRepository.save(screening);
 

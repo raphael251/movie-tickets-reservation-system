@@ -51,7 +51,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Review the reservation status
 - [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
 - [x] Refactor the Movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [ ] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
+- [x] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [ ] Refactor the Seat entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [ ] Refactor the Theater entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [ ] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.

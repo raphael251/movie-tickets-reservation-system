@@ -1,6 +1,5 @@
 import { Brackets } from 'typeorm';
-import { ScreeningDBEntity } from '../database/screening.entity.ts';
-import { Screening } from '../entities/screening.ts';
+import { Screening } from '../database/screening.entity.ts';
 import { IScreeningRepository } from './interfaces/screening.repository.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { ScreeningSeat, SCREENING_SEAT_STATUS } from '../database/screening-seat.entity.ts';
@@ -12,7 +11,8 @@ export class ScreeningRepository implements IScreeningRepository {
   constructor(private appConfig: AppConfig) {}
 
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
-    const foundScreening = await ScreeningDBEntity.createQueryBuilder('screening')
+    const foundScreening = await appDataSource
+      .createQueryBuilder(Screening, 'screening')
       .select()
       .where('screening.theaterId = :theaterId', { theaterId })
       .andWhere(
@@ -38,33 +38,34 @@ export class ScreeningRepository implements IScreeningRepository {
       return null;
     }
 
-    return new Screening(foundScreening.id, foundScreening.movieId, foundScreening.theaterId, foundScreening.startTime, foundScreening.endTime);
+    return foundScreening;
   }
 
   async findById(id: string): Promise<Screening | null> {
-    const foundScreening = await ScreeningDBEntity.findOne({ where: { id } });
+    const foundScreening = await appDataSource.getRepository(Screening).findOne({ where: { id } });
 
     if (!foundScreening) {
       return null;
     }
 
-    return new Screening(foundScreening.id, foundScreening.movieId, foundScreening.theaterId, foundScreening.startTime, foundScreening.endTime);
+    return foundScreening;
   }
 
   async findAll({ limit = this.appConfig.PAGINATION_DEFAULT_LIMIT, cursor }: IPaginationParams): Promise<TPaginationResponse<Screening>> {
     // Increasing the number of retrieved registers to check if there is a next page
     const limitWithNextPageFirstElement = limit + 1;
 
-    const screeningsQuery = await ScreeningDBEntity.createQueryBuilder()
+    const screeningsQuery = await appDataSource
+      .createQueryBuilder(Screening, 'screening')
       .select()
-      .where('"startTime" > :now', { now: new Date() })
-      .orderBy('"startTime"', 'ASC')
+      .where('screening.startTime > :now', { now: new Date() })
+      .orderBy('screening.startTime', 'ASC')
       .take(limitWithNextPageFirstElement);
 
     if (cursor) {
       const decodedCursor = decodeCursor(cursor);
 
-      screeningsQuery.andWhere('"startTime" > :startTime', { startTime: new Date(Number(decodedCursor)) });
+      screeningsQuery.andWhere('screening.startTime > :startTime', { startTime: new Date(Number(decodedCursor)) });
     }
 
     const screenings = await screeningsQuery.getMany();
@@ -77,24 +78,20 @@ export class ScreeningRepository implements IScreeningRepository {
 
       return {
         hasNext: true,
-        data: screeningsToReturn.map(
-          (screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime),
-        ),
+        data: screeningsToReturn,
         nextCursor: encodeCursor(lastScreening.startTime.getTime().toString()),
       };
     }
 
     return {
       hasNext: false,
-      data: screenings.map(
-        (screening) => new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime),
-      ),
+      data: screenings,
       nextCursor: undefined,
     };
   }
 
   async save(screening: Screening): Promise<void> {
-    await ScreeningDBEntity.upsert(screening, {
+    await appDataSource.getRepository(Screening).upsert(screening, {
       conflictPaths: ['id'],
       skipUpdateIfNoValuesChanged: true,
     });
@@ -171,13 +168,12 @@ export class ScreeningRepository implements IScreeningRepository {
     await appDataSource.getRepository(ScreeningSeat).update({ id: screeningSeatId }, { status });
   }
 
-  async findScreeningByScreeningSeatId(screeningSeatId: string): Promise<Screening | null> {
-    const screening = await ScreeningDBEntity.createQueryBuilder('screening')
+  findScreeningByScreeningSeatId(screeningSeatId: string): Promise<Screening | null> {
+    return appDataSource
+      .createQueryBuilder(Screening, 'screening')
       .select()
       .innerJoin(ScreeningSeat, 'screeningSeat', 'screeningSeat.screeningId = screening.id')
       .where('screeningSeat.id = :screeningSeatId', { screeningSeatId })
       .getOne();
-
-    return screening ? new Screening(screening.id, screening.movieId, screening.theaterId, screening.startTime, screening.endTime) : null;
   }
 }
