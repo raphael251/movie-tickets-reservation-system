@@ -1,7 +1,8 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { randomUUID } from 'node:crypto';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('movie')
-export class MovieDBEntity extends BaseEntity {
+export class Movie {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -19,4 +20,16 @@ export class MovieDBEntity extends BaseEntity {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+  static create(title: string, description: string, category: string): Movie {
+    const movie = new Movie();
+
+    movie.id = randomUUID();
+    movie.title = title;
+    movie.description = description;
+    movie.category = category;
+    movie.createdAt = new Date();
+
+    return movie;
+  }
 }

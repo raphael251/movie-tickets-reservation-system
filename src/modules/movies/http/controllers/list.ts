@@ -2,7 +2,7 @@ import { IMovieRepository } from '../../repositories/interfaces/movie.repository
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { Movie } from '../../entities/movie.ts';
+import { Movie } from '../../database/movie.entity.ts';
 
 export class ListMoviesController implements IHttpControllerV2<Movie> {
   constructor(private repository: IMovieRepository) {}

@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, ForeignKey, PrimaryGeneratedColumn } from 'typeorm';
 import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
-import { MovieDBEntity } from '../../movies/database/movie.entity.ts';
+import { Movie } from '../../movies/database/movie.entity.ts';
 
 @Entity('screening')
 export class ScreeningDBEntity extends BaseEntity {
@@ -8,7 +8,7 @@ export class ScreeningDBEntity extends BaseEntity {
   id!: string;
 
   @Column('uuid')
-  @ForeignKey(() => MovieDBEntity)
+  @ForeignKey(() => Movie)
   movieId!: string;
 
   @Column('uuid')

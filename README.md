@@ -50,6 +50,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Return reservation data on its creation
 - [x] Review the reservation status
 - [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
+- [x] Refactor the movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 
 ## Improvements
 

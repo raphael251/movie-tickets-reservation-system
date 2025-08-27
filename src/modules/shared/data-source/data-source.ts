@@ -8,7 +8,7 @@ import { readFileSync } from 'node:fs';
 import { SeatDBEntity } from '../../seats/database/seat.entity.ts';
 import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
 import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
-import { MovieDBEntity } from '../../movies/database/movie.entity.ts';
+import { Movie } from '../../movies/database/movie.entity.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -25,7 +25,7 @@ export const appDataSource = new DataSource({
         ca: readFileSync(appConfig.DB_SSL_CA_PATH, 'utf-8'),
       }
     : false,
-  entities: [UserDBEntity, ScreeningDBEntity, Reservation, SeatDBEntity, TheaterDBEntity, ScreeningSeat, MovieDBEntity],
+  entities: [UserDBEntity, ScreeningDBEntity, Reservation, SeatDBEntity, TheaterDBEntity, ScreeningSeat, Movie],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: appConfig.DB_LOGGING_ENABLED,
   useUTC: true,

@@ -1,5 +1,5 @@
 import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/types.ts';
-import { Movie } from '../../entities/movie.ts';
+import { Movie } from '../../database/movie.entity.ts';
 
 export interface IMovieRepository {
   findById(movieId: string): Promise<Movie | null>;

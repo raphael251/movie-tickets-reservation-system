@@ -1,7 +1,7 @@
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { UpdateMovieUseCase } from '../../use-cases/update.ts';
-import { Movie } from '../../entities/movie.ts';
+import { Movie } from '../../database/movie.entity.ts';
 
 export class UpdateMovieController implements IHttpControllerV2<Movie> {
   constructor(private readonly updateMovieUseCase: UpdateMovieUseCase) {}
