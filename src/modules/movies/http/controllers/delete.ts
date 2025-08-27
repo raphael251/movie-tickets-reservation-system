@@ -1,7 +1,7 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { DeleteMovieUseCase } from '../../use-cases/delete.ts';
-import { Movie } from '../../entities/movie.ts';
+import { Movie } from '../../database/movie.entity.ts';
 
 export class DeleteMovieController implements IHttpControllerV2<Movie> {
   constructor(private deleteMovieUseCase: DeleteMovieUseCase) {}

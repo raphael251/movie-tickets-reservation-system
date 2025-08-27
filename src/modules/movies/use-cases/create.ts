@@ -1,7 +1,6 @@
 import z from 'zod';
-import { Movie } from '../entities/movie.ts';
+import { Movie } from '../database/movie.entity.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { randomUUID } from 'node:crypto';
 import { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
 
 type Input = {
@@ -28,7 +27,7 @@ export class CreateMovieUseCase {
 
     const { title, description, category } = validationResult.data;
 
-    const movie = new Movie(randomUUID(), title, description, category);
+    const movie = Movie.create(title, description, category);
 
     await this.movieRepository.save(movie);
 

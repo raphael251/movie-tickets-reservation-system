@@ -1,5 +1,5 @@
 import z from 'zod';
-import { Movie } from '../entities/movie.ts';
+import { Movie } from '../database/movie.entity.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
 import { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
 
@@ -35,10 +35,12 @@ export class UpdateMovieUseCase {
       throw new InputValidationError(['Movie not found']);
     }
 
-    const movie = new Movie(foundMovie.id, title ?? foundMovie.title, description ?? foundMovie.description, category ?? foundMovie.category);
+    foundMovie.title = title || foundMovie.title;
+    foundMovie.description = description || foundMovie.description;
+    foundMovie.category = category || foundMovie.category;
 
-    await this.movieRepository.save(movie);
+    await this.movieRepository.save(foundMovie);
 
-    return movie;
+    return foundMovie;
   }
 }
