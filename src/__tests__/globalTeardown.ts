@@ -4,12 +4,12 @@ import { Screening } from '../modules/screenings/database/screening.entity';
 import { Seat } from '../modules/seats/database/seat.entity';
 import { appDataSource } from '../modules/shared/data-source/data-source';
 import { Theater } from '../modules/theaters/database/theater.entity';
-import { UserDBEntity } from '../modules/users/database/user.entity';
+import { User } from '../modules/users/database/user.entity';
 
 export default async () => {
   if (appDataSource.isInitialized) {
     await appDataSource.getRepository(Reservation).deleteAll();
-    await appDataSource.getRepository(UserDBEntity).deleteAll();
+    await appDataSource.getRepository(User).deleteAll();
     await appDataSource.getRepository(Seat).deleteAll();
     await appDataSource.getRepository(ScreeningSeat).deleteAll();
     await appDataSource.getRepository(Screening).deleteAll();

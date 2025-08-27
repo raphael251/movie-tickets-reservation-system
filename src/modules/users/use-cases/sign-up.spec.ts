@@ -1,5 +1,5 @@
 import { IHasher } from '../../shared/security/interfaces/hasher.ts';
-import { User } from '../entities/user.ts';
+import { User } from '../database/user.entity.ts';
 import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.ts';
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import { UserRole } from '../util/constants/roles.ts';
@@ -40,7 +40,7 @@ describe('UsersSignUpUseCase', () => {
   });
 
   it('should not create a user if email is already registered', async () => {
-    userRepository.findByEmail.mockResolvedValueOnce(new User('1', UserRole.REGULAR, 'test@example.com', 'hashedPassword'));
+    userRepository.findByEmail.mockResolvedValueOnce(User.create('test@example.com', 'hashedPassword', UserRole.REGULAR));
 
     await expect(
       useCase.execute({

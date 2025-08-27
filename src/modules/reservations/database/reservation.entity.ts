@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, ForeignKey, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
-import { UserDBEntity } from '../../users/database/user.entity.ts';
+import { User } from '../../users/database/user.entity.ts';
 
 export enum RESERVATION_STATUS {
   PENDING = 'PENDING',
@@ -14,7 +14,7 @@ export class Reservation {
   id!: string;
 
   @Column('uuid')
-  @ForeignKey(() => UserDBEntity)
+  @ForeignKey(() => User)
   userId!: string;
 
   @OneToOne(() => ScreeningSeat, { nullable: false })

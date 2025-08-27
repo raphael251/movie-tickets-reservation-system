@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { Screening } from '../../screenings/database/screening.entity.ts';
-import { UserDBEntity } from '../../users/database/user.entity.ts';
+import { User } from '../../users/database/user.entity.ts';
 import { AppConfigLoader } from '../configs/app-config.ts';
 import { Reservation } from '../../reservations/database/reservation.entity.ts';
 import { readFileSync } from 'node:fs';
@@ -25,7 +25,7 @@ export const appDataSource = new DataSource({
         ca: readFileSync(appConfig.DB_SSL_CA_PATH, 'utf-8'),
       }
     : false,
-  entities: [UserDBEntity, Screening, Reservation, Seat, Theater, ScreeningSeat, Movie],
+  entities: [User, Screening, Reservation, Seat, Theater, ScreeningSeat, Movie],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: appConfig.DB_LOGGING_ENABLED,
   useUTC: true,

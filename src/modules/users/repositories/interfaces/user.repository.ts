@@ -1,4 +1,4 @@
-import { User } from '../../entities/user.ts';
+import { User } from '../../database/user.entity.ts';
 import { UserRole } from '../../util/constants/roles.ts';
 
 export interface IUserRepository {
