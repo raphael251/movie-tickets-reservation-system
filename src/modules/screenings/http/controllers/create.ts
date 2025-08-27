@@ -1,6 +1,6 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { Screening } from '../../entities/screening.ts';
+import { Screening } from '../../database/screening.entity.ts';
 import { AlreadyScheduledMovieError } from '../../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
 import { MovieDoesNotExistError } from '../../errors/movie-does-not-exist.ts';

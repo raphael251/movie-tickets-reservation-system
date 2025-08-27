@@ -1,6 +1,6 @@
 import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../../screenings/database/screening-seat.entity.ts';
 import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/types.ts';
-import { Screening } from '../../entities/screening.ts';
+import { Screening } from '../../database/screening.entity.ts';
 
 export interface IScreeningRepository {
   findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null>;

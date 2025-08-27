@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, Column, ForeignKey, Entity } from 'typeorm';
-import { ScreeningDBEntity } from '../../screenings/database/screening.entity.ts';
+import { Screening } from '../../screenings/database/screening.entity.ts';
 
 export enum SCREENING_SEAT_STATUS {
   AVAILABLE = 'AVAILABLE',
@@ -13,7 +13,7 @@ export class ScreeningSeat {
   id!: string;
 
   @Column({ type: 'uuid' })
-  @ForeignKey(() => ScreeningDBEntity)
+  @ForeignKey(() => Screening)
   screeningId!: string;
 
   @Column()

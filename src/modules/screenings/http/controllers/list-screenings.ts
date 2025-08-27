@@ -1,6 +1,6 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { Screening } from '../../entities/screening.ts';
+import { Screening } from '../../database/screening.entity.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
 
 export class ListScreeningsController implements IHttpControllerV2<Screening[]> {
