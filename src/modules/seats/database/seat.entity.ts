@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, ForeignKey } from 'typeorm';
-import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
+import { Theater } from '../../theaters/database/theater.entity.ts';
 
 @Entity('seat')
 export class Seat {
@@ -7,7 +7,7 @@ export class Seat {
   id!: string;
 
   @Column('uuid')
-  @ForeignKey(() => TheaterDBEntity)
+  @ForeignKey(() => Theater)
   theaterId!: string;
 
   @Column()

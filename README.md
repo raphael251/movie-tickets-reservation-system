@@ -53,7 +53,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Refactor the Movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [x] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [x] Refactor the Seat entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
-- [ ] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
+- [x] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
 - [ ] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [ ] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
   - [ ] CreateMovieController

@@ -1,7 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('theater')
-export class TheaterDBEntity extends BaseEntity {
+export class Theater {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
