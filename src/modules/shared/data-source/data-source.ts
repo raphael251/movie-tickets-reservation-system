@@ -6,7 +6,7 @@ import { AppConfigLoader } from '../configs/app-config.ts';
 import { Reservation } from '../../reservations/database/reservation.entity.ts';
 import { readFileSync } from 'node:fs';
 import { Seat } from '../../seats/database/seat.entity.ts';
-import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
+import { Theater } from '../../theaters/database/theater.entity.ts';
 import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
 import { Movie } from '../../movies/database/movie.entity.ts';
 
@@ -25,7 +25,7 @@ export const appDataSource = new DataSource({
         ca: readFileSync(appConfig.DB_SSL_CA_PATH, 'utf-8'),
       }
     : false,
-  entities: [UserDBEntity, Screening, Reservation, Seat, TheaterDBEntity, ScreeningSeat, Movie],
+  entities: [UserDBEntity, Screening, Reservation, Seat, Theater, ScreeningSeat, Movie],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: appConfig.DB_LOGGING_ENABLED,
   useUTC: true,

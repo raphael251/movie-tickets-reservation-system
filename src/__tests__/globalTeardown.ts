@@ -3,7 +3,7 @@ import { ScreeningSeat } from '../modules/screenings/database/screening-seat.ent
 import { Screening } from '../modules/screenings/database/screening.entity';
 import { Seat } from '../modules/seats/database/seat.entity';
 import { appDataSource } from '../modules/shared/data-source/data-source';
-import { TheaterDBEntity } from '../modules/theaters/database/theater.entity';
+import { Theater } from '../modules/theaters/database/theater.entity';
 import { UserDBEntity } from '../modules/users/database/user.entity';
 
 export default async () => {
@@ -13,7 +13,7 @@ export default async () => {
     await appDataSource.getRepository(Seat).deleteAll();
     await appDataSource.getRepository(ScreeningSeat).deleteAll();
     await appDataSource.getRepository(Screening).deleteAll();
-    await appDataSource.getRepository(TheaterDBEntity).deleteAll();
+    await appDataSource.getRepository(Theater).deleteAll();
     await appDataSource.destroy();
   }
 };

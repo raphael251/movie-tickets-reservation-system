@@ -1,5 +1,5 @@
 import { Seat } from '../../seats/database/seat.entity.ts';
-import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
+import { Theater } from '../../theaters/database/theater.entity.ts';
 import { appDataSource } from '../data-source/data-source.ts';
 import { seatsSeed } from './seats.ts';
 import { theatersSeed } from './theaters.ts';
@@ -8,7 +8,7 @@ import { QueryFailedError } from 'typeorm';
 export class Seeder {
   static async run() {
     try {
-      await TheaterDBEntity.insert(theatersSeed);
+      await appDataSource.getRepository(Theater).insert(theatersSeed);
       await appDataSource.getRepository(Seat).insert(seatsSeed);
     } catch (error) {
       if (error instanceof Error) {

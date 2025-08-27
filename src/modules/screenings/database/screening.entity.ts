@@ -1,5 +1,5 @@
 import { Column, Entity, ForeignKey, PrimaryGeneratedColumn } from 'typeorm';
-import { TheaterDBEntity } from '../../theaters/database/theater.entity.ts';
+import { Theater } from '../../theaters/database/theater.entity.ts';
 import { Movie } from '../../movies/database/movie.entity.ts';
 import { randomUUID } from 'crypto';
 
@@ -13,7 +13,7 @@ export class Screening {
   movieId!: string;
 
   @Column('uuid')
-  @ForeignKey(() => TheaterDBEntity)
+  @ForeignKey(() => Theater)
   theaterId!: string;
 
   @Column()
