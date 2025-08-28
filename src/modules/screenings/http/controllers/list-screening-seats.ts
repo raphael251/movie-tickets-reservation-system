@@ -1,12 +1,13 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
-import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../database/screening-seat.entity.ts';
+import { SCREENING_SEAT_STATUS } from '../../database/screening-seat.entity.ts';
+import { mapScreeningSeatToDTO, ScreeningSeatDTO } from '../../dtos/screening-seat.dto.ts';
 
-export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeat[]> {
+export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeatDTO> {
   constructor(private repository: IScreeningRepository) {}
 
-  async handle(request: THttpRequest): Promise<THttpResponse<ScreeningSeat[]>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<ScreeningSeatDTO>> {
     try {
       const requestQuerySchema = z.object({
         status: z.enum(SCREENING_SEAT_STATUS).optional(),
@@ -31,7 +32,7 @@ export class ListScreeningSeatsController implements IHttpControllerV2<Screening
 
       return {
         status: 200,
-        data,
+        data: data.map((screeningSeat) => mapScreeningSeatToDTO(screeningSeat)),
         meta: {
           hasNext,
           nextCursor,
