@@ -55,7 +55,7 @@ The project is currently in the early stages of development. The main features a
 - [x] Refactor the Seat entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
 - [x] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
 - [x] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [ ] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
+- [x] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
   - [x] CreateMovieController
   - [x] ListMoviesController
   - [x] UpdateMovieController
@@ -64,7 +64,7 @@ The project is currently in the early stages of development. The main features a
   - [x] ListScreeningsController
   - [x] UsersLoginController
 - [ ] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
-- [ ] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
+- [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
 
 ## Improvements
 
