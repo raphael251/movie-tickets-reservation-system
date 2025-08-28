@@ -22,6 +22,8 @@ export class CreateReservationController implements IHttpControllerV2<Reservatio
         data: mapReservationToDTO(reservation),
       };
     } catch (error) {
+      console.error('Error during reservation listing:', error);
+
       if (error instanceof SeatAlreadyReservedError || error instanceof InvalidScreeningSeatIdError) {
         return {
           status: 409,

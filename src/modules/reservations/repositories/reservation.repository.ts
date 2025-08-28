@@ -3,7 +3,7 @@ import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { RESERVATION_STATUS, Reservation } from '../database/reservation.entity.ts';
-import { IReservationRepository } from './interfaces/reservation.repository';
+import { IReservationRepository } from './interfaces/reservation.repository.ts';
 
 export class ReservationRepository implements IReservationRepository {
   constructor(private appConfig: AppConfig) {}
@@ -12,6 +12,10 @@ export class ReservationRepository implements IReservationRepository {
     return appDataSource
       .createQueryBuilder(Reservation, 'reservation')
       .select()
+      .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
+      .leftJoinAndSelect('screeningSeat.screening', 'screening')
+      .leftJoinAndSelect('screening.movie', 'movie')
+      .leftJoinAndSelect('screening.theater', 'theater')
       .where('reservation.screeningId = :screeningId', { screeningId })
       .andWhere('reservation.seatCode = :seatCode', { seatCode })
       .getOne();
@@ -34,9 +38,12 @@ export class ReservationRepository implements IReservationRepository {
     const reservationsQuery = appDataSource
       .createQueryBuilder(Reservation, 'reservation')
       .select()
+      .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
+      .leftJoinAndSelect('screeningSeat.screening', 'screening')
+      .leftJoinAndSelect('screening.movie', 'movie')
+      .leftJoinAndSelect('screening.theater', 'theater')
       .where('reservation.userId = :userId', { userId })
       .orderBy('reservation.createdAt', 'DESC')
-      .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
       .limit(limitWithNextPageFirstElement);
 
     if (cursor) {
@@ -71,6 +78,9 @@ export class ReservationRepository implements IReservationRepository {
       .createQueryBuilder(Reservation, 'reservation')
       .select()
       .leftJoinAndSelect('reservation.screeningSeat', 'screeningSeat')
+      .leftJoinAndSelect('screeningSeat.screening', 'screening')
+      .leftJoinAndSelect('screening.movie', 'movie')
+      .leftJoinAndSelect('screening.theater', 'theater')
       .where('reservation.id = :reservationId', { reservationId })
       .getOne();
   }
