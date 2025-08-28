@@ -162,7 +162,15 @@ export class ScreeningRepository implements IScreeningRepository {
   }
 
   async findSeatByScreeningSeatId(screeningSeatId: string): Promise<ScreeningSeat | null> {
-    const foundScreeningSeat = await appDataSource.getRepository(ScreeningSeat).findOne({ where: { id: screeningSeatId } });
+    const foundScreeningSeat = await appDataSource.getRepository(ScreeningSeat).findOne({
+      where: { id: screeningSeatId },
+      relations: {
+        screening: {
+          movie: true,
+          theater: true,
+        },
+      },
+    });
 
     if (!foundScreeningSeat) return null;
 

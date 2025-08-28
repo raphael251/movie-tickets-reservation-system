@@ -63,7 +63,7 @@ The project is currently in the early stages of development. The main features a
   - [x] ListScreeningSeatsController
   - [x] ListScreeningsController
   - [x] UsersLoginController
-- [ ] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
+- [x] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
 - [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
 
 ## Improvements
