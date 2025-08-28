@@ -2,11 +2,11 @@ import { IMovieRepository } from '../../repositories/interfaces/movie.repository
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { Movie } from '../../database/movie.entity.ts';
+import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
 
-export class ListMoviesController implements IHttpControllerV2<Movie> {
+export class ListMoviesController implements IHttpControllerV2<MovieDTO> {
   constructor(private repository: IMovieRepository) {}
-  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<MovieDTO>> {
     try {
       const inputValidationSchema = z.object({
         cursor: z.string().min(1).optional(),
@@ -28,7 +28,7 @@ export class ListMoviesController implements IHttpControllerV2<Movie> {
 
       return {
         status: 200,
-        data,
+        data: data.map((movie) => mapMovieToDTO(movie)),
         meta: {
           hasNext,
           nextCursor,
