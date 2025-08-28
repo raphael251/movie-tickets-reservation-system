@@ -60,7 +60,7 @@ The project is currently in the early stages of development. The main features a
   - [x] ListMoviesController
   - [x] UpdateMovieController
   - [x] CreateScreeningController
-  - [ ] ListScreeningSeatsController
+  - [x] ListScreeningSeatsController
   - [x] ListScreeningsController
   - [ ] UsersLoginController
 - [ ] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.

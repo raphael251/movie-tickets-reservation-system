@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, ForeignKey, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
 import { Screening } from '../../screenings/database/screening.entity.ts';
 
 export enum SCREENING_SEAT_STATUS {
@@ -12,9 +12,8 @@ export class ScreeningSeat {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
-  @ForeignKey(() => Screening)
-  screeningId!: string;
+  @ManyToOne(() => Screening, { nullable: false })
+  screening!: Screening;
 
   @Column()
   rowLabel!: string;

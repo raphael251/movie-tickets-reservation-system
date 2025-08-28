@@ -120,6 +120,9 @@ export class ScreeningRepository implements IScreeningRepository {
     const seatsQuery = appDataSource
       .createQueryBuilder(ScreeningSeat, 'screeningSeat')
       .select()
+      .leftJoinAndSelect('screeningSeat.screening', 'screening')
+      .leftJoinAndSelect('screening.movie', 'movie')
+      .leftJoinAndSelect('screening.theater', 'theater')
       .where('screeningSeat.screeningId = :screeningId', { screeningId })
       .orderBy('screeningSeat.rowLabel', 'ASC')
       .addOrderBy('screeningSeat.seatNumber', 'ASC')
