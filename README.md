@@ -72,9 +72,9 @@ As the project evolves, there are several improvements to be made to enhance the
 
 - [ ] [Logger] Implement Logging tool (e.g.: winstonjs) for a better logging system.
 - [ ] [Dependency Injection Container] Implement a DI container (e.g.: inversifyjs) to manage dependencies.
-- [ ] [Response standardization] Standardize API responses for consistency.
-- [ ] [Input validation] Implement input validation for all endpoints to ensure data integrity.
-- [ ] [Add factory functions] Implement factory functions for creating entities.
+- [x] [Response standardization] Standardize API responses for consistency.
+- [x] [Input validation] Implement input validation for all endpoints to ensure data integrity.
+- [x] [Add factory functions] Implement factory functions for creating entities.
 - [ ] [Seeder detailed verification] Currently the seeder just continues if it encounters any duplicate keys. It should handle the cases where the seed file was modified after the initial run.
 
 ## Core Technologies
