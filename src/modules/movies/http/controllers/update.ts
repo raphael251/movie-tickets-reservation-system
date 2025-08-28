@@ -1,12 +1,12 @@
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { UpdateMovieUseCase } from '../../use-cases/update.ts';
-import { Movie } from '../../database/movie.entity.ts';
+import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
 
-export class UpdateMovieController implements IHttpControllerV2<Movie> {
+export class UpdateMovieController implements IHttpControllerV2<MovieDTO> {
   constructor(private readonly updateMovieUseCase: UpdateMovieUseCase) {}
 
-  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<MovieDTO>> {
     try {
       const { title, description, category } = request.body;
       const { movieId } = request.params;
@@ -15,7 +15,7 @@ export class UpdateMovieController implements IHttpControllerV2<Movie> {
 
       return {
         status: 200,
-        data: movie,
+        data: mapMovieToDTO(movie),
       };
     } catch (error) {
       if (error instanceof InputValidationError) {

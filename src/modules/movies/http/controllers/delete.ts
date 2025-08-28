@@ -1,12 +1,11 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { DeleteMovieUseCase } from '../../use-cases/delete.ts';
-import { Movie } from '../../database/movie.entity.ts';
 
-export class DeleteMovieController implements IHttpControllerV2<Movie> {
+export class DeleteMovieController implements IHttpControllerV2<never> {
   constructor(private deleteMovieUseCase: DeleteMovieUseCase) {}
 
-  async handle(request: THttpRequest): Promise<THttpResponse<Movie>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<never>> {
     try {
       const { movieId } = request.params;
 
