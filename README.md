@@ -59,9 +59,9 @@ The project is currently in the early stages of development. The main features a
   - [x] CreateMovieController
   - [x] ListMoviesController
   - [x] UpdateMovieController
-  - [ ] CreateScreeningController
+  - [x] CreateScreeningController
   - [ ] ListScreeningSeatsController
-  - [ ] ListScreeningsController
+  - [x] ListScreeningsController
   - [ ] UsersLoginController
 - [ ] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
 - [ ] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm

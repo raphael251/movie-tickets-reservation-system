@@ -58,6 +58,8 @@ export class ScreeningRepository implements IScreeningRepository {
     const screeningsQuery = await appDataSource
       .createQueryBuilder(Screening, 'screening')
       .select()
+      .leftJoinAndSelect('screening.movie', 'movie')
+      .leftJoinAndSelect('screening.theater', 'theater')
       .where('screening.startTime > :now', { now: new Date() })
       .orderBy('screening.startTime', 'ASC')
       .take(limitWithNextPageFirstElement);
