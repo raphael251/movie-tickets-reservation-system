@@ -1,4 +1,4 @@
-import { Column, Entity, ForeignKey, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Theater } from '../../theaters/database/theater.entity.ts';
 import { Movie } from '../../movies/database/movie.entity.ts';
 import { randomUUID } from 'crypto';
@@ -8,13 +8,11 @@ export class Screening {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('uuid')
-  @ForeignKey(() => Movie)
-  movieId!: string;
+  @ManyToOne(() => Movie, { nullable: false })
+  movie!: Movie;
 
-  @Column('uuid')
-  @ForeignKey(() => Theater)
-  theaterId!: string;
+  @ManyToOne(() => Theater, { nullable: false })
+  theater!: Theater;
 
   @Column()
   startTime!: Date;
@@ -22,12 +20,12 @@ export class Screening {
   @Column()
   endTime!: Date;
 
-  static create(movieId: string, theaterId: string, startTime: Date, endTime: Date): Screening {
+  static create(movie: Movie, theater: Theater, startTime: Date, endTime: Date): Screening {
     const screening = new Screening();
 
     screening.id = randomUUID();
-    screening.movieId = movieId;
-    screening.theaterId = theaterId;
+    screening.movie = movie;
+    screening.theater = theater;
     screening.startTime = startTime;
     screening.endTime = endTime;
 

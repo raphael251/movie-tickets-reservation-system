@@ -1,12 +1,12 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { Screening } from '../../database/screening.entity.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
+import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
 
-export class ListScreeningsController implements IHttpControllerV2<Screening[]> {
+export class ListScreeningsController implements IHttpControllerV2<ScreeningDTO> {
   constructor(private screeningRepository: IScreeningRepository) {}
 
-  async handle(request: THttpRequest): Promise<THttpResponse<Screening[]>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<ScreeningDTO>> {
     try {
       const requestQuerySchema = z.object({
         cursor: z.string().min(1).optional(),
@@ -26,7 +26,7 @@ export class ListScreeningsController implements IHttpControllerV2<Screening[]> 
 
       return {
         status: 200,
-        data,
+        data: data.map((screening) => mapScreeningToDTO(screening)),
         meta: {
           hasNext,
           nextCursor,

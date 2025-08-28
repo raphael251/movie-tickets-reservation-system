@@ -1,16 +1,16 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { Screening } from '../../database/screening.entity.ts';
+import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
 import { AlreadyScheduledMovieError } from '../../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
 import { MovieDoesNotExistError } from '../../errors/movie-does-not-exist.ts';
 import { TheaterDoesNotExistError } from '../../errors/theater-does-not-exist.ts';
 import { CreateScreeningUseCase } from '../../use-cases/create.ts';
 
-export class CreateScreeningController implements IHttpControllerV2<Screening> {
+export class CreateScreeningController implements IHttpControllerV2<ScreeningDTO> {
   constructor(private readonly createScreeningUseCase: CreateScreeningUseCase) {}
 
-  async handle(request: THttpRequest): Promise<THttpResponse<Screening>> {
+  async handle(request: THttpRequest): Promise<THttpResponse<ScreeningDTO>> {
     const { movieId, theaterId, startTime, endTime } = request.body;
 
     try {
@@ -23,7 +23,7 @@ export class CreateScreeningController implements IHttpControllerV2<Screening> {
 
       return {
         status: 201,
-        data: screening,
+        data: mapScreeningToDTO(screening),
       };
     } catch (error) {
       if (error instanceof InvalidTimeError || error instanceof AlreadyScheduledMovieError) {

@@ -63,7 +63,7 @@ export class CreateScreeningUseCase {
       throw new TheaterDoesNotExistError();
     }
 
-    const screening = Screening.create(input.movieId, input.theaterId, input.startTime, input.endTime);
+    const screening = Screening.create(foundMovie, foundTheater, input.startTime, input.endTime);
 
     await this.screeningRepository.save(screening);
 
