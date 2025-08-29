@@ -1,132 +1,146 @@
-# Movie Tickets Reservation System
+# 🎬 Movie Ticket Reservations System
 
-## Project Overview
+## 📌 About the Project
 
-This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.
+This is a backend system for **movie ticket reservations**, where users can browse screenings, book seats, and manage their reservations.
 
-This project was based on [one of the roadmap.sh backend path projects](https://roadmap.sh/projects/movie-reservation-system) but my idea is to go further and implement my own ideas from the initial one.
+The project was initially inspired by [roadmap.sh backend path project](https://roadmap.sh/projects/movie-reservation-system)
+, but I extended it with additional features, better architecture, and production-style practices.
 
-## Project Stage
+---
 
-The project is currently in the early stages of development. The main features are planned, but the implementation is still in progress.
+## 📈 Project Stage
 
-## Features (User-Focused)
+This project is in **active development**.
 
-| Feature                               | Description                                                                                                                 | Status   |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------- |
-| User sign up and login                | Users can create their own account and log in to it                                                                         | COMPLETE |
-| Movie management                      | Admins can manage movie information, including creating, updating, and deleting movies.                                     | COMPLETE |
-| Screening management with a showtime. | Admins can manage screening showtimes, only being able to create a unique screening for a specific theater and time window. | COMPLETE |
-| Screening seat reservation            | Users can reserve a seat for specific screening                                                                             | COMPLETE |
-| Reservation management                | Users can manage their current reservations and cancel them if needed                                                       | COMPLETE |
+- Core reservation features are implemented.
+- End-to-end tests are partially set up.
+- Next improvements focus on logging, dependency injection, and production-grade enhancements.
 
-## Technical Roadmap
+---
 
-- [x] User sign up API
-- [x] User login API
-- [x] Movie creation API
-- [x] Movie listing API
-- [x] Authorization middleware
-- [x] Reservation endpoints
-- [x] Create Theater entity
-- [x] Create Seat entity
-- [x] Create Seed script to run on app startup to create the available theaters and seats (create CRUD for them in the future)
-- [x] Rename Movie entity to Screening for a better naming and separation of concerns
-- [x] Create ScreeningSeat entity for managing seat reservations within a screening
-- [x] Populate the screening seats for a screening on creation
-- [x] Create endpoint to list all seats in a screening
-- [x] Update the reservations endpoint to reserve a screening seat instead of the old params
-- [x] Create filter for the screening seats endpoint to filter screening seats by status
-- [x] Create endpoint to list all user's reservations
-- [x] Create a new Movie entity just for the static information about movies available for screening
-- [x] Handle invalid ids on creation gracefully (on screenings endpoints and others as well)
-- [x] Add cursor pagination on movies listing
-- [x] Add rule for reservation cancellation: only allowed before 48 hours of the screening start time
-- [x] Add initial end-to-end tests setup
-- [x] Add pagination to screening seats listing endpoint
-- [x] Add pagination to screenings listing endpoint
-- [x] Add pagination to reservations listing endpoint
-- [x] Add error handling on screening seats listing controller
-- [x] Return reservation data on its creation
-- [x] Review the reservation status
-- [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
-- [x] Refactor the Movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [x] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [x] Refactor the Seat entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
-- [x] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
-- [x] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [x] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
-  - [x] CreateMovieController
-  - [x] ListMoviesController
-  - [x] UpdateMovieController
-  - [x] CreateScreeningController
-  - [x] ListScreeningSeatsController
-  - [x] ListScreeningsController
-  - [x] UsersLoginController
-- [x] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
-- [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
+## 🚀 Features
 
-## Improvements
+| Feature                      | Description                                                                             | Status  |
+| ---------------------------- | --------------------------------------------------------------------------------------- | ------- |
+| User Authentication          | Users can sign up and log in.                                                           | ✅ Done |
+| Movie Management (Admin)     | Admins can create, update, and delete (soft delete) movies.                             | ✅ Done |
+| Screening Management (Admin) | Admins can manage showtimes, ensuring uniqueness for theater + time.                    | ✅ Done |
+| Seat Reservation             | Users can book seats for a specific screening.                                          | ✅ Done |
+| Reservation Management       | Users can view and cancel reservations (with rules, e.g. cancellation only before 48h). | ✅ Done |
 
-As the project evolves, there are several improvements to be made to enhance the system quality. Here are some of the planned improvements:
+---
 
-- [ ] [Logger] Implement Logging tool (e.g.: winstonjs) for a better logging system.
-- [ ] [Dependency Injection Container] Implement a DI container (e.g.: inversifyjs) to manage dependencies.
-- [x] [Response standardization] Standardize API responses for consistency.
-- [x] [Input validation] Implement input validation for all endpoints to ensure data integrity.
-- [x] [Add factory functions] Implement factory functions for creating entities.
-- [ ] [Seeder detailed verification] Currently the seeder just continues if it encounters any duplicate keys. It should handle the cases where the seed file was modified after the initial run.
+## 🛠️ Tech Stack
 
-## Core Technologies
+- **Backend**: Node.js, TypeScript, Express
+- **Database & ORM**: PostgreSQL + TypeORM
+- **Testing**: Jest + Supertest (unit & E2E)
+- **Tools**: Docker, ESLint, Prettier, commitlint, Husky
 
-- Node.js & Typescript
-- TypeORM
-- Express
-- PostgreSQL
+---
 
-## Error Handling
+## 🏗️ Architecture
 
-Standard on handling errors in the application:
+- **Entities**: `User`, `Movie`, `Theater`, `Seat`, `Screening`, `ScreeningSeat`, `Reservation`
 
-The use cases should throw an InvalidInputError when the input is invalid, and the HTTP controllers should catch this error and return a 400 Bad Request response with the error message.
+- **Flow**:
 
-The HTTP controllers should also catch other errors and return a 500 Internal Server Error response with a generic error message.
+  **1.** User signs up/logs in.
 
-The HTTP controllers should not return the error stack trace to the client, as it may contain sensitive information. Instead, they should log the error stack trace for debugging purposes.
+  **2.** Admin creates movies and screenings.
 
-The HTTP controlers should catch any unexpected errors and return a 500 Internal Server Error response with a generic error message.
+  **3.** Screening seats are generated.
 
-The HTTP controlllers should use instanceof to check the type of the error and return the appropriate response.
+  **4.** Users book seats → reservation is created.
 
-For the business logic errors, such as EmailAlreadyRegisteredError in the users sign up use case, the HTTP controllers should catch these errors and return a 409 Conflict response with the error message.
+  **5.** Reservation rules & validations are enforced.
 
-## Getting Started
+**Entity-Relationship Diagram**
+
+![Image containing the project's entity-relation diagram](docs/db-entity-relationship-diagram.png)
+
+---
+
+## 🗺️ Technical Roadmap
+
+**Completed ✅**
+
+- Authentication & Authorization
+- Movie, Screening, Screening Seat & Reservation APIs with pagination
+- Reservation system with cancellation rules
+- Input validation & standardized responses
+- End-to-end testing setup
+
+**Planned / In Progress 🚧**
+
+- Logging system (Winston)
+- Dependency Injection container (Inversify)
+- Improved seeder verification
+
+📖 See the [full roadmap](docs/ROADMAP.md) for detailed progress.
+
+---
+
+## ⚠️ Error Handling Strategy
+
+The system follows a consistent error-handling approach:
+
+**400 Bad Request →** invalid inputs
+
+**409 Conflict →** business logic errors (e.g. email already registered)
+
+**500 Internal Server Error →** unexpected issues (with stack traces logged, not exposed to clients)
+
+This design ensures security (no leaking stack traces) and predictable responses for API consumers.
+
+---
+
+## ⚡Getting Started
 
 To get started with the project, follow these steps:
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/raphael251/movie-tickets-reservation-system.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd movie-tickets-reservation-system
    ```
-3. Install the dependencies:
+
+2. Install the dependencies:
+
    ```bash
     npm install
    ```
-4. Set up the environment variables by creating a `.env` file based on the `.env.example` file.
-5. Spin up the database using Docker:
+
+3. Set up the environment variables:
+
+   Copy `.env.example` → `.env` and adjust values.
+
+4. Spin up the database using Docker:
+
    ```bash
    docker-compose up -d
    ```
-   Ensure you have Docker installed and running on your machine.
-6. Build the project:
+
+5. Build the project:
+
    ```bash
    npm run build
    ```
-7. Start the development server:
+
+6. Start the development server:
    ```bash
-   npm run dev
+   npm run start:dev
    ```
+
+---
+
+## 🧪 Testing
+
+Run unit and end-to-end tests:
+
+```sh
+npm run test:unit  # unit tests
+npm run test:e2e   # end-to-end tests
+```
