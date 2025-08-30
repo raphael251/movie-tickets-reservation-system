@@ -49,6 +49,13 @@ describe('POST /reservations - Create reservation', () => {
     expect(response.body).toEqual({
       data: {
         id: expect.any(String),
+        screening: {
+          id: expect.any(String),
+          movieTitle: expect.any(String),
+          startTime: expect.any(String),
+          endTime: expect.any(String),
+          theaterName: expect.any(String),
+        },
         seat: 'A1',
         status: 'CONFIRMED',
       },
