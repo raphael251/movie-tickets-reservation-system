@@ -1,0 +1,50 @@
+name: CI - End-to-end tests
+
+on: workflow_dispatch
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: test-db
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: 123456
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run the tests
+        run: npm run test:e2e
+        env:
+          SERVER_PORT: 3000
+          JWT_SECRET: jwt_secret
+          JWT_EXPIRATION: 3000
+          DB_USERNAME: admin
+          DB_PASSWORD: 123456
+          DB_DATABASE: test-db
+          DB_MIGRATIONS_PATH: ./dist/src/migrations/*.js
+          DB_HOST: postgres
+          DB_PORT: 5432
