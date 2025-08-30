@@ -25,7 +25,6 @@ describe('POST /movies - Create movie', () => {
     expect(response.status).toBe(201);
     expect(response.body.data).toEqual({
       id: expect.any(String),
-      createdAt: expect.any(String),
       title: 'Cars',
       description: 'The story of Lightning McQueen, a race car who ends up in a small town and learns valuable life lessons.',
       category: 'animation',
