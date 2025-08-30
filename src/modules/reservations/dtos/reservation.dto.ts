@@ -6,7 +6,7 @@ export type ReservationDTO = {
   screening: {
     id: string;
     movieTitle: string;
-    theaterNameName: string;
+    theaterName: string;
     startTime: Date;
     endTime: Date;
   };
@@ -19,7 +19,7 @@ export const mapReservationToDTO = ({ id, status, screeningSeat: { rowLabel, sea
   screening: {
     id: screening.id,
     movieTitle: screening.movie.title,
-    theaterNameName: screening.theater.name,
+    theaterName: screening.theater.name,
     startTime: screening.startTime,
     endTime: screening.endTime,
   },
