@@ -8,6 +8,8 @@ jobs:
 
     services:
       postgres:
+        ports:
+          - 5432:5432
         image: postgres
         env:
           POSTGRES_DB: test-db
