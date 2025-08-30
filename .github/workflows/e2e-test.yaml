@@ -26,6 +26,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h postgres -p 5432 -U admin; do
+            echo "Waiting for Postgres..."
+            sleep 2
+          done
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
