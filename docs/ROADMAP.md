@@ -45,3 +45,4 @@ This document tracks the **detailed technical progress** of the project. The REA
   - [x] UsersLoginController
 - [x] Add the screening information on the reservation DTO, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
 - [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using TypeORM
+- [x] Create an GitHub Action workflow to trigger and run the e2e tests in an easy and possible automated way.
