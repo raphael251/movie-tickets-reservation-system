@@ -138,7 +138,11 @@ To get started with the project, follow these steps:
 
 ## 🧪 Testing
 
-Run unit and end-to-end tests:
+The unit tests are automated via GitHub Actions every time a pull request is open for the main branch.
+
+The end-to-end tests are able to run in the GitHub Action as well, but not in an automated way. I can be run by a manual trigger in the repository. Maybe at some point I will activate it to be run automatically as the unit tests.
+
+Run unit and end-to-end tests locally:
 
 ```sh
 npm run test:unit  # unit tests
