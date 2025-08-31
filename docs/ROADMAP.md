@@ -15,11 +15,11 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Create ScreeningSeat entity for managing seat reservations within a screening
 - [x] Populate the screening seats for a screening on creation
 - [x] Create endpoint to list all seats in a screening
-- [x] Update the reservations endpoint to reserve a screening seat instead of the old params
+- [x] Update the reservations' endpoint to reserve a screening seat instead of the old params
 - [x] Create filter for the screening seats endpoint to filter screening seats by status
 - [x] Create endpoint to list all user's reservations
 - [x] Create a new Movie entity just for the static information about movies available for screening
-- [x] Handle invalid ids on creation gracefully (on screenings endpoints and others as well)
+- [x] Handle invalid IDs on creation gracefully (on screenings endpoints and others as well)
 - [x] Add cursor pagination on movies listing
 - [x] Add rule for reservation cancellation: only allowed before 48 hours of the screening start time
 - [x] Add initial end-to-end tests setup
@@ -29,13 +29,13 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Add error handling on screening seats listing controller
 - [x] Return reservation data on its creation
 - [x] Review the reservation status
-- [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the typeorm entity directly instead of two separated classes.
+- [x] Refactor reservation and screening seat entities (as they are closely related) to use a simpler instance creation and handling approach, using the TypeORM entity directly instead of two separated classes.
 - [x] Refactor the Movie entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
 - [x] Refactor the Screening entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [x] Refactor the Seat entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
-- [x] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name need to be changed, as well as the removal of the BaseEntity extension.
+- [x] Refactor the Seat entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name needs to be changed, as well as the removal of the BaseEntity extension.
+- [x] Refactor the Theater entity to have the same format as Reservation and Screening Seat, although it doesn't have a separated entity class, the name needs to be changed, as well as the removal of the BaseEntity extension.
 - [x] Refactor the User entity to have the same format as Reservation and Screening Seat that have already been refactored to use only one class.
-- [x] Implement the returning of dto objects instead of entities to decouple the types and make the returning object more friendly to the clients.
+- [x] Implement the returning of DTO objects instead of entities to decouple the types and make the returning object more friendly to the clients.
   - [x] CreateMovieController
   - [x] ListMoviesController
   - [x] UpdateMovieController
@@ -43,5 +43,5 @@ This document tracks the **detailed technical progress** of the project. The REA
   - [x] ListScreeningSeatsController
   - [x] ListScreeningsController
   - [x] UsersLoginController
-- [x] Add the screening information on the reservation dto, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
-- [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using typeorm
+- [x] Add the screening information on the reservation DTO, for a better experience to the clients. When we get the reservations, we already want to see the screening info.
+- [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using TypeORM
