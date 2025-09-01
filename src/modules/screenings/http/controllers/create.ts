@@ -1,5 +1,6 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
 import { AlreadyScheduledMovieError } from '../../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
@@ -8,7 +9,10 @@ import { TheaterDoesNotExistError } from '../../errors/theater-does-not-exist.ts
 import { CreateScreeningUseCase } from '../../use-cases/create.ts';
 
 export class CreateScreeningController implements IHttpControllerV2<ScreeningDTO> {
-  constructor(private readonly createScreeningUseCase: CreateScreeningUseCase) {}
+  constructor(
+    private readonly createScreeningUseCase: CreateScreeningUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<ScreeningDTO>> {
     const { movieId, theaterId, startTime, endTime } = request.body;
@@ -47,7 +51,7 @@ export class CreateScreeningController implements IHttpControllerV2<ScreeningDTO
         };
       }
 
-      console.error('Error during screening creation:', error);
+      this.logger.error('Error during screening creation:', { error });
       return { status: 500 };
     }
   }

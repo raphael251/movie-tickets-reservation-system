@@ -3,9 +3,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
 import { SCREENING_SEAT_STATUS } from '../../database/screening-seat.entity.ts';
 import { mapScreeningSeatToDTO, ScreeningSeatDTO } from '../../dtos/screening-seat.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeatDTO> {
-  constructor(private repository: IScreeningRepository) {}
+  constructor(
+    private readonly repository: IScreeningRepository,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<ScreeningSeatDTO>> {
     try {
@@ -39,7 +43,7 @@ export class ListScreeningSeatsController implements IHttpControllerV2<Screening
         },
       };
     } catch (error) {
-      console.error('Error during screening seats listing:', error);
+      this.logger.error('Error during screening seats listing:', { error });
       return { status: 500 };
     }
   }

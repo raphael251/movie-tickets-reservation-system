@@ -88,6 +88,7 @@ export function createApp() {
     expressHttpControllerAdapter(
       new CreateScreeningController(
         new CreateScreeningUseCase(new ScreeningRepository(appConfig), new MovieRepository(appConfig), new TheaterRepository()),
+        new ConsoleLogger(),
       ),
     ),
   );
@@ -96,14 +97,14 @@ export function createApp() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig))),
+    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig), new ConsoleLogger())),
   );
 
   app.get(
     '/screenings/:screeningId/seats',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig))),
+    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig), new ConsoleLogger())),
   );
 
   app.post(
