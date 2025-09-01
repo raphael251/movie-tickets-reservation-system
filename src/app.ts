@@ -30,6 +30,7 @@ import { CancelReservationController } from './modules/reservations/http/control
 import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
+import { ConsoleLogger } from './modules/shared/logger/console-logger.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -42,11 +43,14 @@ export function createApp() {
     res.send('Welcome to the Movie Tickets Reservation System!');
   });
 
-  app.post('/users', expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()))));
+  app.post(
+    '/users',
+    expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()), new ConsoleLogger())),
+  );
 
   app.post(
     '/users/login',
-    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig))),
+    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig), new ConsoleLogger())),
   );
 
   app.post(
