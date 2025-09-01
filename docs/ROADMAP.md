@@ -47,5 +47,5 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Add lazy relation loading on the screening seat Entity to return the screening data as needed using TypeORM
 - [x] Create an GitHub Action workflow to trigger and run the e2e tests in an easy and possible automated way.
 - [x] Add logger interface to decouple abstraction from the implementation and start adding to the classes as an abstract dependency.
-- [ ] Add the logger dependency in the classes that are currently using console.log.
+- [x] Add the logger dependency in the classes that are currently using console.log.
 - [ ] Create the Winston.js implementation of the logger interface.
