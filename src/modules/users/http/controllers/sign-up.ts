@@ -2,9 +2,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { UsersSignUpUseCase } from '../../use-cases/sign-up.ts';
 import { EmailAlreadyRegisteredError } from '../../errors/email-already-registered.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class UsersSignUpController implements IHttpControllerV2<never> {
-  constructor(private readonly useCase: UsersSignUpUseCase) {}
+  constructor(
+    private readonly useCase: UsersSignUpUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<never>> {
     try {
@@ -38,7 +42,7 @@ export class UsersSignUpController implements IHttpControllerV2<never> {
         }
       }
 
-      console.error('Error during user sign-up:', error);
+      this.logger.error('Error during user sign-up:', { error });
       return { status: 500 };
     }
   }

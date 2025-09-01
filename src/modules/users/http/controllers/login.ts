@@ -1,11 +1,15 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { UserLoginDTO } from '../../dtos/user-login.dto.ts';
 import { InvalidEmailOrPasswordError } from '../../errors/invalid-email-or-password.ts';
 import { UserLoginUseCase } from '../../use-cases/login.ts';
 
 export class UsersLoginController implements IHttpControllerV2<UserLoginDTO> {
-  constructor(private readonly useCase: UserLoginUseCase) {}
+  constructor(
+    private readonly useCase: UserLoginUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<UserLoginDTO>> {
     try {
@@ -41,7 +45,7 @@ export class UsersLoginController implements IHttpControllerV2<UserLoginDTO> {
         }
       }
 
-      console.error('Error during user login:', error);
+      this.logger.error('Error during user login:', { error });
       return { status: 500 };
     }
   }
