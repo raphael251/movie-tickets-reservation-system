@@ -2,9 +2,13 @@ import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
 import { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
 import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class ListScreeningsController implements IHttpControllerV2<ScreeningDTO> {
-  constructor(private screeningRepository: IScreeningRepository) {}
+  constructor(
+    private readonly screeningRepository: IScreeningRepository,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<ScreeningDTO>> {
     try {
@@ -33,7 +37,7 @@ export class ListScreeningsController implements IHttpControllerV2<ScreeningDTO>
         },
       };
     } catch (error) {
-      console.error('Error during screenings listing:', error);
+      this.logger.error('Error during screenings listing:', { error });
       return { status: 500 };
     }
   }
