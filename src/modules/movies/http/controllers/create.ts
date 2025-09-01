@@ -2,9 +2,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { CreateMovieUseCase } from '../../use-cases/create.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class CreateMovieController implements IHttpControllerV2<MovieDTO> {
-  constructor(private createMovieUseCase: CreateMovieUseCase) {}
+  constructor(
+    private readonly createMovieUseCase: CreateMovieUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<MovieDTO>> {
     try {
@@ -17,7 +21,7 @@ export class CreateMovieController implements IHttpControllerV2<MovieDTO> {
         return { status: 400, errors: error.errors };
       }
 
-      console.error('Error during movie creation:', error);
+      this.logger.error('Error during movie creation:', { error });
       return { status: 500 };
     }
   }
