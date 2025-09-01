@@ -4,8 +4,7 @@
 
 This is a backend system for **movie ticket reservations**, where users can browse screenings, book seats, and manage their reservations.
 
-The project was initially inspired by [roadmap.sh backend path project](https://roadmap.sh/projects/movie-reservation-system)
-, but I extended it with additional features, better architecture, and production-style practices.
+The project was initially inspired by [roadmap.sh backend path project](https://roadmap.sh/projects/movie-reservation-system), but I extended it with additional features, better architecture, and production-style practices.
 
 ---
 
