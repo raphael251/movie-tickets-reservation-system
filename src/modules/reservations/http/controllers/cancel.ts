@@ -3,9 +3,13 @@ import { CancelReservationUseCase } from '../../use-cases/cancel.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { ReservationDoesNotExistError } from '../../errors/reservation-does-not-exist.ts';
 import { CancelingOperationOutOfRange } from '../../errors/canceling-operation-out-of-range.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class CancelReservationController implements IHttpControllerV2<never> {
-  constructor(private readonly cancelReservationUseCase: CancelReservationUseCase) {}
+  constructor(
+    private readonly cancelReservationUseCase: CancelReservationUseCase,
+    private readonly logger: ILogger,
+  ) {}
   async handle(request: THttpRequest): Promise<THttpResponse<never>> {
     try {
       const { reservationId } = request.params;
@@ -26,7 +30,7 @@ export class CancelReservationController implements IHttpControllerV2<never> {
         return { status: 409, errors: [error.message] };
       }
 
-      console.error('Error during reservation cancellation:', error);
+      this.logger.error('Error during reservation cancellation:', { error });
       return { status: 500 };
     }
   }

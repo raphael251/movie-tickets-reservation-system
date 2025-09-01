@@ -2,9 +2,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { IReservationRepository } from '../../repositories/interfaces/reservation.repository.ts';
 import z from 'zod';
 import { mapReservationToDTO, ReservationDTO } from '../../dtos/reservation.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class ListReservationsController implements IHttpControllerV2<ReservationDTO> {
-  constructor(private reservationRepository: IReservationRepository) {}
+  constructor(
+    private readonly reservationRepository: IReservationRepository,
+    private readonly logger: ILogger,
+  ) {}
   async handle(request: THttpRequest): Promise<THttpResponse<ReservationDTO>> {
     try {
       if (!request.user) {
@@ -38,7 +42,7 @@ export class ListReservationsController implements IHttpControllerV2<Reservation
         },
       };
     } catch (error) {
-      console.error('Error during reservation listing:', error);
+      this.logger.error('Error during reservation listing:', { error });
       return { status: 500 };
     }
   }

@@ -1,12 +1,16 @@
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { mapReservationToDTO, ReservationDTO } from '../../dtos/reservation.dto.ts';
 import { InvalidScreeningSeatIdError } from '../../errors/invalid-screening-id.ts';
 import { SeatAlreadyReservedError } from '../../errors/seat-already-reserved.ts';
 import { CreateReservationUseCase } from '../../use-cases/create.ts';
 
 export class CreateReservationController implements IHttpControllerV2<ReservationDTO> {
-  constructor(private readonly createReservationUseCase: CreateReservationUseCase) {}
+  constructor(
+    private readonly createReservationUseCase: CreateReservationUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<ReservationDTO>> {
     try {
@@ -22,7 +26,7 @@ export class CreateReservationController implements IHttpControllerV2<Reservatio
         data: mapReservationToDTO(reservation),
       };
     } catch (error) {
-      console.error('Error during reservation listing:', error);
+      this.logger.error('Error during reservation listing:', { error });
 
       if (error instanceof SeatAlreadyReservedError || error instanceof InvalidScreeningSeatIdError) {
         return {
