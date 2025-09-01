@@ -30,7 +30,7 @@ import { CancelReservationController } from './modules/reservations/http/control
 import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
-import { ConsoleLogger } from './modules/shared/logger/console-logger.ts';
+import { WinstonLogger } from './modules/shared/logger/winston-logger.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -45,40 +45,40 @@ export function createApp() {
 
   app.post(
     '/users',
-    expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()), new ConsoleLogger())),
+    expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()), new WinstonLogger())),
   );
 
   app.post(
     '/users/login',
-    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig), new ConsoleLogger())),
+    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig), new WinstonLogger())),
   );
 
   app.post(
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
+    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
   );
 
   app.get(
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig), new ConsoleLogger())),
+    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig), new WinstonLogger())),
   );
 
   app.put(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
+    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
   );
 
   app.delete(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:delete']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
+    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
   );
 
   app.post(
@@ -88,7 +88,7 @@ export function createApp() {
     expressHttpControllerAdapter(
       new CreateScreeningController(
         new CreateScreeningUseCase(new ScreeningRepository(appConfig), new MovieRepository(appConfig), new TheaterRepository()),
-        new ConsoleLogger(),
+        new WinstonLogger(),
       ),
     ),
   );
@@ -97,14 +97,14 @@ export function createApp() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig), new ConsoleLogger())),
+    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig), new WinstonLogger())),
   );
 
   app.get(
     '/screenings/:screeningId/seats',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig), new ConsoleLogger())),
+    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig), new WinstonLogger())),
   );
 
   app.post(
@@ -114,7 +114,7 @@ export function createApp() {
     expressHttpControllerAdapter(
       new CreateReservationController(
         new CreateReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig)),
-        new ConsoleLogger(),
+        new WinstonLogger(),
       ),
     ),
   );
@@ -123,7 +123,7 @@ export function createApp() {
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository(appConfig), new ConsoleLogger())),
+    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository(appConfig), new WinstonLogger())),
   );
 
   app.delete(
@@ -133,7 +133,7 @@ export function createApp() {
     expressHttpControllerAdapter(
       new CancelReservationController(
         new CancelReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig)),
-        new ConsoleLogger(),
+        new WinstonLogger(),
       ),
     ),
   );

@@ -12,3 +12,4 @@ UsersLoginController
 Supertest
 commitlint
 Inversify
+WinstonLogger

@@ -48,4 +48,5 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Create an GitHub Action workflow to trigger and run the e2e tests in an easy and possible automated way.
 - [x] Add logger interface to decouple abstraction from the implementation and start adding to the classes as an abstract dependency.
 - [x] Add the logger dependency in the classes that are currently using console.log.
-- [ ] Create the Winston.js implementation of the logger interface.
+- [x] Create the Winston.js implementation of the logger interface.
+- [x] Replace the Console.log logger implementation dependency of all controllers with the WinstonLogger.
