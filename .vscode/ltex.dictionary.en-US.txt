@@ -1,0 +1,14 @@
+ScreeningSeat
+params
+TypeORM
+BaseEntity
+CreateMovieController
+ListMoviesController
+UpdateMovieController
+CreateScreeningController
+ListScreeningSeatsController
+ListScreeningsController
+UsersLoginController
+Supertest
+commitlint
+Inversify
