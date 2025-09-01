@@ -57,28 +57,28 @@ export function createApp() {
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)))),
+    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
   );
 
   app.get(
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig))),
+    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig), new ConsoleLogger())),
   );
 
   app.put(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)))),
+    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
   );
 
   app.delete(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:delete']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)))),
+    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)), new ConsoleLogger())),
   );
 
   app.post(

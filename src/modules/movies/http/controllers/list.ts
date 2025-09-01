@@ -3,9 +3,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import z from 'zod';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class ListMoviesController implements IHttpControllerV2<MovieDTO> {
-  constructor(private repository: IMovieRepository) {}
+  constructor(
+    private readonly repository: IMovieRepository,
+    private readonly logger: ILogger,
+  ) {}
   async handle(request: THttpRequest): Promise<THttpResponse<MovieDTO>> {
     try {
       const inputValidationSchema = z.object({
@@ -35,7 +39,7 @@ export class ListMoviesController implements IHttpControllerV2<MovieDTO> {
         },
       };
     } catch (error) {
-      console.error('Error during movie listing:', error);
+      this.logger.error('Error during movie listing:', { error });
       return { status: 500 };
     }
   }

@@ -2,9 +2,13 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { UpdateMovieUseCase } from '../../use-cases/update.ts';
 import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
+import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 
 export class UpdateMovieController implements IHttpControllerV2<MovieDTO> {
-  constructor(private readonly updateMovieUseCase: UpdateMovieUseCase) {}
+  constructor(
+    private readonly updateMovieUseCase: UpdateMovieUseCase,
+    private readonly logger: ILogger,
+  ) {}
 
   async handle(request: THttpRequest): Promise<THttpResponse<MovieDTO>> {
     try {
@@ -25,7 +29,7 @@ export class UpdateMovieController implements IHttpControllerV2<MovieDTO> {
         };
       }
 
-      console.error('Error during movie update:', error);
+      this.logger.error('Error during movie update:', { error });
       return {
         status: 500,
       };
