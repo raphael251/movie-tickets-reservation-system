@@ -20,21 +20,22 @@ import { ListScreeningSeatsController } from './modules/screenings/http/controll
 import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
-import { CreateMovieUseCase } from './modules/movies/use-cases/create.ts';
 import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
-import { UpdateMovieUseCase } from './modules/movies/use-cases/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
-import { DeleteMovieUseCase } from './modules/movies/use-cases/delete.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
 import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { WinstonLogger } from './modules/shared/logger/winston-logger.ts';
+import { Container } from 'inversify';
+import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
 
 const appConfig = AppConfigLoader.load();
 
 export function createApp() {
+  const container: Container = createDependenciesContainer(appConfig);
+
   const app = express();
 
   app.use(express.json());
@@ -57,28 +58,28 @@ export function createApp() {
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new CreateMovieController(new CreateMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(CreateMovieController)),
   );
 
   app.get(
     '/movies',
     expressRequiredPermissionsMiddleware(['movies:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListMoviesController(new MovieRepository(appConfig), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(ListMoviesController)),
   );
 
   app.put(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:update']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new UpdateMovieController(new UpdateMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(UpdateMovieController)),
   );
 
   app.delete(
     '/movies/:movieId',
     expressRequiredPermissionsMiddleware(['movies:delete']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new DeleteMovieController(new DeleteMovieUseCase(new MovieRepository(appConfig)), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(DeleteMovieController)),
   );
 
   app.post(

@@ -1,14 +1,20 @@
 import z from 'zod';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
+import type { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
 import { MovieDoesNotExistError } from '../errors/movie-does-not-exist.ts';
+import { inject, injectable } from 'inversify';
+import { MovieRepository } from '../repositories/movie.repository.ts';
 
 type Input = {
   movieId: string;
 };
 
+@injectable()
 export class DeleteMovieUseCase {
-  constructor(private repository: IMovieRepository) {}
+  constructor(
+    @inject(MovieRepository)
+    private repository: IMovieRepository,
+  ) {}
 
   async execute(input: Input): Promise<void> {
     const inputSchema = z.object({
