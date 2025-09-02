@@ -22,6 +22,8 @@ const envSchema = zod.object({
 // Export the inferred type for use in other modules
 export type AppConfig = zod.infer<typeof envSchema>;
 
+export const AppConfig = Symbol.for('AppConfig');
+
 /**
  * AppConfigLoader is responsible for loading and validating the application configuration
  * from environment variables using Zod for schema validation.

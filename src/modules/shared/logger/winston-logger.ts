@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import { ILogger } from './interfaces/logger';
 import winston from 'winston';
 
+@injectable()
 export class WinstonLogger implements ILogger {
   private logger: winston.Logger;
 

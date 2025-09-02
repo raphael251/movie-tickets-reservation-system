@@ -13,3 +13,4 @@ Supertest
 commitlint
 Inversify
 WinstonLogger
+inversifyjs

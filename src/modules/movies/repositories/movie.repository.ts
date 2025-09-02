@@ -1,3 +1,4 @@
+import { inject, injectable } from 'inversify';
 import { AppConfig } from '../../shared/configs/app-config.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
@@ -5,8 +6,12 @@ import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/
 import { Movie } from '../database/movie.entity.ts';
 import { IMovieRepository } from './interfaces/movie.repository.ts';
 
+@injectable()
 export class MovieRepository implements IMovieRepository {
-  constructor(private appConfig: AppConfig) {}
+  constructor(
+    @inject(AppConfig)
+    private appConfig: AppConfig,
+  ) {}
 
   async save(movie: Movie): Promise<void> {
     await appDataSource.getRepository(Movie).upsert(movie, {

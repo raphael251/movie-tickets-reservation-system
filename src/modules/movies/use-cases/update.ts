@@ -1,7 +1,9 @@
 import z from 'zod';
 import { Movie } from '../database/movie.entity.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
+import type { IMovieRepository } from '../repositories/interfaces/movie.repository.ts';
+import { inject, injectable } from 'inversify';
+import { MovieRepository } from '../repositories/movie.repository.ts';
 
 type Input = {
   movieId: string;
@@ -10,8 +12,12 @@ type Input = {
   category: string;
 };
 
+@injectable()
 export class UpdateMovieUseCase {
-  constructor(private readonly movieRepository: IMovieRepository) {}
+  constructor(
+    @inject(MovieRepository)
+    private readonly movieRepository: IMovieRepository,
+  ) {}
 
   async execute(input: Input): Promise<Movie> {
     const inputValidationSchema = z.object({

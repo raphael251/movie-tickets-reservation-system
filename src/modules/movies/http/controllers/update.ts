@@ -2,11 +2,16 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { UpdateMovieUseCase } from '../../use-cases/update.ts';
 import { mapMovieToDTO, MovieDTO } from '../../dtos/movie.dto.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class UpdateMovieController implements IHttpControllerV2<MovieDTO> {
   constructor(
+    @inject(UpdateMovieUseCase)
     private readonly updateMovieUseCase: UpdateMovieUseCase,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 
