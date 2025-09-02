@@ -5,7 +5,6 @@ import { ListReservationsController } from '../http/controllers/list.ts';
 import { CancelReservationUseCase } from '../use-cases/cancel.ts';
 import { CreateReservationUseCase } from '../use-cases/create.ts';
 import { ReservationRepository } from '../repositories/reservation.repository.ts';
-import { ScreeningRepository } from '../../screenings/repositories/screening.repository.ts';
 
 export function createDependenciesContainer(container: Container): Container {
   // Controllers
@@ -19,7 +18,6 @@ export function createDependenciesContainer(container: Container): Container {
 
   // Repositories
   container.bind(ReservationRepository).toSelf();
-  container.bind(ScreeningRepository).toSelf();
 
   return container;
 }

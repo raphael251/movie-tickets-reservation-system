@@ -1,12 +1,18 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
+import type { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
 import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { ScreeningRepository } from '../../repositories/screening.repository.ts';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class ListScreeningsController implements IHttpControllerV2<ScreeningDTO> {
   constructor(
+    @inject(ScreeningRepository)
     private readonly screeningRepository: IScreeningRepository,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 

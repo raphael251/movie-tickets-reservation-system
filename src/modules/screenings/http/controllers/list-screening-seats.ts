@@ -1,13 +1,19 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
+import type { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
 import { SCREENING_SEAT_STATUS } from '../../database/screening-seat.entity.ts';
 import { mapScreeningSeatToDTO, ScreeningSeatDTO } from '../../dtos/screening-seat.dto.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { ScreeningRepository } from '../../repositories/screening.repository.ts';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class ListScreeningSeatsController implements IHttpControllerV2<ScreeningSeatDTO> {
   constructor(
+    @inject(ScreeningRepository)
     private readonly repository: IScreeningRepository,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 
