@@ -1,5 +1,7 @@
 # 🎬 Movie Ticket Reservations System
 
+[![CI status](https://github.com/raphael251/movie-tickets-reservation-system/actions/workflows/ci.yml/badge.svg)](https://github.com/raphael251/movie-tickets-reservation-system/actions/workflows/ci.yml)
+
 ## 📌 About the Project
 
 This is a backend system for **movie ticket reservations**, where users can browse screenings, book seats, and manage their reservations.
