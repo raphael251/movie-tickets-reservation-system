@@ -53,7 +53,7 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Add the initial structure for dependency injection using inversifyjs
 - [ ] Add the injection decorators in the controllers, use cases, repositories, etc. for all modules:
   - [x] Movies
-  - [ ] Reservations
+  - [x] Reservations
   - [ ] Screenings
   - [ ] Seats
   - [ ] Theaters

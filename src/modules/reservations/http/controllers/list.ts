@@ -1,12 +1,18 @@
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { IReservationRepository } from '../../repositories/interfaces/reservation.repository.ts';
+import type { IReservationRepository } from '../../repositories/interfaces/reservation.repository.ts';
 import z from 'zod';
 import { mapReservationToDTO, ReservationDTO } from '../../dtos/reservation.dto.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { ReservationRepository } from '../../repositories/reservation.repository.ts';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class ListReservationsController implements IHttpControllerV2<ReservationDTO> {
   constructor(
+    @inject(ReservationRepository)
     private readonly reservationRepository: IReservationRepository,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
   async handle(request: THttpRequest): Promise<THttpResponse<ReservationDTO>> {

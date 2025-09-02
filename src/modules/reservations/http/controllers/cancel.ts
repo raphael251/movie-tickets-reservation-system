@@ -3,11 +3,16 @@ import { CancelReservationUseCase } from '../../use-cases/cancel.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { ReservationDoesNotExistError } from '../../errors/reservation-does-not-exist.ts';
 import { CancelingOperationOutOfRange } from '../../errors/canceling-operation-out-of-range.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class CancelReservationController implements IHttpControllerV2<never> {
   constructor(
+    @inject(CancelReservationUseCase)
     private readonly cancelReservationUseCase: CancelReservationUseCase,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
   async handle(request: THttpRequest): Promise<THttpResponse<never>> {

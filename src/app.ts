@@ -14,8 +14,6 @@ import { expressAuthMiddleware } from './modules/shared/external/express/middlew
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { expressRequiredPermissionsMiddleware } from './modules/shared/external/express/middlewares/required-permissions.ts';
 import { CreateReservationController } from './modules/reservations/http/controllers/create.ts';
-import { CreateReservationUseCase } from './modules/reservations/use-cases/create.ts';
-import { ReservationRepository } from './modules/reservations/repositories/reservation.repository.ts';
 import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
 import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
@@ -24,7 +22,6 @@ import { UpdateMovieController } from './modules/movies/http/controllers/update.
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
-import { CancelReservationUseCase } from './modules/reservations/use-cases/cancel.ts';
 import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { WinstonLogger } from './modules/shared/logger/winston-logger.ts';
@@ -112,31 +109,21 @@ export function createApp() {
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(
-      new CreateReservationController(
-        new CreateReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig)),
-        new WinstonLogger(),
-      ),
-    ),
+    expressHttpControllerAdapter(container.get(CreateReservationController)),
   );
 
   app.get(
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListReservationsController(new ReservationRepository(appConfig), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(ListReservationsController)),
   );
 
   app.delete(
     '/reservations/:reservationId',
     expressRequiredPermissionsMiddleware(['reservations:cancel']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(
-      new CancelReservationController(
-        new CancelReservationUseCase(new ReservationRepository(appConfig), new ScreeningRepository(appConfig)),
-        new WinstonLogger(),
-      ),
-    ),
+    expressHttpControllerAdapter(container.get(CancelReservationController)),
   );
 
   app.use((err: unknown, req: Request, res: Response) => {
