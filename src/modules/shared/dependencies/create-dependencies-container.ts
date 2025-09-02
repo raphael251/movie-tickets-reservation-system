@@ -10,11 +10,13 @@ import { UpdateMovieUseCase } from '../../movies/use-cases/update.ts';
 import { AppConfig } from '../configs/app-config.ts';
 import { WinstonLogger } from '../logger/winston-logger.ts';
 import { createDependenciesContainer as createReservationsDependenciesContainer } from '../../reservations/dependencies/create-dependencies-container.ts';
+import { createDependenciesContainer as createScreeningsDependenciesContainer } from '../../screenings/dependencies/create-dependencies-container.ts';
 
 export function createDependenciesContainer(appConfig: AppConfig): Container {
   const container = new Container();
 
   createReservationsDependenciesContainer(container);
+  createScreeningsDependenciesContainer(container);
 
   // Controllers - movies
   container.bind(CreateMovieController).toSelf();

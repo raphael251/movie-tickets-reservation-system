@@ -7,8 +7,6 @@ import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
 import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
 import { CreateScreeningController } from './modules/screenings/http/controllers/create.ts';
-import { ScreeningRepository } from './modules/screenings/repositories/screening.repository.ts';
-import { CreateScreeningUseCase } from './modules/screenings/use-cases/create.ts';
 import { ListScreeningsController } from './modules/screenings/http/controllers/list-screenings.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
@@ -17,12 +15,10 @@ import { CreateReservationController } from './modules/reservations/http/control
 import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
 import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
-import { MovieRepository } from './modules/movies/repositories/movie.repository.ts';
 import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
-import { TheaterRepository } from './modules/theaters/repositories/theater.repository.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { WinstonLogger } from './modules/shared/logger/winston-logger.ts';
 import { Container } from 'inversify';
@@ -83,26 +79,21 @@ export function createApp() {
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:create']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(
-      new CreateScreeningController(
-        new CreateScreeningUseCase(new ScreeningRepository(appConfig), new MovieRepository(appConfig), new TheaterRepository()),
-        new WinstonLogger(),
-      ),
-    ),
+    expressHttpControllerAdapter(container.get(CreateScreeningController)),
   );
 
   app.get(
     '/screenings',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningsController(new ScreeningRepository(appConfig), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(ListScreeningsController)),
   );
 
   app.get(
     '/screenings/:screeningId/seats',
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(new ListScreeningSeatsController(new ScreeningRepository(appConfig), new WinstonLogger())),
+    expressHttpControllerAdapter(container.get(ListScreeningSeatsController)),
   );
 
   app.post(

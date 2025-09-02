@@ -2,12 +2,16 @@ import z from 'zod';
 import { Screening } from '../database/screening.entity.ts';
 import { AlreadyScheduledMovieError } from '../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../errors/invalid-time.ts';
-import { IScreeningRepository } from '../repositories/interfaces/screening.repository.ts';
+import type { IScreeningRepository } from '../repositories/interfaces/screening.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { IMovieRepository } from '../../movies/repositories/interfaces/movie.repository.ts';
-import { ITheaterRepository } from '../../theaters/repositories/interfaces/theather.repository.ts';
+import type { IMovieRepository } from '../../movies/repositories/interfaces/movie.repository.ts';
+import type { ITheaterRepository } from '../../theaters/repositories/interfaces/theather.repository.ts';
 import { MovieDoesNotExistError } from '../errors/movie-does-not-exist.ts';
 import { TheaterDoesNotExistError } from '../errors/theater-does-not-exist.ts';
+import { inject, injectable } from 'inversify';
+import { ScreeningRepository } from '../repositories/screening.repository.ts';
+import { MovieRepository } from '../../movies/repositories/movie.repository.ts';
+import { TheaterRepository } from '../../theaters/repositories/theater.repository.ts';
 
 type Input = {
   movieId: string;
@@ -16,10 +20,14 @@ type Input = {
   endTime: Date;
 };
 
+@injectable()
 export class CreateScreeningUseCase {
   constructor(
+    @inject(ScreeningRepository)
     private readonly screeningRepository: IScreeningRepository,
+    @inject(MovieRepository)
     private readonly movieRepository: IMovieRepository,
+    @inject(TheaterRepository)
     private readonly theaterRepository: ITheaterRepository,
   ) {}
 

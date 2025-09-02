@@ -1,16 +1,21 @@
+import { inject, injectable } from 'inversify';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
 import { AlreadyScheduledMovieError } from '../../errors/already-scheduled-movie.ts';
 import { InvalidTimeError } from '../../errors/invalid-time.ts';
 import { MovieDoesNotExistError } from '../../errors/movie-does-not-exist.ts';
 import { TheaterDoesNotExistError } from '../../errors/theater-does-not-exist.ts';
 import { CreateScreeningUseCase } from '../../use-cases/create.ts';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class CreateScreeningController implements IHttpControllerV2<ScreeningDTO> {
   constructor(
+    @inject(CreateScreeningUseCase)
     private readonly createScreeningUseCase: CreateScreeningUseCase,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 

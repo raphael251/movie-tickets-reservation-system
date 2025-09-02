@@ -54,7 +54,7 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [ ] Add the injection decorators in the controllers, use cases, repositories, etc. for all modules:
   - [x] Movies
   - [x] Reservations
-  - [ ] Screenings
-  - [ ] Seats
+  - [x] Screenings
+  - [x] Seats
   - [ ] Theaters
   - [ ] Users
