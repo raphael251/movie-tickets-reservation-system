@@ -4,7 +4,6 @@ import { CreateScreeningController } from '../http/controllers/create.ts';
 import { ListScreeningSeatsController } from '../http/controllers/list-screening-seats.ts';
 import { ListScreeningsController } from '../http/controllers/list-screenings.ts';
 import { CreateScreeningUseCase } from '../use-cases/create.ts';
-import { TheaterRepository } from '../../theaters/repositories/theater.repository.ts';
 
 export function createDependenciesContainer(container: Container): Container {
   // Controllers
@@ -17,7 +16,6 @@ export function createDependenciesContainer(container: Container): Container {
 
   // Repositories
   container.bind(ScreeningRepository).toSelf();
-  container.bind(TheaterRepository).toSelf();
 
   return container;
 }
