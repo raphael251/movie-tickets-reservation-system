@@ -6,9 +6,14 @@ import { ScreeningSeat, SCREENING_SEAT_STATUS } from '../database/screening-seat
 import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/types.ts';
 import { AppConfig } from '../../shared/configs/app-config.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 export class ScreeningRepository implements IScreeningRepository {
-  constructor(private appConfig: AppConfig) {}
+  constructor(
+    @inject(AppConfig)
+    private appConfig: AppConfig,
+  ) {}
 
   async findByTheaterIdAndTime(theaterId: string, startTime: Date, endTime: Date): Promise<Screening | null> {
     const foundScreening = await appDataSource

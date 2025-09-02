@@ -1,20 +1,26 @@
 import z from 'zod';
 import { RESERVATION_STATUS } from '../database/reservation.entity.ts';
 import { ReservationDoesNotExistError } from '../errors/reservation-does-not-exist.ts';
-import { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
+import type { IReservationRepository } from '../repositories/interfaces/reservation.repository.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
-import { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
+import type { IScreeningRepository } from '../../screenings/repositories/interfaces/screening.repository.ts';
 import { SCREENING_SEAT_STATUS } from '../../screenings/database/screening-seat.entity.ts';
 import { ScreeningDoesNotExistError } from '../errors/screening-does-not-exist.ts';
 import { CancelingOperationOutOfRange } from '../errors/canceling-operation-out-of-range.ts';
+import { inject, injectable } from 'inversify';
+import { ReservationRepository } from '../repositories/reservation.repository.ts';
+import { ScreeningRepository } from '../../screenings/repositories/screening.repository.ts';
 
 type Input = {
   reservationId: string;
 };
 
+@injectable()
 export class CancelReservationUseCase {
   constructor(
+    @inject(ReservationRepository)
     private reservationRepository: IReservationRepository,
+    @inject(ScreeningRepository)
     private readonly screeningRepository: IScreeningRepository,
   ) {}
 

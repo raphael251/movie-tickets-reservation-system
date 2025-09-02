@@ -1,3 +1,4 @@
+import { inject, injectable } from 'inversify';
 import { AppConfig } from '../../shared/configs/app-config.ts';
 import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { decodeCursor, encodeCursor } from '../../shared/pagination/helpers.ts';
@@ -5,8 +6,12 @@ import { IPaginationParams, TPaginationResponse } from '../../shared/pagination/
 import { RESERVATION_STATUS, Reservation } from '../database/reservation.entity.ts';
 import { IReservationRepository } from './interfaces/reservation.repository.ts';
 
+@injectable()
 export class ReservationRepository implements IReservationRepository {
-  constructor(private appConfig: AppConfig) {}
+  constructor(
+    @inject(AppConfig)
+    private appConfig: AppConfig,
+  ) {}
 
   async findByScreeningIdAndSeatCode(screeningId: string, seatCode: string): Promise<Reservation | null> {
     return appDataSource
