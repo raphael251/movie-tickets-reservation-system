@@ -56,5 +56,5 @@ This document tracks the **detailed technical progress** of the project. The REA
   - [x] Reservations
   - [x] Screenings
   - [x] Seats
-  - [ ] Theaters
+  - [x] Theaters
   - [ ] Users
