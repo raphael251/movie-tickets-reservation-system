@@ -1,20 +1,27 @@
 import z from 'zod';
 import { AppConfig } from '../../shared/configs/app-config.ts';
-import { IHasher } from '../../shared/security/interfaces/hasher.ts';
+import type { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { InvalidEmailOrPasswordError } from '../errors/invalid-email-or-password.ts';
-import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
+import type { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import jwt from 'jsonwebtoken';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
+import { inject, injectable } from 'inversify';
+import { UserRepository } from '../repositories/user.repository.ts';
+import { Hasher } from '../../shared/security/hasher.ts';
 
 type Input = {
   email: string;
   password: string;
 };
 
+@injectable()
 export class UserLoginUseCase {
   constructor(
+    @inject(UserRepository)
     private readonly userRepository: IUserRepository,
+    @inject(Hasher)
     private readonly hasher: IHasher,
+    @inject(AppConfig)
     private readonly appConfig: AppConfig,
   ) {}
 

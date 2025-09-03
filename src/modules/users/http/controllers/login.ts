@@ -1,13 +1,18 @@
+import { inject, injectable } from 'inversify';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { UserLoginDTO } from '../../dtos/user-login.dto.ts';
 import { InvalidEmailOrPasswordError } from '../../errors/invalid-email-or-password.ts';
 import { UserLoginUseCase } from '../../use-cases/login.ts';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class UsersLoginController implements IHttpControllerV2<UserLoginDTO> {
   constructor(
+    @inject(UserLoginUseCase)
     private readonly useCase: UserLoginUseCase,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 

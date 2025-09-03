@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
 import { IHasher } from './interfaces/hasher.ts';
+import { injectable } from 'inversify';
 
+@injectable()
 export class Hasher implements IHasher {
   async hash(value: string): Promise<string> {
     return new Promise((resolve, reject) => {
