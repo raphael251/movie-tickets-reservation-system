@@ -2,11 +2,16 @@ import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/
 import { UsersSignUpUseCase } from '../../use-cases/sign-up.ts';
 import { EmailAlreadyRegisteredError } from '../../errors/email-already-registered.ts';
 import { InputValidationError } from '../../../shared/errors/input-validation.ts';
-import { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
+import { inject, injectable } from 'inversify';
+import { WinstonLogger } from '../../../shared/logger/winston-logger.ts';
 
+@injectable()
 export class UsersSignUpController implements IHttpControllerV2<never> {
   constructor(
+    @inject(UsersSignUpUseCase)
     private readonly useCase: UsersSignUpUseCase,
+    @inject(WinstonLogger)
     private readonly logger: ILogger,
   ) {}
 

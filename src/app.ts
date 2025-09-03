@@ -1,11 +1,7 @@
 import express, { Request, Response } from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
-import { UserRepository } from './modules/users/repositories/user.repository.ts';
-import { Hasher } from './modules/shared/security/hasher.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
-import { UsersSignUpUseCase } from './modules/users/use-cases/sign-up.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
-import { UserLoginUseCase } from './modules/users/use-cases/login.ts';
 import { CreateScreeningController } from './modules/screenings/http/controllers/create.ts';
 import { ListScreeningsController } from './modules/screenings/http/controllers/list-screenings.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
@@ -20,7 +16,6 @@ import { ListMoviesController } from './modules/movies/http/controllers/list.ts'
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
 import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
-import { WinstonLogger } from './modules/shared/logger/winston-logger.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
 
@@ -37,15 +32,9 @@ export function createApp() {
     res.send('Welcome to the Movie Tickets Reservation System!');
   });
 
-  app.post(
-    '/users',
-    expressHttpControllerAdapter(new UsersSignUpController(new UsersSignUpUseCase(new UserRepository(), new Hasher()), new WinstonLogger())),
-  );
+  app.post('/users', expressHttpControllerAdapter(container.get(UsersSignUpController)));
 
-  app.post(
-    '/users/login',
-    expressHttpControllerAdapter(new UsersLoginController(new UserLoginUseCase(new UserRepository(), new Hasher(), appConfig), new WinstonLogger())),
-  );
+  app.post('/users/login', expressHttpControllerAdapter(container.get(UsersLoginController)));
 
   app.post(
     '/movies',

@@ -1,18 +1,24 @@
 import z from 'zod';
-import { IHasher } from '../../shared/security/interfaces/hasher.ts';
+import type { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.ts';
-import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
+import type { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import { UserRole } from '../util/constants/roles.ts';
 import { InputValidationError } from '../../shared/errors/input-validation.ts';
+import { inject, injectable } from 'inversify';
+import { UserRepository } from '../repositories/user.repository.ts';
+import { Hasher } from '../../shared/security/hasher.ts';
 
 type Input = {
   email: string;
   password: string;
 };
 
+@injectable()
 export class UsersSignUpUseCase {
   constructor(
+    @inject(UserRepository)
     private readonly userRepository: IUserRepository,
+    @inject(Hasher)
     private readonly hasher: IHasher,
   ) {}
 
