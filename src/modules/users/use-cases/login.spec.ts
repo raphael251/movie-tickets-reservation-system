@@ -6,6 +6,8 @@ import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import { UserRole } from '../util/constants/roles.ts';
 import { UserLoginUseCase } from './login.ts';
 
+jest.mock('../../shared/data-source/data-source.ts', () => {});
+
 describe('UserLoginUseCase', () => {
   let userRepository: jest.Mocked<IUserRepository>;
   let hasher: jest.Mocked<IHasher>;
