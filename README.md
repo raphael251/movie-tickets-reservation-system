@@ -16,7 +16,7 @@ This project is in **active development**.
 
 - Core reservation features are implemented.
 - End-to-end tests are partially set up.
-- Next improvements focus on logging, dependency injection, and production-grade enhancements.
+- Next improvements focus increasing the tests' coverage percentage, and production-grade enhancements.
 
 ---
 
@@ -72,11 +72,11 @@ This project is in **active development**.
 - Reservation system with cancellation rules
 - Input validation & standardized responses
 - End-to-end testing setup
+- Logging system (Winston)
+- Dependency Injection container (Inversify)
 
 **Planned / In Progress 🚧**
 
-- Logging system (Winston)
-- Dependency Injection container (Inversify)
 - Improved seeder verification
 
 📖 See the [full roadmap](docs/ROADMAP.md) for detailed progress.
