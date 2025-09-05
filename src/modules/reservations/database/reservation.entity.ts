@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ForeignKey, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ForeignKey, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
 import { User } from '../../users/database/user.entity.ts';
 
@@ -9,6 +9,7 @@ export enum RESERVATION_STATUS {
 }
 
 @Entity('reservation')
+@Index('unique_reserved_seat', ['screeningSeat'], { unique: true, where: `status = '${RESERVATION_STATUS.CONFIRMED}'` })
 export class Reservation {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -17,7 +18,7 @@ export class Reservation {
   @ForeignKey(() => User)
   userId!: string;
 
-  @OneToOne(() => ScreeningSeat, { nullable: false })
+  @ManyToOne(() => ScreeningSeat, { nullable: false, cascade: true })
   @JoinColumn()
   screeningSeat!: ScreeningSeat;
 

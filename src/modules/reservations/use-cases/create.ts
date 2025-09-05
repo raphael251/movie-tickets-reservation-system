@@ -48,9 +48,9 @@ export class CreateReservationUseCase {
       throw new SeatAlreadyReservedError();
     }
 
-    const reservation = Reservation.create(input.userId, existingScreeningSeat, RESERVATION_STATUS.CONFIRMED);
+    existingScreeningSeat.status = SCREENING_SEAT_STATUS.RESERVED;
 
-    await this.screeningRepository.updateScreeningSeatStatusById(screeningSeatId, SCREENING_SEAT_STATUS.RESERVED);
+    const reservation = Reservation.create(input.userId, existingScreeningSeat, RESERVATION_STATUS.CONFIRMED);
 
     await this.reservationRepository.save(reservation);
 

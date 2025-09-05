@@ -57,8 +57,9 @@ export class CancelReservationUseCase {
       throw new CancelingOperationOutOfRange();
     }
 
-    await this.screeningRepository.updateScreeningSeatStatusById(reservation.screeningSeat.id, SCREENING_SEAT_STATUS.AVAILABLE);
+    reservation.status = RESERVATION_STATUS.CANCELED;
+    reservation.screeningSeat.status = SCREENING_SEAT_STATUS.AVAILABLE;
 
-    await this.reservationRepository.updateStatusById(reservationId, RESERVATION_STATUS.CANCELED);
+    await this.reservationRepository.save(reservation);
   }
 }

@@ -14,10 +14,10 @@ export class Screening {
   @ManyToOne(() => Theater, { nullable: false })
   theater!: Theater;
 
-  @Column()
+  @Column('timestamp')
   startTime!: Date;
 
-  @Column()
+  @Column('timestamp')
   endTime!: Date;
 
   static create(movie: Movie, theater: Theater, startTime: Date, endTime: Date): Screening {
