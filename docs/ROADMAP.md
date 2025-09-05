@@ -58,3 +58,4 @@ This document tracks the **detailed technical progress** of the project. The REA
   - [x] Seats
   - [x] Theaters
   - [x] Users
+- [x] Allow multiple reservations to be made to the same screening seat, since only one has the confirmed status
