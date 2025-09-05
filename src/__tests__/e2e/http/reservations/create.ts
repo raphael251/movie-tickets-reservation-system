@@ -4,6 +4,10 @@ import { Express } from 'express';
 import { appDataSource } from '../../../../modules/shared/data-source/data-source.ts';
 import { theatersSeed } from '../../../../modules/shared/seed/theaters.ts';
 import { getAdminUserToken, getRegularUserToken } from '../utils/login.ts';
+import { Movie } from '../../../../modules/movies/database/movie.entity.ts';
+import { ScreeningSeat } from '../../../../modules/screenings/database/screening-seat.entity.ts';
+import { Screening } from '../../../../modules/screenings/database/screening.entity.ts';
+import { Reservation } from '../../../../modules/reservations/database/reservation.entity.ts';
 
 describe('POST /reservations - Create reservation', () => {
   let testingApp: Express;
@@ -14,6 +18,10 @@ describe('POST /reservations - Create reservation', () => {
   beforeAll(async () => {
     testingApp = createApp();
     await appDataSource.initialize();
+    await appDataSource.getRepository(Reservation).deleteAll();
+    await appDataSource.getRepository(ScreeningSeat).deleteAll();
+    await appDataSource.getRepository(Screening).deleteAll();
+    await appDataSource.getRepository(Movie).deleteAll();
 
     adminUserToken = await getAdminUserToken(testingApp);
 
