@@ -6,8 +6,10 @@
   "scripts": {
     "build": "swc src --out-dir dist",
     "build:ci": "tsc && npm run build",
+    "build:dev": "npm run build -- --watch --source-maps true",
     "check-types": "tsc --noEmit",
     "start:dev": "nodemon dist/src/index.js",
+    "start:dev:inspect": "nodemon --inspect dist/src/index.js",
     "start:prod": "npm run migration:run:prod && node dist/src/index.js",
     "format": "prettier --write .",
     "lint": "eslint . ",

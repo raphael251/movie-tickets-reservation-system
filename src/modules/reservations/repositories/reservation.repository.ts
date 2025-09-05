@@ -27,10 +27,7 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   async save(reservation: Reservation): Promise<void> {
-    appDataSource.getRepository(Reservation).upsert(reservation, {
-      conflictPaths: ['id'],
-      skipUpdateIfNoValuesChanged: true,
-    });
+    await appDataSource.getRepository(Reservation).save(reservation);
   }
 
   async findAllByUserId(
