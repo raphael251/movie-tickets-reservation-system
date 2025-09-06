@@ -19,6 +19,7 @@ import { expressHttpControllerAdapter } from './modules/shared/external/express/
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
 import { ReadReservationController } from './modules/reservations/http/controllers/read.ts';
+import { ReadScreeningSeatController } from './modules/screenings/http/controllers/read-screening-seat.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -84,6 +85,13 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['screenings:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(container.get(ListScreeningSeatsController)),
+  );
+
+  app.get(
+    '/seats/:screeningSeatId',
+    expressRequiredPermissionsMiddleware(['screenings:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    expressHttpControllerAdapter(container.get(ReadScreeningSeatController)),
   );
 
   app.post(
