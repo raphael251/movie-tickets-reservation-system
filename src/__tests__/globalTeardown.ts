@@ -15,5 +15,6 @@ export default async () => {
     await appDataSource.getRepository(Screening).deleteAll();
     await appDataSource.getRepository(Theater).deleteAll();
     await appDataSource.destroy();
+    process.exit(0);
   }
 };

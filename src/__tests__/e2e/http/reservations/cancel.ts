@@ -7,7 +7,7 @@ import { getAdminUserToken, getRegularUserToken } from '../utils/login.ts';
 import { Movie } from '../../../../modules/movies/database/movie.entity.ts';
 import { Screening } from '../../../../modules/screenings/database/screening.entity.ts';
 import { ScreeningSeat } from '../../../../modules/screenings/database/screening-seat.entity.ts';
-import { Reservation } from '../../../../modules/reservations/database/reservation.entity.ts';
+import { Reservation, RESERVATION_STATUS } from '../../../../modules/reservations/database/reservation.entity.ts';
 
 describe('POST /reservations - Cancel reservation', () => {
   let testingApp: Express;
@@ -73,7 +73,21 @@ describe('POST /reservations - Cancel reservation', () => {
     expect(response.status).toBe(204);
   });
 
-  it.todo('should return the reservation status as canceled after canceling the reservation');
+  it('should return the reservation status as canceled after canceling the reservation', async () => {
+    const {
+      body: { data: createdReservation },
+    } = await request(testingApp).post('/reservations').set('authorization', `Bearer ${regularUserToken}`).send({
+      screeningSeatId,
+    });
+
+    await request(testingApp).delete(`/reservations/${createdReservation.id}`).set('authorization', `Bearer ${regularUserToken}`).send();
+
+    const {
+      body: { data: deleteReservation },
+    } = await request(testingApp).get(`/reservations/${createdReservation.id}`).set('authorization', `Bearer ${regularUserToken}`).send();
+
+    expect(deleteReservation.status).toBe(RESERVATION_STATUS.CANCELED);
+  });
 
   it.todo('should return the screening seat status as available after canceling the reservation');
 });
