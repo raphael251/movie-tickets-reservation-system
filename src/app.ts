@@ -18,6 +18,7 @@ import { CancelReservationController } from './modules/reservations/http/control
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
+import { ReadReservationController } from './modules/reservations/http/controllers/read.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -97,6 +98,13 @@ export function createApp() {
     expressRequiredPermissionsMiddleware(['reservations:read']),
     expressAuthMiddleware(new JWTTokenValidator(appConfig)),
     expressHttpControllerAdapter(container.get(ListReservationsController)),
+  );
+
+  app.get(
+    '/reservations/:reservationId',
+    expressRequiredPermissionsMiddleware(['reservations:read']),
+    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
+    expressHttpControllerAdapter(container.get(ReadReservationController)),
   );
 
   app.delete(

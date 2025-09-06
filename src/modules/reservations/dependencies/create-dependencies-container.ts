@@ -5,12 +5,14 @@ import { ListReservationsController } from '../http/controllers/list.ts';
 import { CancelReservationUseCase } from '../use-cases/cancel.ts';
 import { CreateReservationUseCase } from '../use-cases/create.ts';
 import { ReservationRepository } from '../repositories/reservation.repository.ts';
+import { ReadReservationController } from '../http/controllers/read.ts';
 
 export function createDependenciesContainer(container: Container): Container {
   // Controllers
   container.bind(CancelReservationController).toSelf();
   container.bind(CreateReservationController).toSelf();
   container.bind(ListReservationsController).toSelf();
+  container.bind(ReadReservationController).toSelf();
 
   // Use Cases
   container.bind(CancelReservationUseCase).toSelf();
