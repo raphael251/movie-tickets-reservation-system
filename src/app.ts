@@ -20,6 +20,7 @@ import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
 import { ReadReservationController } from './modules/reservations/http/controllers/read.ts';
 import { ReadScreeningSeatController } from './modules/screenings/http/controllers/read-screening-seat.ts';
+import cors from 'cors';
 
 const appConfig = AppConfigLoader.load();
 
@@ -28,6 +29,7 @@ export function createApp() {
 
   const app = express();
 
+  app.use(cors());
   app.use(express.json());
 
   app.get('/', (_, res) => {
