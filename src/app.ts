@@ -7,20 +7,17 @@ import { ListScreeningsController } from './modules/screenings/http/controllers/
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { expressRequiredPermissionsMiddleware } from './modules/shared/external/express/middlewares/required-permissions.ts';
-import { CreateReservationController } from './modules/reservations/http/controllers/create.ts';
 import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
-import { ListReservationsController } from './modules/reservations/http/controllers/list.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
 import { DeleteMovieController } from './modules/movies/http/controllers/delete.ts';
-import { CancelReservationController } from './modules/reservations/http/controllers/cancel.ts';
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
-import { ReadReservationController } from './modules/reservations/http/controllers/read.ts';
 import { ReadScreeningSeatController } from './modules/screenings/http/controllers/read-screening-seat.ts';
 import cors from 'cors';
+import { reservationsRouter } from './modules/reservations/external/express/router.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -96,33 +93,7 @@ export function createApp() {
     expressHttpControllerAdapter(container.get(ReadScreeningSeatController)),
   );
 
-  app.post(
-    '/reservations',
-    expressRequiredPermissionsMiddleware(['reservations:create']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(CreateReservationController)),
-  );
-
-  app.get(
-    '/reservations',
-    expressRequiredPermissionsMiddleware(['reservations:read']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(ListReservationsController)),
-  );
-
-  app.get(
-    '/reservations/:reservationId',
-    expressRequiredPermissionsMiddleware(['reservations:read']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(ReadReservationController)),
-  );
-
-  app.delete(
-    '/reservations/:reservationId',
-    expressRequiredPermissionsMiddleware(['reservations:cancel']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(CancelReservationController)),
-  );
+  app.use(reservationsRouter(container, appConfig));
 
   app.use((err: unknown, req: Request, res: Response) => {
     if (err instanceof Error) {
