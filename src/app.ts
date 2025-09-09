@@ -1,14 +1,12 @@
 import express, { Request, Response } from 'express';
-import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
-import { UsersLoginController } from './modules/users/http/controllers/login.ts';
-import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
 import cors from 'cors';
 import { reservationsRouter } from './modules/reservations/external/express/router.ts';
 import { screeningsRouter } from './modules/screenings/external/express/router.ts';
 import { moviesRouter } from './modules/movies/external/express/router.ts';
+import { usersRouter } from './modules/users/external/express/router.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -24,9 +22,7 @@ export function createApp() {
     res.send('Welcome to the Movie Tickets Reservation System!');
   });
 
-  app.post('/users', expressHttpControllerAdapter(container.get(UsersSignUpController)));
-
-  app.post('/users/login', expressHttpControllerAdapter(container.get(UsersLoginController)));
+  app.use(usersRouter(container));
 
   app.use(moviesRouter(container, appConfig));
 
