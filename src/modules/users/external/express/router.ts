@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { Container } from 'inversify';
-import { expressHttpControllerAdapter } from '../../../shared/external/express/adapters/controller-adapter';
-import { UsersLoginController } from '../../http/controllers/login';
-import { UsersSignUpController } from '../../http/controllers/sign-up';
+import { expressHttpControllerAdapter } from '../../../shared/external/express/adapters/controller-adapter.ts';
+import { UsersLoginController } from '../../http/controllers/login.ts';
+import { UsersSignUpController } from '../../http/controllers/sign-up.ts';
 
 export function usersRouter(container: Container): Router {
   const app = Router();
