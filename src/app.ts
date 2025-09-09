@@ -2,12 +2,9 @@ import express, { Request, Response } from 'express';
 import { UsersSignUpController } from './modules/users/http/controllers/sign-up.ts';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
 import { UsersLoginController } from './modules/users/http/controllers/login.ts';
-import { CreateScreeningController } from './modules/screenings/http/controllers/create.ts';
-import { ListScreeningsController } from './modules/screenings/http/controllers/list-screenings.ts';
 import { expressAuthMiddleware } from './modules/shared/external/express/middlewares/auth-middleware.ts';
 import { JWTTokenValidator } from './modules/shared/security/token-validator.ts';
 import { expressRequiredPermissionsMiddleware } from './modules/shared/external/express/middlewares/required-permissions.ts';
-import { ListScreeningSeatsController } from './modules/screenings/http/controllers/list-screening-seats.ts';
 import { CreateMovieController } from './modules/movies/http/controllers/create.ts';
 import { UpdateMovieController } from './modules/movies/http/controllers/update.ts';
 import { ListMoviesController } from './modules/movies/http/controllers/list.ts';
@@ -15,9 +12,9 @@ import { DeleteMovieController } from './modules/movies/http/controllers/delete.
 import { expressHttpControllerAdapter } from './modules/shared/external/express/adapters/controller-adapter.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
-import { ReadScreeningSeatController } from './modules/screenings/http/controllers/read-screening-seat.ts';
 import cors from 'cors';
 import { reservationsRouter } from './modules/reservations/external/express/router.ts';
+import { screeningsRouter } from './modules/screenings/external/express/router.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -65,33 +62,7 @@ export function createApp() {
     expressHttpControllerAdapter(container.get(DeleteMovieController)),
   );
 
-  app.post(
-    '/screenings',
-    expressRequiredPermissionsMiddleware(['screenings:create']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(CreateScreeningController)),
-  );
-
-  app.get(
-    '/screenings',
-    expressRequiredPermissionsMiddleware(['screenings:read']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(ListScreeningsController)),
-  );
-
-  app.get(
-    '/screenings/:screeningId/seats',
-    expressRequiredPermissionsMiddleware(['screenings:read']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(ListScreeningSeatsController)),
-  );
-
-  app.get(
-    '/seats/:screeningSeatId',
-    expressRequiredPermissionsMiddleware(['screenings:read']),
-    expressAuthMiddleware(new JWTTokenValidator(appConfig)),
-    expressHttpControllerAdapter(container.get(ReadScreeningSeatController)),
-  );
+  app.use(screeningsRouter(container, appConfig));
 
   app.use(reservationsRouter(container, appConfig));
 
