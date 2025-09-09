@@ -7,6 +7,7 @@ import { reservationsRouter } from './modules/reservations/external/express/rout
 import { screeningsRouter } from './modules/screenings/external/express/router.ts';
 import { moviesRouter } from './modules/movies/external/express/router.ts';
 import { usersRouter } from './modules/users/external/express/router.ts';
+import { appDataSource } from './modules/shared/data-source/data-source.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -18,8 +19,14 @@ export function createApp() {
   app.use(cors());
   app.use(express.json());
 
-  app.get('/', (_, res) => {
-    res.send('Welcome to the Movie Tickets Reservation System!');
+  app.get('/health', async (_, res) => {
+    try {
+      await appDataSource.query('SELECT 1');
+      res.status(200).end();
+    } catch (err) {
+      console.error('error on health check: ', err);
+      res.status(500).end();
+    }
   });
 
   app.use(usersRouter(container));
