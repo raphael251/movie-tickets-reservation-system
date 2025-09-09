@@ -1,14 +1,14 @@
 import { Container } from 'inversify';
 import { AppConfig } from '../../../shared/configs/app-config';
 import { Router } from 'express';
-import { expressHttpControllerAdapter } from '../../../shared/external/express/adapters/controller-adapter';
-import { expressAuthMiddleware } from '../../../shared/external/express/middlewares/auth-middleware';
-import { expressRequiredPermissionsMiddleware } from '../../../shared/external/express/middlewares/required-permissions';
-import { JWTTokenValidator } from '../../../shared/security/token-validator';
-import { CreateMovieController } from '../../http/controllers/create';
-import { DeleteMovieController } from '../../http/controllers/delete';
-import { ListMoviesController } from '../../http/controllers/list';
-import { UpdateMovieController } from '../../http/controllers/update';
+import { expressHttpControllerAdapter } from '../../../shared/external/express/adapters/controller-adapter.ts';
+import { expressAuthMiddleware } from '../../../shared/external/express/middlewares/auth-middleware.ts';
+import { expressRequiredPermissionsMiddleware } from '../../../shared/external/express/middlewares/required-permissions.ts';
+import { JWTTokenValidator } from '../../../shared/security/token-validator.ts';
+import { CreateMovieController } from '../../http/controllers/create.ts';
+import { DeleteMovieController } from '../../http/controllers/delete.ts';
+import { ListMoviesController } from '../../http/controllers/list.ts';
+import { UpdateMovieController } from '../../http/controllers/update.ts';
 
 export function moviesRouter(container: Container, appConfig: AppConfig): Router {
   const router = Router();
