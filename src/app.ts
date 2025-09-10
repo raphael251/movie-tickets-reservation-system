@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
 import { Container } from 'inversify';
 import { createDependenciesContainer } from './modules/shared/dependencies/create-dependencies-container.ts';
@@ -37,7 +37,8 @@ export function createApp() {
 
   app.use(reservationsRouter(container, appConfig));
 
-  app.use((err: unknown, req: Request, res: Response) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof Error) {
       console.error(err.stack);
     } else {
