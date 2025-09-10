@@ -37,6 +37,12 @@ export function createApp() {
 
   app.use(reservationsRouter(container, appConfig));
 
+  // Generic handler for not-found routes (404)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use((req: Request, res: Response, _next: NextFunction) => {
+    res.status(404).send('Not Found');
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof Error) {
