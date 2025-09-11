@@ -13,6 +13,61 @@ import { AppConfig } from '../../../shared/configs/app-config.ts';
 export function reservationsRouter(container: Container, appConfig: AppConfig): Router {
   const router = Router();
 
+  /**
+   * @swagger
+   * components:
+   *  schemas:
+   *    CreateReservationInput:
+   *      type: object
+   *      properties:
+   *        screeningSeatId:
+   *          type: string
+   *    CreateReservationOutput:
+   *      type: object
+   *      properties:
+   *        id:
+   *          type: string
+   *        seat:
+   *          type: string
+   *        status:
+   *          type: string
+   *          enum: [PENDING, CONFIRMED, CANCELED]
+   *        screening:
+   *          type: object
+   *          properties:
+   *            id:
+   *              type: string
+   *            movieTitle:
+   *              type: string
+   *            theaterName:
+   *              type: string
+   *            startTime:
+   *              type: string
+   *            endTime:
+   *              type: string
+   */
+
+  /**
+   * @swagger
+   * /reservations:
+   *  post:
+   *    summary: Create a reservation.
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            $ref: "#/components/schemas/CreateReservationInput"
+   *    responses:
+   *      '201':
+   *        description: The reservation was created successfuly.
+   *        content:
+   *          application/json:
+   *           schema:
+   *             $ref: "#/components/schemas/CreateReservationOutput"
+   *      '401':
+   *        description: Unauthorized.
+   */
   router.post(
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:create']),
@@ -20,6 +75,23 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
     expressHttpControllerAdapter(container.get(CreateReservationController)),
   );
 
+  /**
+   * @swagger
+   * /reservations:
+   *  get:
+   *    summary: List all reservations for the authenticated user.
+   *    responses:
+   *      '200':
+   *        description: The reservation was created successfuly.
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: array
+   *              items:
+   *                $ref: "#/components/schemas/CreateReservationOutput"
+   *      '401':
+   *        description: Unauthorized.
+   */
   router.get(
     '/reservations',
     expressRequiredPermissionsMiddleware(['reservations:read']),
@@ -27,6 +99,21 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
     expressHttpControllerAdapter(container.get(ListReservationsController)),
   );
 
+  /**
+   * @swagger
+   * /reservations/{reservationId}:
+   *  get:
+   *    summary: Get one specific reservation details.
+   *    responses:
+   *      '200':
+   *        description: The reservation was created successfuly.
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: "#/components/schemas/CreateReservationOutput"
+   *      '401':
+   *        description: Unauthorized.
+   */
   router.get(
     '/reservations/:reservationId',
     expressRequiredPermissionsMiddleware(['reservations:read']),
@@ -34,6 +121,23 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
     expressHttpControllerAdapter(container.get(ReadReservationController)),
   );
 
+  /**
+   * @swagger
+   * /reservations/{reservationId}:
+   *  delete:
+   *    summary: Delete the reservation with the given ID.
+   *    responses:
+   *      '204':
+   *        description: The reservation was created successfuly.
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: array
+   *              items:
+   *                $ref: "#/components/schemas/CreateReservationOutput"
+   *      '401':
+   *        description: Unauthorized.
+   */
   router.delete(
     '/reservations/:reservationId',
     expressRequiredPermissionsMiddleware(['reservations:cancel']),
