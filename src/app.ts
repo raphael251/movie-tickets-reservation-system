@@ -37,7 +37,7 @@ export function createApp() {
         },
       ],
     },
-    apis: ['./dist/src/modules/*/external/express/router.js'],
+    apis: ['./dist/src/modules/*/external/express/router.js', './src/modules/shared/swagger/definitions.yaml'],
   };
 
   const swaggerDocs = swaggerjsdoc(swaggerOptions);
