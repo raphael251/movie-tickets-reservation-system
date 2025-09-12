@@ -22,7 +22,7 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *      properties:
    *        screeningSeatId:
    *          type: string
-   *    CreateReservationOutput:
+   *    Reservation:
    *      type: object
    *      properties:
    *        id:
@@ -50,23 +50,27 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
   /**
    * @swagger
    * /reservations:
-   *  post:
-   *    summary: Create a reservation.
-   *    requestBody:
-   *      required: true
-   *      content:
-   *        application/json:
-   *          schema:
-   *            $ref: "#/components/schemas/CreateReservationInput"
-   *    responses:
-   *      '201':
-   *        description: The reservation was created successfuly.
-   *        content:
-   *          application/json:
+   *   post:
+   *     summary: Create a reservation.
+   *     tags:
+   *      - Reservations
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
    *           schema:
-   *             $ref: "#/components/schemas/CreateReservationOutput"
-   *      '401':
-   *        description: Unauthorized.
+   *             $ref: "#/components/schemas/CreateReservationInput"
+   *     responses:
+   *       '201':
+   *         description: The reservation was created successfuly.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: "#/components/schemas/Reservation"
+   *       '401':
+   *         $ref: "#/components/responses/UnauthorizedError"
    */
   router.post(
     '/reservations',
@@ -78,19 +82,22 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
   /**
    * @swagger
    * /reservations:
-   *  get:
-   *    summary: List all reservations for the authenticated user.
-   *    responses:
-   *      '200':
-   *        description: The reservation was created successfuly.
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: "#/components/schemas/CreateReservationOutput"
-   *      '401':
-   *        description: Unauthorized.
+   *   get:
+   *     summary: List all reservations for the authenticated user.
+   *     tags:
+   *      - Reservations
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       '200':
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: "#/components/schemas/Reservation"
+   *       '401':
+   *         $ref: "#/components/responses/UnauthorizedError"
    */
   router.get(
     '/reservations',
@@ -102,17 +109,20 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
   /**
    * @swagger
    * /reservations/{reservationId}:
-   *  get:
-   *    summary: Get one specific reservation details.
-   *    responses:
-   *      '200':
-   *        description: The reservation was created successfuly.
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: "#/components/schemas/CreateReservationOutput"
-   *      '401':
-   *        description: Unauthorized.
+   *   get:
+   *     summary: Get one specific reservation details.
+   *     tags:
+   *      - Reservations
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       '200':
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: "#/components/schemas/CreateReservationOutput"
+   *       '401':
+   *         $ref: "#/components/responses/UnauthorizedError"
    */
   router.get(
     '/reservations/:reservationId',
@@ -124,19 +134,22 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
   /**
    * @swagger
    * /reservations/{reservationId}:
-   *  delete:
-   *    summary: Delete the reservation with the given ID.
-   *    responses:
-   *      '204':
-   *        description: The reservation was created successfuly.
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: "#/components/schemas/CreateReservationOutput"
-   *      '401':
-   *        description: Unauthorized.
+   *   delete:
+   *     summary: Delete the reservation with the given ID.
+   *     tags:
+   *      - Reservations
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       '204':
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: "#/components/schemas/CreateReservationOutput"
+   *       '401':
+   *         $ref: "#/components/responses/UnauthorizedError"
    */
   router.delete(
     '/reservations/:reservationId',
