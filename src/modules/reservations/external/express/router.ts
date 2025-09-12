@@ -120,7 +120,7 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: "#/components/schemas/CreateReservationOutput"
+   *               $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
    */
@@ -147,7 +147,7 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *             schema:
    *               type: array
    *               items:
-   *                 $ref: "#/components/schemas/CreateReservationOutput"
+   *                 $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
    */
