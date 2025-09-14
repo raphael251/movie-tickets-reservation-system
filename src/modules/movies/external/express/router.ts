@@ -60,7 +60,7 @@ export function moviesRouter(container: Container, appConfig: AppConfig): Router
    *         content:
    *           application/json:
    *             schema:
-   *               $ref: "#/components/schemas/CreateMovieOutput"
+   *               $ref: "#/components/schemas/Movie"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
    */
