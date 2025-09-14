@@ -1,26 +1,43 @@
-import zod from 'zod';
+import z from 'zod';
+import { swaggerConfigSchema } from '../swagger/config';
 
 // Define the schema at the module level for type inference and reuse
-const envSchema = zod.object({
-  SERVER_PORT: zod.string(),
+const envSchema = z.object({
+  SERVER_PORT: z.string(),
 
-  JWT_SECRET: zod.string(),
-  JWT_EXPIRATION: zod.coerce.number(),
+  JWT_SECRET: z.string(),
+  JWT_EXPIRATION: z.coerce.number(),
 
-  DB_USERNAME: zod.string(),
-  DB_PASSWORD: zod.string(),
-  DB_DATABASE: zod.string(),
-  DB_SSL_CA_PATH: zod.string().optional(),
-  DB_MIGRATIONS_PATH: zod.string(),
-  DB_HOST: zod.string(),
-  DB_PORT: zod.coerce.number(),
-  DB_LOGGING_ENABLED: zod.coerce.boolean().default(false),
+  DB_USERNAME: z.string(),
+  DB_PASSWORD: z.string(),
+  DB_DATABASE: z.string(),
+  DB_SSL_CA_PATH: z.string().optional(),
+  DB_MIGRATIONS_PATH: z.string(),
+  DB_HOST: z.string(),
+  DB_PORT: z.coerce.number(),
+  DB_LOGGING_ENABLED: z.coerce.boolean().default(false),
 
-  PAGINATION_DEFAULT_LIMIT: zod.coerce.number().default(10),
+  PAGINATION_DEFAULT_LIMIT: z.coerce.number().default(10),
+
+  SWAGGER_DOCS_CONFIG: z
+    .string()
+    .transform((config, ctx) => {
+      try {
+        return JSON.parse(config);
+      } catch (_) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Invalid Swagger Docs config JSON',
+        });
+        return z.NEVER;
+      }
+    })
+    .pipe(swaggerConfigSchema)
+    .optional(),
 });
 
 // Export the inferred type for use in other modules
-export type AppConfig = zod.infer<typeof envSchema>;
+export type AppConfig = z.infer<typeof envSchema>;
 
 export const AppConfig = Symbol.for('AppConfig');
 
@@ -33,7 +50,7 @@ export class AppConfigLoader {
     const envParsingResult = envSchema.safeParse(process.env);
 
     if (!envParsingResult.success) {
-      console.error('Invalid environment variables:', JSON.stringify(zod.treeifyError(envParsingResult.error)));
+      console.error('Invalid environment variables:', JSON.stringify(z.treeifyError(envParsingResult.error)));
       process.exit(1);
     }
 

@@ -8,8 +8,7 @@ import { screeningsRouter } from './modules/screenings/external/express/router.t
 import { moviesRouter } from './modules/movies/external/express/router.ts';
 import { usersRouter } from './modules/users/external/express/router.ts';
 import { appDataSource } from './modules/shared/data-source/data-source.ts';
-import swaggerjsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import { configSwagger } from './modules/shared/swagger/config.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -17,30 +16,6 @@ export function createApp() {
   const container: Container = createDependenciesContainer(appConfig);
 
   const app = express();
-
-  const swaggerOptions: swaggerjsdoc.Options = {
-    swaggerDefinition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'Movie Ticket Reservation System',
-        description: 'This is an API to make ticket reservations to watch incredible movies on the theaters',
-        contact: {
-          name: 'Raphael Passos',
-          email: 'raphael251@hotmail.com',
-          url: 'https://www.linkedin.com/in/rapha-passos/',
-        },
-        version: '1.0.0',
-      },
-      servers: [
-        {
-          url: `http://localhost:${appConfig.SERVER_PORT}`,
-        },
-      ],
-    },
-    apis: ['./dist/src/modules/*/external/express/router.js', './src/modules/shared/swagger/definitions.yaml'],
-  };
-
-  const swaggerDocs = swaggerjsdoc(swaggerOptions);
 
   app.use(cors());
   app.use(express.json());
@@ -55,7 +30,7 @@ export function createApp() {
     }
   });
 
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  if (appConfig.SWAGGER_DOCS_CONFIG) app.use('/api-docs', ...configSwagger(appConfig.SWAGGER_DOCS_CONFIG));
 
   app.use(usersRouter(container));
 
