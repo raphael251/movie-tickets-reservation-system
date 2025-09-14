@@ -1,5 +1,5 @@
 import z from 'zod';
-import { swaggerConfigSchema } from '../swagger/config';
+import { swaggerConfigSchema } from '../swagger/config.ts';
 
 // Define the schema at the module level for type inference and reuse
 const envSchema = z.object({
