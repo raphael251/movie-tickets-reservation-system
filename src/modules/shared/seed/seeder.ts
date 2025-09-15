@@ -14,7 +14,7 @@ export class Seeder {
       if (error instanceof Error) {
         if (error instanceof QueryFailedError) {
           if (error.driverError.code === '23505') {
-            console.log('Duplicate entry detected. The seeder already ran.', error.message);
+            console.log('Seeder already ran.');
             return;
           }
 
