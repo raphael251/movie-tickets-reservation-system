@@ -63,6 +63,8 @@ export function moviesRouter(container: Container, appConfig: AppConfig): Router
    *               $ref: "#/components/schemas/Movie"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.post(
     '/movies',
@@ -90,6 +92,8 @@ export function moviesRouter(container: Container, appConfig: AppConfig): Router
    *                 $ref: "#/components/schemas/Movie"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/movies',
@@ -115,6 +119,8 @@ export function moviesRouter(container: Container, appConfig: AppConfig): Router
    *               $ref: "#/components/schemas/Movie"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.put(
     '/movies/:movieId',
@@ -142,6 +148,8 @@ export function moviesRouter(container: Container, appConfig: AppConfig): Router
    *                 $ref: "#/components/schemas/Movie"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.delete(
     '/movies/:movieId',
