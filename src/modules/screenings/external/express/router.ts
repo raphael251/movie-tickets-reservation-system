@@ -81,6 +81,8 @@ export function screeningsRouter(container: Container, appConfig: AppConfig): Ro
    *               $ref: "#/components/schemas/Screening"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.post(
     '/screenings',
@@ -108,6 +110,8 @@ export function screeningsRouter(container: Container, appConfig: AppConfig): Ro
    *                 $ref: "#/components/schemas/Screening"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/screenings',
@@ -133,6 +137,8 @@ export function screeningsRouter(container: Container, appConfig: AppConfig): Ro
    *               $ref: "#/components/schemas/Screening"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/screenings/:screeningId/seats',
@@ -158,6 +164,8 @@ export function screeningsRouter(container: Container, appConfig: AppConfig): Ro
    *               $ref: "#/components/schemas/Screening"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/seats/:screeningSeatId',
