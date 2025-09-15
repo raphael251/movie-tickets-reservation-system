@@ -71,6 +71,8 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *               $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.post(
     '/reservations',
@@ -98,6 +100,8 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *                 $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/reservations',
@@ -123,6 +127,8 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *               $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.get(
     '/reservations/:reservationId',
@@ -150,6 +156,8 @@ export function reservationsRouter(container: Container, appConfig: AppConfig): 
    *                 $ref: "#/components/schemas/Reservation"
    *       '401':
    *         $ref: "#/components/responses/UnauthorizedError"
+   *       '403':
+   *         $ref: "#/components/responses/InsufficientPermissions"
    */
   router.delete(
     '/reservations/:reservationId',
