@@ -10,3 +10,13 @@ components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+    InsufficientPermissions:
+      description: Insufficient permissions for the given user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Forbidden: Insufficient permissions'
