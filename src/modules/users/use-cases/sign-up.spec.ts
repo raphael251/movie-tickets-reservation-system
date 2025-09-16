@@ -1,3 +1,4 @@
+import { IEventRepository } from '../../events/repositories/interfaces/event.repository.ts';
 import { IHasher } from '../../shared/security/interfaces/hasher.ts';
 import { User } from '../database/user.entity.ts';
 import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.ts';
@@ -9,6 +10,7 @@ jest.mock('../../shared/data-source/data-source.ts', () => {});
 
 describe('UsersSignUpUseCase', () => {
   let userRepository: jest.Mocked<IUserRepository>;
+  let eventRepository: jest.Mocked<IEventRepository>;
   let hasher: jest.Mocked<IHasher>;
   let useCase: UsersSignUpUseCase;
 
@@ -23,7 +25,11 @@ describe('UsersSignUpUseCase', () => {
       compare: jest.fn(),
     };
 
-    useCase = new UsersSignUpUseCase(userRepository, hasher);
+    eventRepository = {
+      create: jest.fn(),
+    };
+
+    useCase = new UsersSignUpUseCase(userRepository, eventRepository, hasher);
   });
 
   it('should create a user with hashed password', async () => {

@@ -7,6 +7,9 @@ import { InputValidationError } from '../../shared/errors/input-validation.ts';
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '../repositories/user.repository.ts';
 import { Hasher } from '../../shared/security/hasher.ts';
+import { EventRepository } from '../../events/repositories/event.repository.ts';
+import type { IEventRepository } from '../../events/repositories/interfaces/event.repository.ts';
+import { Events } from '../../events/database/outbox.entity.ts';
 
 type Input = {
   email: string;
@@ -18,6 +21,8 @@ export class UsersSignUpUseCase {
   constructor(
     @inject(UserRepository)
     private readonly userRepository: IUserRepository,
+    @inject(EventRepository)
+    private readonly eventRepository: IEventRepository,
     @inject(Hasher)
     private readonly hasher: IHasher,
   ) {}
@@ -43,6 +48,11 @@ export class UsersSignUpUseCase {
       email,
       role: UserRole.REGULAR,
       password: await this.hasher.hash(password),
+    });
+
+    await this.eventRepository.create({
+      event: Events.USER_CREATED,
+      email,
     });
   }
 }
