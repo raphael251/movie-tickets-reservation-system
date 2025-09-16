@@ -61,3 +61,5 @@ This document tracks the **detailed technical progress** of the project. The REA
 - [x] Allow multiple reservations to be made to the same screening seat, since only one has the confirmed status
 - [x] Add swagger docs for all endpoints
 - [x] Add feature flag to enable swagger docs
+- [ ] Create Transactional Outbox Pattern table to store events in the database
+- [ ] Create worker to send outbox table events to its targets
