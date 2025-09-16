@@ -6,6 +6,7 @@ import { createDependenciesContainer as createReservationsDependenciesContainer 
 import { createDependenciesContainer as createScreeningsDependenciesContainer } from '../../screenings/dependencies/create-dependencies-container.ts';
 import { createDependenciesContainer as createTheatersDependenciesContainer } from '../../theaters/dependencies/create-dependencies-container.ts';
 import { createDependenciesContainer as createUsersDependenciesContainer } from '../../users/dependencies/create-dependencies-container.ts';
+import { createDependenciesContainer as createEventsDependenciesContainer } from '../../events/dependencies/create-dependencies-container.ts';
 import { Hasher } from '../security/hasher.ts';
 
 export function createDependenciesContainer(appConfig: AppConfig): Container {
@@ -16,6 +17,7 @@ export function createDependenciesContainer(appConfig: AppConfig): Container {
   createScreeningsDependenciesContainer(container);
   createTheatersDependenciesContainer(container);
   createUsersDependenciesContainer(container);
+  createEventsDependenciesContainer(container);
 
   // Logger
   container.bind(WinstonLogger).toSelf();

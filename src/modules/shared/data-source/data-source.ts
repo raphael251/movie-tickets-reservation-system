@@ -9,6 +9,7 @@ import { Seat } from '../../seats/database/seat.entity.ts';
 import { Theater } from '../../theaters/database/theater.entity.ts';
 import { ScreeningSeat } from '../../screenings/database/screening-seat.entity.ts';
 import { Movie } from '../../movies/database/movie.entity.ts';
+import { Outbox } from '../../events/database/outbox.entity.ts';
 
 const appConfig = AppConfigLoader.load();
 
@@ -25,7 +26,7 @@ export const appDataSource = new DataSource({
         ca: readFileSync(appConfig.DB_SSL_CA_PATH, 'utf-8'),
       }
     : false,
-  entities: [User, Screening, Reservation, Seat, Theater, ScreeningSeat, Movie],
+  entities: [User, Screening, Reservation, Seat, Theater, ScreeningSeat, Movie, Outbox],
   migrations: [appConfig.DB_MIGRATIONS_PATH],
   logging: appConfig.DB_LOGGING_ENABLED,
   useUTC: true,
