@@ -1,0 +1,20 @@
+{
+  "name": "@movie-tickets-reservation/event-sender",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "swc src --out-dir ./dist",
+    "build:ci": "tsc && npm run build",
+    "build:dev": "npm run build -- --watch --source-maps true",
+    "start:dev": "nodemon dist/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^7.0.6"
+  }
+}
