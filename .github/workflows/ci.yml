@@ -21,4 +21,4 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - run: npm run check-types && npm run test:unit
+      - run: npx turbo check-types && npx turbo test:unit
