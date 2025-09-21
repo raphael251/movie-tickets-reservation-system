@@ -1,5 +1,5 @@
 import { Container } from 'inversify';
-import { AppConfig } from '../../../shared/configs/app-config';
+import { AppConfig } from '../../../shared/configs/app-config.ts';
 import { Router } from 'express';
 import { expressHttpControllerAdapter } from '../../../shared/external/express/adapters/controller-adapter.ts';
 import { expressAuthMiddleware } from '../../../shared/external/express/middlewares/auth-middleware.ts';

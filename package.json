@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "This side project is a backend system to make movie tickets reservation. The idea is to have movies available for reservation by users.",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "src/*"
+  ],
   "scripts": {
     "build": "swc src --out-dir dist",
     "build:ci": "tsc && npm run build",
@@ -34,47 +38,13 @@
     "url": "https://github.com/raphael251/movie-tickets-reservation-system/issues"
   },
   "homepage": "https://github.com/raphael251/movie-tickets-reservation-system#readme",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "inversify": "^7.9.1",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.3",
-    "reflect-metadata": "^0.2.2",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.25",
-    "winston": "^3.17.0",
-    "zod": "^4.0.14"
-  },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@eslint/js": "^9.32.0",
-    "@jest/globals": "^30.0.5",
-    "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.13.2",
-    "@swc/plugin-transform-imports": "^9.0.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/jest": "^30.0.0",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.1.0",
-    "@types/supertest": "^6.0.3",
-    "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.8",
-    "eslint": "^9.32.0",
-    "globals": "^16.3.0",
     "husky": "^9.1.7",
-    "jest": "^30.0.5",
-    "jiti": "^2.5.1",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2",
-    "supertest": "^7.1.4",
-    "ts-jest": "^29.4.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "turbo": "^2.5.6"
+  },
+  "packageManager": "npm@11.4.2",
+  "directories": {
+    "doc": "docs"
   }
 }

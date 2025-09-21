@@ -1,4 +1,4 @@
-import { appDataSource } from '../modules/shared/data-source/data-source';
+import { appDataSource } from '../modules/shared/data-source/data-source.ts';
 import { Seeder } from '../modules/shared/seed/seeder';
 import { User } from '../modules/users/database/user.entity';
 import { UserRole } from '../modules/users/util/constants/roles';
