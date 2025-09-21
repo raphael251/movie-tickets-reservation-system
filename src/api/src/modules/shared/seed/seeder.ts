@@ -1,6 +1,6 @@
 import { Seat } from '../../seats/database/seat.entity.ts';
 import { Theater } from '../../theaters/database/theater.entity.ts';
-import { appDataSource } from '../data-source/data-source.ts';
+import { appDataSource } from '../../shared/data-source/data-source.ts';
 import { seatsSeed } from './seats.ts';
 import { theatersSeed } from './theaters.ts';
 import { QueryFailedError } from 'typeorm';

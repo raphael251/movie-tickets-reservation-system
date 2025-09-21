@@ -4,7 +4,7 @@ import { User } from '../database/user.entity.ts';
 import { EmailAlreadyRegisteredError } from '../errors/email-already-registered.ts';
 import { IUserRepository } from '../repositories/interfaces/user.repository.ts';
 import { UserRole } from '../util/constants/roles.ts';
-import { UsersSignUpUseCase } from './sign-up';
+import { UsersSignUpUseCase } from './sign-up.ts';
 
 jest.mock('../../shared/data-source/data-source.ts', () => {});
 

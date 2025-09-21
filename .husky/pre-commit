@@ -1,2 +1,2 @@
-npm run check-types
-npm run test:unit
+turbo check-types
+turbo test:unit

@@ -1,6 +1,6 @@
 import z from 'zod';
 import { IHttpControllerV2, THttpRequest, THttpResponse } from '../../../shared/interfaces/http/controller.ts';
-import type { IScreeningRepository } from '../../repositories/interfaces/screening.repository';
+import type { IScreeningRepository } from '../../repositories/interfaces/screening.repository.ts';
 import { mapScreeningToDTO, ScreeningDTO } from '../../dtos/screening.dto.ts';
 import type { ILogger } from '../../../shared/logger/interfaces/logger.ts';
 import { inject, injectable } from 'inversify';

@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
-import { Screening } from '../../screenings/database/screening.entity.ts';
+import { Screening } from './screening.entity.ts';
 
 export enum SCREENING_SEAT_STATUS {
   AVAILABLE = 'AVAILABLE',

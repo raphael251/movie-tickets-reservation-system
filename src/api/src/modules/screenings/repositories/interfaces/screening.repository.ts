@@ -1,4 +1,4 @@
-import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../../screenings/database/screening-seat.entity.ts';
+import { SCREENING_SEAT_STATUS, ScreeningSeat } from '../../database/screening-seat.entity.ts';
 import { IPaginationParams, TPaginationResponse } from '../../../shared/pagination/types.ts';
 import { Screening } from '../../database/screening.entity.ts';
 
