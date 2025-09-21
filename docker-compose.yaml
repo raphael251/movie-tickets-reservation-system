@@ -38,6 +38,15 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
+  movies-tickets-reservation-mail-hog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: movies-tickets-reservation-mail-hog
+    restart: always
+    networks:
+      - movies-tickets-reservation-network
+    ports:
+      - 1025:1025
+      - 8025:8025
 volumes:
   db:
     driver: local

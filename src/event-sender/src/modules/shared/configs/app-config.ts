@@ -10,6 +10,11 @@ const envSchema = z.object({
   DB_HOST: z.string(),
   DB_PORT: z.coerce.number(),
   DB_LOGGING_ENABLED: z.coerce.boolean().default(false),
+
+  EMAIL_HOST: z.string(),
+  EMAIL_PORT: z.coerce.number(),
+  EMAIL_USERNAME: z.string(),
+  EMAIL_PASSWORD: z.string(),
 });
 
 // Export the inferred type for use in other modules
