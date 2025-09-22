@@ -1,6 +1,6 @@
-import { Events, Outbox, OutboxEventStatus } from './modules/events/database/outbox.entity.ts';
-import { appDataSource } from './modules/shared/data-source/data-source.ts';
-import { AppConfigLoader } from './modules/shared/configs/app-config.ts';
+import { Events, Outbox, OutboxEventStatus } from './modules/database/outbox.entity.ts';
+import { appDataSource } from './modules/data-source/data-source.ts';
+import { AppConfigLoader } from './modules/configs/app-config.ts';
 import nodemailer from 'nodemailer';
 
 async function startApplication() {

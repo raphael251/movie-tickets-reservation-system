@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { AppConfigLoader } from '../configs/app-config.ts';
 import { readFileSync } from 'node:fs';
-import { Outbox } from '../../events/database/outbox.entity.ts';
+import { Outbox } from '../database/outbox.entity.ts';
 
 const appConfig = AppConfigLoader.load();
 

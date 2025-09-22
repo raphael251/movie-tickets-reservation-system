@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { appDataSource } from '../../shared/data-source/data-source.ts';
+import { appDataSource } from '../data-source/data-source.ts';
 import { Outbox } from '../database/outbox.entity.ts';
 import { EventPayload } from '../payloads.ts';
 import { IEventRepository } from './interfaces/event.repository.ts';
