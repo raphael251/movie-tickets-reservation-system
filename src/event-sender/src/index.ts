@@ -1,5 +1,5 @@
 import { Events, Outbox, OutboxEventStatus } from './modules/database/outbox.entity.ts';
-import { appDataSource } from './modules/data-source/data-source.ts';
+import { appDataSource } from './modules/database/data-source.ts';
 import { AppConfigLoader } from './modules/configs/app-config.ts';
 import nodemailer from 'nodemailer';
 
