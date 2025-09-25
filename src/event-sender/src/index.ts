@@ -2,6 +2,7 @@ import { Events, Outbox, OutboxEventStatus } from './modules/database/outbox.ent
 import { appDataSource } from './modules/database/data-source.ts';
 import { AppConfigLoader } from './modules/configs/app-config.ts';
 import nodemailer from 'nodemailer';
+import { userCreatedEventPayloadSchema } from './modules/payloads.ts';
 
 async function startApplication() {
   const appConfig = AppConfigLoader.load();
@@ -40,23 +41,25 @@ async function startApplication() {
       console.log('Server is ready to take our messages');
 
       try {
+        const { email: to } = userCreatedEventPayloadSchema.parse(JSON.parse(event.event));
+
         const info = await transporter.sendMail({
           from: '"Movie Tickets Reservation System" <events@movietickets.com>',
-          to: JSON.parse(event.payload).email,
+          to,
           subject: 'A new user was created',
           text: 'Just to tell you a new user was created!',
-          html: '<h1>Email notification - Movie Tickets Reservation System</h1><b>Just to tell you a new user was created!</b>',
+          html: `<h1>Email notification - Movie Tickets Reservation System</h1><b>Just to tell you a new user with the e-mail ${to} was created!</b>`,
         });
+
+        event.status = OutboxEventStatus.SENT;
+
+        await outboxRepo.update({ id: event.id }, event);
 
         console.log('Message sent: %s', info.messageId);
       } catch (err) {
         console.error('Error while sending mail', err);
       }
     }
-
-    // event.status = OutboxEventStatus.SENT;
-
-    // await outboxRepo.update({ id: event.id }, event);
   }
 
   console.log('Event Sender has finished sending the events!');
