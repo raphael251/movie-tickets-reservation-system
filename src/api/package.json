@@ -20,7 +20,6 @@
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix ",
-    "prepare": "husky",
     "test:unit": "jest --detectOpenHandles --config=./jest.config.unit.js",
     "test:e2e": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules --require dotenv/config\" DOTENV_CONFIG_PATH=\".env.test\" jest --runInBand --detectOpenHandles --config=./jest.config.e2e.js",
     "migration:generate": "typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/modules/shared/data-source/data-source.ts",
