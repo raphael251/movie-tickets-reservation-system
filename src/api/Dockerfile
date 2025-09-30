@@ -14,7 +14,8 @@ FROM node:22-alpine AS installer
 RUN apk update
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY --from=builder /app/src/api/dist ./dist
+COPY --from=builder /app/src/api/dist ./src/api/dist
+COPY --from=builder /app/src/api/package.json ./src/api/package.json
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/package-lock.json ./package-lock.json
 RUN touch /usr/local/bin/husky && chmod +x /usr/local/bin/husky
@@ -28,6 +29,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 USER nodejs
 COPY --from=installer /app .
+WORKDIR /app/src/api
 
 EXPOSE 80
 
