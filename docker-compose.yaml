@@ -1,8 +1,6 @@
 services:
   movies-tickets-reservation-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: my-api:latest
     container_name: movies-tickets-reservation-api
     restart: always
     environment:
@@ -17,7 +15,7 @@ services:
       - DB_USERNAME=admin
       - DB_PASSWORD=123456
       - DB_DATABASE=movies-tickets-reservation-db
-      - DB_MIGRATIONS_PATH=./dist/src/migrations/*.js
+      - DB_MIGRATIONS_PATH=./dist/src/api/src/migrations/*.js
       - DB_HOST=movies-tickets-reservation-db
       - DB_PORT=5432
     networks:
