@@ -5,6 +5,11 @@ export default tseslint.config([
   eslint.configs.recommended,
   tseslint.configs.recommended,
   {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+      },
+    },
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
